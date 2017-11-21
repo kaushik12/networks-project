@@ -1,0 +1,113 @@
+---
+title: "Scraping"
+output: github_document
+---
+
+```{r, echo=FALSE}
+library(igraph)
+library(rvest)
+library(xml2)
+library(stringr)
+```
+
+This is the part where we scrape a HTML book to extract hyperlinks and create a network with pages (page names) as nodes and hyperlink between pages as an edge. The webpage used here is HyperPhysics, a Physics and Math HTML textbook developed by Carl R. nave of Georgia State University. We use this because it's comprehensive coverage of most of physics and the linking structure between content pages. It also has a map of the content in some form which could provide validation to the extraction of trees from the link structure.
+
+The url is http://hyperphysics.phy-astr.gsu.edu/hbase/hframe.html
+
+We use the package 'rvest' which is similar to 'beautifulsoup' in Python used for web-scraping. 
+
+```{r}
+## We start with the first article in the Index, acceleration as the index page itself is a hframe and we are unable to parse it for links. 
+
+url <- "http://hyperphysics.phy-astr.gsu.edu/hbase/acca.html#c1"
+webpage <- read_html(url)
+nodes <- html_nodes(webpage,'a')
+titles <- html_text(nodes)
+links <- html_attr(nodes,"href")
+print("Links")
+links
+print("Titles")
+titles
+
+
+```
+
+We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those pages. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content.
+
+```{r}
+url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
+
+## Defining a function to get all the hyperlinks in a given webpage
+get_links <- function(url,prefix=url_prefix,heading){
+  full_url <- paste0(prefix,url)
+  webpage <- read_html(full_url)
+  nodes <- html_nodes(webpage,'a')
+  titles <- html_text(nodes)
+  links <- html_attr(nodes,"href")
+  ## Removing certain URLs and trimming URLs to exclude within page references (#...)
+  links <- sub("\\#.*","\\",links)
+  excluded_urls <- c("hframe.html","hph.html","Javascript:history.go(-1)","",NA)
+  titles <- titles[!links %in% excluded_urls]
+  links <- links[!links %in% excluded_urls]
+  unique_links <- unique(links)
+  unique_titles <- titles[match(unique_links,links)]
+  return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
+}
+
+l <- get_links("acca.html",heading="acceleration")
+l
+```
+
+Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit.
+
+```{r}
+## Storing the page URL and title in data frame page_details
+page_details <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+colnames(page_details) <- c("url","title")
+
+## Initializing a data frame to store the edge list which would be the hyperlinks
+edge_list <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+colnames(edge_list) <- c("from_url","to_url")
+
+## Function to add new page details
+add_page_details <- function(l,df){
+  existing_urls <- df$url
+  existing_titles <- df$title
+  new_urls <- c(l$main_page,l$page_links)
+  new_titles <- c(l$main_page_title,l$page_titles)
+  ## Removing duplicates before appending
+  new_urls <- new_urls[!new_urls %in% existing_urls]
+  new_titles <- new_titles[!new_titles %in% existing_titles]
+  temp_df <- data.frame(url=new_urls,title=new_titles)
+  return(rbind(df,temp_df))
+}
+
+## Function to add new edge information
+get_edges <- function(l){
+  return(data.frame(from_url=l$main_page,to_url=l$page_links))
+}
+
+# page_details <- add_page_details(l,df = page_details )
+# edge_list <- rbind(edge_list,get_edges(l))
+```
+
+```{r}
+## Creating a list to store all the URLs vsiited
+visited_urls <- NA
+unvisited_urls <- "acca.html"
+page_details <- rbind(page_details,c("acca.html","acceleration"))
+
+counter <- 0
+while(length(unvisited_urls) > 0){
+  l <- get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
+  page_details <- add_page_details(l,df = page_details )
+  edge_list <- rbind(edge_list,get_edges(l))
+  visited_urls <- c(visited_urls,unvisited_urls[1])
+  unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
+  counter <- counter + 1
+  print(counter)
+}
+
+
+```
+
