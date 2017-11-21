@@ -76,7 +76,7 @@ get_links <- function(url,prefix=url_prefix,heading){
   links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
   links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
   links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
-  
+  links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
   
   
   ## Removing the Index and Main page URLs along with any null or missing cases
@@ -89,7 +89,7 @@ get_links <- function(url,prefix=url_prefix,heading){
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("thermo/temper.html",heading="acceleration")
+l <- get_links("astro/bbcloc.html",heading="acceleration")
 l
 ```
 
@@ -157,8 +157,8 @@ unvisited_urls[1]
 edge_list$from_url[edge_list$to_url == unvisited_urls[1]]
 
 # Fix to continue
-page_details$url[which(page_details$url == unvisited_urls[1])] <- "thermo/entropcon.html"
-unvisited_urls[1] <- "thermo/entropcon.html"
+page_details$url[which(page_details$url == unvisited_urls[1])] <- "particles/hadron.html"
+unvisited_urls[1] <- "particles/hadron.html"
 
 ```
 
