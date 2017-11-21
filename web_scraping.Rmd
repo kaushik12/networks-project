@@ -3,11 +3,12 @@ title: "Scraping"
 output: github_document
 ---
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 library(igraph)
 library(rvest)
 library(xml2)
 library(stringr)
+library(stringi)
 ```
 
 This is the part where we scrape a HTML book to extract hyperlinks and create a network with pages (page names) as nodes and hyperlink between pages as an edge. The webpage used here is HyperPhysics, a Physics and Math HTML textbook developed by Carl R. nave of Georgia State University. We use this because it's comprehensive coverage of most of physics and the linking structure between content pages. It also has a map of the content in some form which could provide validation to the extraction of trees from the link structure.
@@ -43,7 +44,7 @@ get_links <- function(url,prefix=url_prefix,heading){
   full_url <- paste0(prefix,url)
   webpage <- read_html(full_url)
   nodes <- html_nodes(webpage,'a')
-  titles <- html_text(nodes)
+  titles <- stri_encode(html_text(nodes), "", "UTF-8")
   links <- html_attr(nodes,"href")
 
   ## Removing any javascript or external (starting with http:// or https://) links
@@ -68,16 +69,17 @@ get_links <- function(url,prefix=url_prefix,heading){
   links <- sub("^../","\\",links)
   
   ## Fixing broken URLs 
-  links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
-  links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
-  links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
-  links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
-  links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
-  links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
-  links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
-  links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
-  links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
-  
+  # links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
+  # links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
+  # links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
+  # links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
+  # links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
+  # links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
+  # links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
+  # links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
+  # links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
+  # links[grepl("^astro/grav.html$",links)] <- "grav.html"
+  # 
   
   ## Removing the Index and Main page URLs along with any null or missing cases
   excluded_urls <- c("hframe.html","hph.html")
@@ -89,7 +91,7 @@ get_links <- function(url,prefix=url_prefix,heading){
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("astro/bbcloc.html",heading="acceleration")
+l <- get_links("astro/crab.html",heading="acceleration")
 l
 ```
 
@@ -130,23 +132,37 @@ get_edges <- function(l){
 # edge_list <- rbind(edge_list,get_edges(l))
 ```
 
-```{r}
+```{r, warning=FALSE}
 ## Creating a list to store all the URLs vsiited
 visited_urls <- NA
+error_urls <- NA
+errors <- NA
 unvisited_urls <- "acca.html"
 page_details <- rbind(page_details,c("acca.html","acceleration"))
 
 counter <- 0
 st <- proc.time()
-while(length(unvisited_urls) > 0 | counter < 500){
-  l <- get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
-  page_details <- add_page_details(l,df = page_details )
-  edge_list <- rbind(edge_list,get_edges(l))
-  visited_urls <- c(visited_urls,unvisited_urls[1])
-  unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
-  counter <- counter + 1
-  # print(counter)
+while(length(unvisited_urls) > 0 & counter < 5000){
+  tryCatch(
+    {
+      l <-get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
+      page_details <- add_page_details(l,df = page_details )
+      edge_list <- rbind(edge_list,get_edges(l))
+    },
+    error=function(cond){
+      # print(unvisited_urls[1])
+      error_urls <<- c(error_urls,unvisited_urls[1])
+      # errors <<- c(errors,cond)
+    },
+    finally={
+      visited_urls <- c(visited_urls,unvisited_urls[1])
+      unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
+      counter <- counter + 1    
+    }
+  )
 }
+
+error_urls <- error_urls[!is.na(error_urls)]
 proc.time() - st
 
 ```
@@ -157,8 +173,8 @@ unvisited_urls[1]
 edge_list$from_url[edge_list$to_url == unvisited_urls[1]]
 
 # Fix to continue
-page_details$url[which(page_details$url == unvisited_urls[1])] <- "particles/hadron.html"
-unvisited_urls[1] <- "particles/hadron.html"
+page_details$url[which(page_details$url == unvisited_urls[1])] <- "grav.html"
+unvisited_urls[1] <- "grav.html"
 
 ```
 
