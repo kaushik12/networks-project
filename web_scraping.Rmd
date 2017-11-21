@@ -76,8 +76,8 @@ add_page_details <- function(l,df){
   new_urls <- c(l$main_page,l$page_links)
   new_titles <- c(l$main_page_title,l$page_titles)
   ## Removing duplicates before appending
+  new_titles <- new_titles[!new_urls %in% existing_urls]
   new_urls <- new_urls[!new_urls %in% existing_urls]
-  new_titles <- new_titles[!new_titles %in% existing_titles]
   temp_df <- data.frame(url=new_urls,title=new_titles)
   return(rbind(df,temp_df))
 }
@@ -98,7 +98,7 @@ unvisited_urls <- "acca.html"
 page_details <- rbind(page_details,c("acca.html","acceleration"))
 
 counter <- 0
-while(length(unvisited_urls) > 0){
+while(length(unvisited_urls) > 0 & counter < 10){
   l <- get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
   page_details <- add_page_details(l,df = page_details )
   edge_list <- rbind(edge_list,get_edges(l))
