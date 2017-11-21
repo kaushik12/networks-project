@@ -39,22 +39,57 @@ url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
 
 ## Defining a function to get all the hyperlinks in a given webpage
 get_links <- function(url,prefix=url_prefix,heading){
+  
   full_url <- paste0(prefix,url)
   webpage <- read_html(full_url)
   nodes <- html_nodes(webpage,'a')
   titles <- html_text(nodes)
   links <- html_attr(nodes,"href")
-  ## Removing certain URLs and trimming URLs to exclude within page references (#...)
+
+  ## Removing any javascript or external (starting with http:// or https://) links
+  titles <- titles[!grepl("^javascript|Javascript|http://|https://",links)]
+  links <- links[!grepl("^javascript|Javascript|http://|https://",links)]
+  
+  ## Removing certain URLs to exclude within page references (of the form #xxxD)
   links <- sub("\\#.*","\\",links)
-  excluded_urls <- c("hframe.html","hph.html","Javascript:history.go(-1)","",NA)
+  
+  ## Removing the Index and Main page URLs along with any null or missing cases
+  excluded_urls <- c("",NA)
   titles <- titles[!links %in% excluded_urls]
   links <- links[!links %in% excluded_urls]
+    
+  ## If the main page url is a sub-url of the form xx/yy/zz.html, we need to prefix yy/ to results of the form    xx.html
+  if(grepl("^.*/",url)){
+    string_to_add <- paste0(sub("\\/.*html","\\",url),"/")
+    links[!grepl("^../",links)] <- paste0(string_to_add,links[!grepl("^../",links)])
+  }
+
+  ## Trimming URLs of the form ../xxx.html
+  links <- sub("^../","\\",links)
+  
+  ## Fixing broken URLs 
+  links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
+  links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
+  links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
+  links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
+  links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
+  links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
+  
+  
+  
+  ## Removing the Index and Main page URLs along with any null or missing cases
+  excluded_urls <- c("hframe.html","hph.html")
+  titles <- titles[!links %in% excluded_urls]
+  links <- links[!links %in% excluded_urls]
+  
   unique_links <- unique(links)
-  unique_titles <- titles[match(unique_links,links)]
+  unique_titles <- trimws(titles[match(unique_links,links)]) ## Trimming leading/trailing whitespace
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("acca.html",heading="acceleration")
+l <- get_links("thermo/temper.html",heading="acceleration")
 l
 ```
 
@@ -84,7 +119,11 @@ add_page_details <- function(l,df){
 
 ## Function to add new edge information
 get_edges <- function(l){
-  return(data.frame(from_url=l$main_page,to_url=l$page_links))
+  if(length(l$page_links) > 0){
+    return(data.frame(from_url=l$main_page,to_url=l$page_links))
+  }else{
+    return(NULL)
+  }
 }
 
 # page_details <- add_page_details(l,df = page_details )
@@ -98,16 +137,31 @@ unvisited_urls <- "acca.html"
 page_details <- rbind(page_details,c("acca.html","acceleration"))
 
 counter <- 0
-while(length(unvisited_urls) > 0 & counter < 10){
+st <- proc.time()
+while(length(unvisited_urls) > 0 | counter < 500){
   l <- get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
   page_details <- add_page_details(l,df = page_details )
   edge_list <- rbind(edge_list,get_edges(l))
   visited_urls <- c(visited_urls,unvisited_urls[1])
   unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
   counter <- counter + 1
-  print(counter)
+  # print(counter)
 }
-
+proc.time() - st
 
 ```
 
+```{r}
+# Check
+unvisited_urls[1]
+edge_list$from_url[edge_list$to_url == unvisited_urls[1]]
+
+# Fix to continue
+page_details$url[which(page_details$url == unvisited_urls[1])] <- "thermo/entropcon.html"
+unvisited_urls[1] <- "thermo/entropcon.html"
+
+```
+
+
+Notes:
+1. Remove self edges
