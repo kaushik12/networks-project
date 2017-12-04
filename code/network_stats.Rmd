@@ -87,6 +87,9 @@ plot(as.numeric(row.names(geodesic_distances_table)[2:(length(geodesic_distances
 
 
 ```{r}
-betweenness_centrality <- betweenness(hyperphysics_network)
+## Centrality Measures
+betweenness_centrality <- centr_betw(hyperphysics_graph)
+paste("Network Centralization: ",round(betweenness_centrality$centralization,3))
+page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
 ```
 
