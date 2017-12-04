@@ -315,6 +315,12 @@ fixed_error_urls$X2[15] <-"relativ/relcon.html"
 fixed_error_urls$X2[20:31] <- paste0("organic/",fixed_error_urls$X1[20:31])
 ## Re-run above loop
 
+# ## small fix in page_details
+# page_details[which(page_details$url == ""),] <- c("Sound/infrasound.html","Infrasonic Sound")
+# edge_list$from_url[which(edge_list$from_url == "")] <- "Sound/infrasound.html"
+# edge_list$to_url[which(edge_list$to_url == "")] <- "Sound/infrasound.html"
+# edge_list[which(edge_list$from_url == ""),]
+
 ## Ignoring 42 broken URLs for now
 
 ```

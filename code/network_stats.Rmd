@@ -8,6 +8,8 @@ In this file, we look at the network data obtained using the code in *web_scrapi
 ```{r, echo=FALSE,warning=FALSE}
 library(igraph)
 library(sna)
+library(network)
+library(statnet)
 library(intergraph)
 ```
 
@@ -65,6 +67,26 @@ plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_d
 ```
 
 ```{r}
-## Creating the network object
+## Creating Network object
+hyperphysics_network <- network(as.matrix(edge_list),vertex.attr = page_details,vertex.attrnames = "Title",matrix.type="edgelist",directed = TRUE)
+
+node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
+set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[which(page_details$url %in% get.vertex.attribute(hyperphysics_network,"vertex.names"))])
+
+## IGraph object
+hyperphysics_graph <- asIgraph(hyperphysics_network)
+
+
+geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
+geodesic_distances_vector <- as.vector(geodesic_distances$gdist)
+geodesic_distances_table <- table(geodesic_distances_vector)
+geodesic_distances_table <- geodesic_distances_table/sum(geodesic_distances_table)
+plot(as.numeric(row.names(geodesic_distances_table)[2:(length(geodesic_distances_table)-1)]),geodesic_distances_table[2:(length(geodesic_distances_table)-1)],main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Frequency",type='o',pch=1)
+
+```
+
+
+```{r}
+betweenness_centrality <- betweenness(hyperphysics_network)
 ```
 
