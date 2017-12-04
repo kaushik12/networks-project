@@ -13,10 +13,10 @@ library(statnet)
 library(intergraph)
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 ## Importing Data Sets
-edge_list <- read.csv("edge_list.csv",stringsAsFactors = FALSE)
-page_details <- read.csv("page_details.csv",stringsAsFactors = FALSE)
+edge_list <- read.csv("Data/edge_list.csv",stringsAsFactors = FALSE)
+page_details <- read.csv("Data/page_details.csv",stringsAsFactors = FALSE)
 ```
 
 First, we looking at some high-level Networks Stats
