@@ -47,9 +47,17 @@ get_links <- function(url,prefix=url_prefix,heading){
   titles <- stri_encode(html_text(nodes), "", "UTF-8")
   links <- html_attr(nodes,"href")
 
-  ## Removing any javascript or external (starting with http:// or https://) links
+  ## Removing any javascript or external (starting with http:// or https://) links 
   titles <- titles[!grepl("^javascript|Javascript|http://|https://",links)]
   links <- links[!grepl("^javascript|Javascript|http://|https://",links)]
+  
+  ## Removing multimedia links (.gif/.mp4/.jpg/.png/.mov)
+  titles <- titles[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
+  links <- links[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
+  
+  ## Removing any links which refer to index directory sorting
+  titles <- titles[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
+  links <- links[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
   
   ## Removing certain URLs to exclude within page references (of the form #xxxD)
   links <- sub("\\#.*","\\",links)
@@ -69,17 +77,17 @@ get_links <- function(url,prefix=url_prefix,heading){
   links <- sub("^../","\\",links)
   
   ## Fixing broken URLs 
-  # links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
-  # links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
-  # links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
-  # links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
-  # links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
-  # links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
-  # links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
-  # links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
-  # links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
-  # links[grepl("^astro/grav.html$",links)] <- "grav.html"
-  # 
+  links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
+  links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
+  links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
+  links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
+  links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
+  links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
+  links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
+  links[grepl("^astro/grav.html$",links)] <- "grav.html"
+
   
   ## Removing the Index and Main page URLs along with any null or missing cases
   excluded_urls <- c("hframe.html","hph.html")
@@ -91,7 +99,7 @@ get_links <- function(url,prefix=url_prefix,heading){
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("astro/crab.html",heading="acceleration")
+l <- get_links("sound/p2030.html",heading="sound")
 l
 ```
 
@@ -132,17 +140,19 @@ get_edges <- function(l){
 # edge_list <- rbind(edge_list,get_edges(l))
 ```
 
-```{r, warning=FALSE}
+```{r, warning=FALSE,echo=FALSE}
 ## Creating a list to store all the URLs vsiited
 visited_urls <- NA
 error_urls <- NA
 errors <- NA
-unvisited_urls <- "acca.html"
+unvisited_urls <- unvisited_urls[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",unvisited_urls)]
+length(unvisited_urls)
 page_details <- rbind(page_details,c("acca.html","acceleration"))
 
+# 133300, 4:55pm
 counter <- 0
 st <- proc.time()
-while(length(unvisited_urls) > 0 & counter < 5000){
+while(length(unvisited_urls) > 0){
   tryCatch(
     {
       l <-get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
@@ -157,20 +167,23 @@ while(length(unvisited_urls) > 0 & counter < 5000){
     finally={
       visited_urls <- c(visited_urls,unvisited_urls[1])
       unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
-      counter <- counter + 1    
+      counter <- counter + 1   
+      print(length(unvisited_urls))
     }
   )
 }
-
+print(counter)
 error_urls <- error_urls[!is.na(error_urls)]
 proc.time() - st
-
 ```
+
+Small script to check broken URLs
 
 ```{r}
 # Check
-unvisited_urls[1]
-edge_list$from_url[edge_list$to_url == unvisited_urls[1]]
+to_check = "isq.html"
+edge_list$from_url[edge_list$to_url == to_check][2]
+page_details[which(page_details$url == to_check),]
 
 # Fix to continue
 page_details$url[which(page_details$url == unvisited_urls[1])] <- "grav.html"
@@ -179,5 +192,164 @@ unvisited_urls[1] <- "grav.html"
 ```
 
 
-Notes:
-1. Remove self edges
+Script to fix broken URLs. I find that most broken URLs are of the form xxx/yyy/zzz.html where the correct URL is supposed to be yyy/zzz.html
+```{r}
+## Removing Error URLs within class/.. and kinetic and quantum index directories
+
+all_error_urls <- error_urls
+
+error_urls <- error_urls[!(grepl("^class/",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/imgkin",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/kinpic",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/imgqua",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/modpic",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/imgqua/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/modpic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^Kinetic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^Kinetic/imgkin//[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^Kinetic/kinpic//[[:punct:]]",error_urls))]
+length(error_urls)
+```
+
+
+
+```{r, warning=FALSE,echo=FALSE}
+
+fixed_error_urls <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+unvisited_urls <- ""
+st <- proc.time()
+st
+for(i in seq_along(error_urls)){
+  fixed_error_urls[i,1] <- error_urls[i]
+  tryCatch(
+    {
+      fixed_error_urls[i,2] <- substring(error_urls[i],regexpr("/",error_urls[i])[1]+1)
+      temp_url <- paste0(url_prefix,fixed_error_urls[i,2])
+      if(!(temp_url %in% edge_list$from_url)){
+        temp_page <- read_html(temp_url)  
+      }
+      ## Replace URL in Page Details
+      page_details$url[which(page_details$url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      ## Replace URL in Edge Details
+      edge_list$from_url[which(edge_list$from_url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      edge_list$to_url[which(edge_list$to_url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      ## Add to Unvisited URLs if not visited
+      if(!fixed_error_urls[i,2] %in% edge_list$from_url){
+        unvisited_urls <- c(unvisited_urls,fixed_error_urls[i,2])
+      }
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    },finally = {
+      if(i%%100 == 0){
+        print(i)
+      }
+    }
+  )
+}
+proc.time() - st
+# to_check_fixed <- substring(to_check,regexpr("/",to_check)[1]+1)
+# to_check_fixed
+
+
+error_url_fixes <- fixed_error_urls[!is.na(fixed_error_urls$X2),]
+for(i in seq_along(error_url_fixes)){
+  err_url <- error_url_fixes$X1[i]
+  fixed_url <- error_url_fixes$X2[i]
+  page_details$url[which(page_details$url == err_url)] <- fixed_url
+  edge_list$from_url[which(edge_list$from_url == err_url)] <- fixed_url  
+  edge_list$to_url[which(edge_list$to_url == err_url)] <- fixed_url  
+  if(!fixed_url %in% edge_list$from_url){
+        unvisited_urls <- c(unvisited_urls,fixed_url)
+      }
+}
+fixed_error_urls <- fixed_error_urls[is.na(fixed_error_urls$X2),]
+
+## First fixes (sound urls without "/Sound")
+fixed_error_urls$X2[104:length(fixed_error_urls$X2)] <- paste0("Sound/",fixed_error_urls$X1[104:length(fixed_error_urls$X2)])
+## Re-run above loop
+
+## Second fixes (Sound URLs which work but under error URLs)                                                    
+fixed_error_urls$X2[81:length(fixed_error_urls$X2)] <- fixed_error_urls$X1[81:length(fixed_error_urls$X2)]
+## Re-run above loop
+
+## interf.html and timbre.html p2030.html (removing spaces/.. in the url)
+fixed_error_urls$X2[59] <- "sound/interf.html"
+fixed_error_urls$X2[57] <- "sound/timbre.html"
+
+## Fixing organic/AMIDE.HTML URLs
+fixed_error_urls$X2[38:43] <- sub("/AMIDE.HTML","",fixed_error_urls$X1[38:43])
+## Re-run above loop
+
+## Removing external URLs
+fixed_error_urls <- fixed_error_urls[-c(15:18,22),]
+
+fixed_error_urls$X2[grep("sound/p2030.html",fixed_error_urls$X1)] <- "sound/p2030.html"
+fixed_error_urls$X2[grep("thermo/",fixed_error_urls$X1)] <- "thermo/"
+
+## Check if these URls are infact broken (some seem to work on manual inspection)
+for(i in seq_along(fixed_error_urls$X1)){
+  tryCatch(
+    {
+      temp_url <- paste0(url_prefix,fixed_error_urls[i,1])
+      temp_page <- read_html(temp_url)   
+      fixed_error_urls[i,2] <- fixed_error_urls[i,1]
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
+}
+## Re-run above loop
+
+## Add parent URL to the data frame
+for(i in seq_along(fixed_error_urls$X1)){
+    parent_url <- edge_list$from_url[edge_list$to_url == fixed_error_urls[i,1]][2]
+    fixed_error_urls[i,3] <- parent_url
+}
+
+## 
+fixed_error_urls$X2[7] <- "relativ/reldop3.html"
+fixed_error_urls$X2[15] <-"relativ/relcon.html"
+fixed_error_urls$X2[20:31] <- paste0("organic/",fixed_error_urls$X1[20:31])
+## Re-run above loop
+
+## Ignoring 42 broken URLs for now
+
+```
+
+```{r}
+## Removing self edges from edge_list and 1st row with an NA
+edge_list <- edge_list[-1,]
+page_details <- page_details[-1,]
+edge_list <- edge_list[-which(edge_list$from_url == edge_list$to_url),]
+
+## Checking for and removing duplicate entries in page_details and edge_list
+edge_list <- edge_list[!duplicated(edge_list), ]
+page_details <- page_details[!duplicated(page_details),] ## URL and Title match
+page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplicated
+
+```
+
+
+
+```{r}
+
+page_details <- page_details[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",page_details$url),]
+edge_list <- edge_list[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",edge_list$to_url),]
+edge_list <- edge_list[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",edge_list$from_url),]
+
+write.csv(page_details,file="page_details.csv",row.names = FALSE)
+write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
+```
+
+Testing the algo:
+1. start from a specific topic
+2. snowball search (target say 300 and induced subgraph)
+3. start at this higher level 
+4. compare the resutls for both
+
+
+
