@@ -351,6 +351,7 @@ page_details <- page_details[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:
 edge_list <- edge_list[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",edge_list$to_url),]
 edge_list <- edge_list[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",edge_list$from_url),]
 
+setwd("./Data")
 write.csv(page_details,file="page_details.csv",row.names = FALSE)
 write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
 ```

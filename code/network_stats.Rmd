@@ -68,7 +68,7 @@ plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_d
 
 ```{r}
 ## Creating Network object
-hyperphysics_network <- network(as.matrix(edge_list),vertex.attr = page_details,vertex.attrnames = "Title",matrix.type="edgelist",directed = TRUE)
+hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
 
 node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
 set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[which(page_details$url %in% get.vertex.attribute(hyperphysics_network,"vertex.names"))])
