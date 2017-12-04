@@ -1,0 +1,70 @@
+---
+title: "Network Analysis"
+output: github_document
+---
+
+In this file, we look at the network data obtained using the code in *web_scraping.Rmd*
+
+```{r, echo=FALSE,warning=FALSE}
+library(igraph)
+library(sna)
+library(intergraph)
+```
+
+```{r}
+## Importing Data Sets
+edge_list <- read.csv("edge_list.csv",stringsAsFactors = FALSE)
+page_details <- read.csv("page_details.csv",stringsAsFactors = FALSE)
+```
+
+First, we looking at some high-level Networks Stats
+
+```{r}
+
+paste("No. of Nodes: ",dim(page_details)[1])
+paste("No. of Edges: ",dim(edge_list)[1])
+network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
+paste("Density: ",round(network_density,5))
+
+print("Sample of Nodes:")
+head(page_details,5)
+
+print("Sample of Edges:")
+head(edge_list,5)
+
+```
+
+```{r}
+## Degree Distribution
+
+degree_dist <- data.frame(matrix(NA,nrow=dim(page_details)[1],ncol=2),stringsAsFactors = FALSE)
+row.names(degree_dist) <- page_details$url
+colnames(degree_dist) <- c("K_in","K_out")
+
+
+
+for(i in seq_along(page_details$url)){
+  degree_dist$K_in[i] <- length(which(edge_list$to_url == page_details$url[i]))
+  degree_dist$K_out[i] <- length(which(edge_list$from_url == page_details$url[i]))
+}
+
+head(degree_dist[order(degree_dist$K_in,decreasing = TRUE ),])
+head(degree_dist[order(degree_dist$K_out,decreasing = TRUE ),])
+
+## Avg. Degrees
+paste("Mean In-Degree: ",round(mean(degree_dist$K_in),4))
+paste("Mean Out-Degree: ",round(mean(degree_dist$K_out),4))
+
+## Plots of Degree Distribution
+par(mfrow=c(1,2))
+plot(log(as.numeric(row.names(table(degree_dist$K_in)))[-1]),log(table(degree_dist$K_in)[-1]),main="Log-log plot of In-Degree Dist.",xlab="log(In-Degree)",ylab="log(frequency)",type="p",pch=1)
+
+plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_dist$K_out)[-1]),main="Log-log plot of Out-Degree Dist.",xlab="log(Out-Degree)",ylab="log(frequency)",type="p",pch=8)
+
+
+```
+
+```{r}
+## Creating the network object
+```
+

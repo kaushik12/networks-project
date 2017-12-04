@@ -4,7 +4,6 @@ output: github_document
 ---
 
 ```{r, echo=FALSE, warning=FALSE}
-library(igraph)
 library(rvest)
 library(xml2)
 library(stringr)
@@ -321,6 +320,11 @@ fixed_error_urls$X2[20:31] <- paste0("organic/",fixed_error_urls$X1[20:31])
 ```
 
 ```{r}
+## Remove URLs with reference to class sub-domain as they don't pertain to physics content
+page_details <- page_details[!grepl("class/",page_details$url),]
+edge_list <- edge_list[!grepl("class/",edge_list$from_url),]
+edge_list <- edge_list[!grepl("class/",edge_list$to_url),]
+
 ## Removing self edges from edge_list and 1st row with an NA
 edge_list <- edge_list[-1,]
 page_details <- page_details[-1,]
