@@ -12,7 +12,6 @@ library(statnet)
 library(intergraph)
 ```
 
-1. Betweenness based hierarchy extraction
 
 ```{r}
 
@@ -28,37 +27,30 @@ hyperphysics_edgelist <- as_edgelist(hyperphysics_graph)
 undirected_edgelist <- data.frame(rbind(hyperphysics_edgelist,cbind(hyperphysics_edgelist[,2],hyperphysics_edgelist[,1])))
 undirected_edgelist <- undirected_edgelist[!duplicated(undirected_edgelist), ]
 
-bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degrees)*(1+out_degrees)))
-bw_hierarchy_edges <- bw_hierarchy_score[undirected_edgelist[,1]]/ifelse(bw_hierarchy_score[undirected_edgelist[,2]]==0,0.00001,bw_hierarchy_score[undirected_edgelist[,2]])
 ```
 
 ```{r}
-upper_cutoff <- 0.8
-lower_cutoff <- 0
+get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
+  ## Score ratio for all edges
+  score_ratio <- h_scores[edgelist[,1]]/ifelse(h_scores[edgelist[,2]]==0,0.00001,h_scores[edgelist[,2]])
+  hierarchy_matrix <- cbind(edgelist,h_scores[edgelist[,1]], h_scores[edgelist[,2]], score_ratio)
+  colnames(hierarchy_matrix) <- c("V1","V2","Score_V1","Score_V2","Score_Ratio")
 
-bw_hierarchy_matrix <- cbind(undirected_edgelist,bw_hierarchy_score[undirected_edgelist[,1]], bw_hierarchy_score[undirected_edgelist[,2]], bw_hierarchy_edges)
-colnames(bw_hierarchy_matrix) <- c("V1","V2","BW_Score_V1","BW_Score_V2","BW_Score_Ratio")
+  hierarchy_matrix <- hierarchy_matrix[hierarchy_matrix$Score_Ratio > lower & hierarchy_matrix$Score_Ratio <= upper,]
+  
+  hierarchy_matrix <- cbind(hierarchy_matrix,ifelse(hierarchy_matrix[,3] > hierarchy_matrix[,4],hierarchy_matrix[,1],hierarchy_matrix[,2]))
+  hierarchy_matrix <- cbind(hierarchy_matrix,ifelse(hierarchy_matrix[,3] > hierarchy_matrix[,4],hierarchy_matrix[,2],hierarchy_matrix[,1]))
+  colnames(hierarchy_matrix) <- c("V1","V2","Score_V1","Score_V2","Score_Ratio","Higher_Node","Lower_Node")
 
-bw_hierarchy_matrix <- bw_hierarchy_matrix[bw_hierarchy_matrix$BW_Score_Ratio > lower_cutoff & bw_hierarchy_matrix$BW_Score_Ratio <= upper_cutoff,]
-
-bw_hierarchy_matrix <- cbind(bw_hierarchy_matrix,ifelse(bw_hierarchy_matrix[,3] > bw_hierarchy_matrix[,4],bw_hierarchy_matrix[,1],bw_hierarchy_matrix[,2]))
-bw_hierarchy_matrix <- cbind(bw_hierarchy_matrix,ifelse(bw_hierarchy_matrix[,3] > bw_hierarchy_matrix[,4],bw_hierarchy_matrix[,2],bw_hierarchy_matrix[,1]))
-colnames(bw_hierarchy_matrix) <- c("V1","V2","BW_Score_V1","BW_Score_V2","BW_Score_Ratio","Higher_Node","Lower_Node")
-
-vertex_titles[as.numeric(rownames(head(sort(table(bw_hierarchy_matrix[,6]),decreasing = TRUE))))]
-vertex_urls[as.numeric(rownames(head(sort(table(bw_hierarchy_matrix[,6]),decreasing = TRUE))))]
-
-bw_hierarchy_edgelist <- as.matrix(bw_hierarchy_matrix[,c(6,7)])
-bw_hierarchy_network <- network(bw_hierarchy_edgelist,matrix.type="edgelist",directed = TRUE)
-bw_hierarchy_graph <- asIgraph(bw_hierarchy_network)
+  hierarchy_edgelist <- as.matrix(hierarchy_matrix[,c(6,7)])
+  hierarchy_network <- network(hierarchy_edgelist,matrix.type="edgelist",directed = TRUE)
+  hierarchy_graph <- asIgraph(hierarchy_network)
+  return(hierarchy_graph)
+}
 
 ```
 
-
 ```{r}
-starting_node <- 100
-levels_up <- 1
-levels_down <- 1
 
 get_sub_tree <- function(st,levels=1,el,n=10){
   down_nodes <- NA
@@ -80,6 +72,21 @@ get_sub_tree <- function(st,levels=1,el,n=10){
   return(g)
 }
   
+```
+
+
+1. Betweenness based hierarchy extraction
+
+```{r}
+bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degrees)*(1+out_degrees)))
+
+upper_cutoff <- 0.75
+lower_cutoff <- 0
+
+bw_hierarchy_graph <- get_hierarchy_graph(bw_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
+
+## plotting sub-tree
 g <- get_sub_tree(2708,5,bw_hierarchy_edgelist,n=3)
 V(g)$titles <- as.character(vertex_titles[V(g)])
 iso <- V(g)[igraph::degree(g)==0]
@@ -88,5 +95,30 @@ plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(
 
 ```
 
+2. Page-Rank based hierarchy extraction
 
-2. Attraction basin hierarchy
+```{r}
+
+pr_hierarchy_score <- page_rank_centrality$vector
+
+upper_cutoff <- 0.9
+lower_cutoff <- 0
+
+pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
+
+## plotting sub-tree
+g <- get_sub_tree(2708,5,pr_hierarchy_edgelist,n=3)
+V(g)$titles <- as.character(vertex_titles[V(g)])
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+
+```
+
+3. Attraction basin hierarchy
+
+```{r}
+
+```
+
