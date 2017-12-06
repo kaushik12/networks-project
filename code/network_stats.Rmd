@@ -82,6 +82,7 @@ geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
 avg_path_length <- average.path.length(hyperphysics_graph)
 dist_path_length <- path.length.hist(hyperphysics_graph)
 paste("Average Geodesic Distance: ",round(avg_path_length,3))
+options(scipen=3)
 plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Count",type='o',pch=1)
 
 ```

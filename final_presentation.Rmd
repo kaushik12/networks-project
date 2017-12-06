@@ -1,0 +1,465 @@
+---
+title: "Extracting knowledge trees"
+subtitle: "Statistical Analysis of Networks"
+author: Kaushik Mohan
+date: December 6, 2017
+output: ioslides_presentation
+
+---
+
+## Introduction
+
+* Objective  
+    + To extract hierarchical structure of articles for a field (say, Mathematics, Physics..)
+
+* Why?  
+    +  Individual learning is still hierarchical
+    +  Can be used to create structured curriculum content with just resources available on the web
+    +  Identify gaps in information on the web
+
+## Data
+
+* HTML Physics textbook (http://hyperphysics.phy-astr.gsu.edu/)
+    + More complete hyperlink structure
+    + Smaller network, easier to work with
+* Scraping to get the hyperlinks for every page
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(stringr)
+library(stringi)
+```
+
+```{r, warning=FALSE, message=FALSE, tidy=TRUE}
+library(rvest)
+library(xml2)
+```
+Looking at the links for the page "acceleration"
+```{r, tidy=TRUE}
+url <- "http://hyperphysics.phy-astr.gsu.edu/hbase/acca.html#c1"
+webpage <- read_html(url)
+nodes <- html_nodes(webpage,'a')
+titles <- html_text(nodes)
+links <- html_attr(nodes,"href")
+```
+
+## Data
+
+```{r, tidy=TRUE}
+head(links[-1])
+head(titles[-1])
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
+url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
+
+## Defining a function to get all the hyperlinks in a given webpage
+get_links <- function(url,prefix=url_prefix,heading){
+  
+  full_url <- paste0(prefix,url)
+  webpage <- read_html(full_url)
+  nodes <- html_nodes(webpage,'a')
+  titles <- stri_encode(html_text(nodes), "", "UTF-8")
+  links <- html_attr(nodes,"href")
+
+  ## Removing any javascript or external (starting with http:// or https://) links 
+  titles <- titles[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
+  links <- links[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
+  
+  ## Removing multimedia links (.gif/.mp4/.jpg/.png/.mov)
+  titles <- titles[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
+  links <- links[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
+  
+  ## Removing any links which refer to index directory sorting
+  titles <- titles[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
+  links <- links[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
+  
+  ## Removing certain URLs to exclude within page references (of the form #xxxD)
+  links <- sub("\\#.*","\\",links)
+  
+  ## Removing the Index and Main page URLs along with any null or missing cases
+  excluded_urls <- c("",NA)
+  titles <- titles[!links %in% excluded_urls]
+  links <- links[!links %in% excluded_urls]
+  
+  
+    
+  ## If the main page url is a sub-url of the form xx/yy/zz.html, we need to prefix yy/ to results of the form    xx.html
+  if(grepl("^.*/",url)){
+    string_to_add <- paste0(sub("\\/.*html","\\",url),"/")
+    links[!grepl("^../",links)] <- paste0(string_to_add,links[!grepl("^../",links)])
+  }
+  
+  ## Removing any links to sub-domain class as they don;t have physics content
+  titles <- titles[!grepl("class/",links)]
+  links <- links[!grepl("class/",links)]
+
+  ## Trimming URLs of the form ../xxx.html
+  links <- sub("^../","\\",links)
+  
+  ## Fixing broken URLs 
+  links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
+  links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
+  links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
+  links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
+  links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
+  links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
+  links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
+  links[grepl("^astro/grav.html$",links)] <- "grav.html"
+
+  
+  ## Removing the Index and Main page URLs along with any null or missing cases
+  excluded_urls <- c("hframe.html","hph.html")
+  titles <- titles[!links %in% excluded_urls]
+  links <- links[!links %in% excluded_urls]
+  
+  unique_links <- trimws(links[!duplicated(links)])
+  unique_titles <- trimws(titles[!duplicated(links)]) ## Trimming leading/trailing whitespace
+  return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
+}
+
+l <- get_links("class/",heading="sound")
+l
+
+## Storing the page URL and title in data frame page_details
+page_details <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+colnames(page_details) <- c("url","title")
+
+## Initializing a data frame to store the edge list which would be the hyperlinks
+edge_list <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+colnames(edge_list) <- c("from_url","to_url")
+
+## Function to add new page details
+add_page_details <- function(l,df){
+  existing_urls <- df$url
+  existing_titles <- df$title
+  new_urls <- c(l$main_page,l$page_links)
+  new_titles <- c(l$main_page_title,l$page_titles)
+  ## Removing duplicates before appending
+  new_titles <- new_titles[!new_urls %in% existing_urls]
+  new_urls <- new_urls[!new_urls %in% existing_urls]
+  temp_df <- data.frame(url=new_urls,title=new_titles)
+  return(rbind(df,temp_df))
+}
+
+## Function to add new edge information
+get_edges <- function(l){
+  if(length(l$page_links) > 0){
+    return(data.frame(from_url=l$main_page,to_url=l$page_links))
+  }else{
+    return(NULL)
+  }
+}
+
+## Creating a list to store all the URLs vsiited
+visited_urls <- NA
+error_urls <- NA
+errors <- NA
+unvisited_urls <- c("acca.html")
+page_details <- rbind(page_details,c("acca.html","acceleration"))
+
+# 133300, 4:55pm
+counter <- 0
+st <- proc.time()
+while(length(unvisited_urls) > 0){
+  tryCatch(
+    {
+      l <-get_links(unvisited_urls[1],heading=page_details$title[which(page_details$url == unvisited_urls[1])])
+      page_details <- add_page_details(l,df = page_details )
+      edge_list <- rbind(edge_list,get_edges(l))
+    },
+    error=function(cond){
+      # print(unvisited_urls[1])
+      error_urls <<- c(error_urls,unvisited_urls[1])
+      # errors <<- c(errors,cond)
+    },
+    finally={
+      visited_urls <- c(visited_urls,unvisited_urls[1])
+      unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
+      counter <- counter + 1   
+      print(length(unvisited_urls))
+    }
+  )
+}
+print(counter)
+error_urls <- error_urls[!is.na(error_urls)]
+proc.time() - st
+
+## Removing Error URLs within class/.. and kinetic and quantum index directories
+
+all_error_urls <- error_urls
+
+error_urls <- error_urls[!(grepl("^class/",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/imgkin",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/kinpic",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/imgqua",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/modpic",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/imgqua/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/modpic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^Kinetic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^Kinetic/imgkin//[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^Kinetic/kinpic//[[:punct:]]",error_urls))]
+length(error_urls)
+
+fixed_error_urls <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+unvisited_urls <- ""
+st <- proc.time()
+st
+for(i in seq_along(error_urls)){
+  fixed_error_urls[i,1] <- error_urls[i]
+  tryCatch(
+    {
+      fixed_error_urls[i,2] <- substring(error_urls[i],regexpr("/",error_urls[i])[1]+1)
+      temp_url <- paste0(url_prefix,fixed_error_urls[i,2])
+      if(!(fixed_error_urls[i,2] %in% edge_list$from_url)){
+        temp_page <- read_html(temp_url)  
+      }
+      ## Replace URL in Page Details
+      page_details$url[which(page_details$url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      ## Replace URL in Edge Details
+      edge_list$from_url[which(edge_list$from_url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      edge_list$to_url[which(edge_list$to_url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      ## Add to Unvisited URLs if not visited
+      if(!fixed_error_urls[i,2] %in% edge_list$from_url){
+        unvisited_urls <- c(unvisited_urls,fixed_error_urls[i,2])
+      }
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    },finally = {
+      if(i%%100 == 0){
+        print(i)
+      }
+    }
+  )
+}
+proc.time() - st
+# to_check_fixed <- substring(to_check,regexpr("/",to_check)[1]+1)
+# to_check_fixed
+
+
+error_url_fixes <- fixed_error_urls[!is.na(fixed_error_urls$X2),]
+for(i in seq_along(error_url_fixes)){
+  err_url <- error_url_fixes$X1[i]
+  fixed_url <- error_url_fixes$X2[i]
+  page_details$url[which(page_details$url == err_url)] <- fixed_url
+  edge_list$from_url[which(edge_list$from_url == err_url)] <- fixed_url  
+  edge_list$to_url[which(edge_list$to_url == err_url)] <- fixed_url  
+  if(!fixed_url %in% edge_list$from_url){
+        unvisited_urls <- c(unvisited_urls,fixed_url)
+      }
+}
+fixed_error_urls <- fixed_error_urls[is.na(fixed_error_urls$X2),]
+
+## Check if these URls are infact broken (some seem to work on manual inspection)
+for(i in seq_along(fixed_error_urls$X1)){
+  tryCatch(
+    {
+      temp_url <- paste0(url_prefix,fixed_error_urls[i,1])
+      temp_page <- read_html(temp_url)   
+      fixed_error_urls[i,2] <- fixed_error_urls[i,1]
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
+}
+
+# ## First fixes (sound urls without "/Sound")
+# fixed_error_urls$X2[104:length(fixed_error_urls$X2)] <- paste0("Sound/",fixed_error_urls$X1[104:length(fixed_error_urls$X2)])
+# ## Re-run above loop
+
+# ## Second fixes (Sound URLs which work but under error URLs)                                                  
+# fixed_error_urls$X2[81:length(fixed_error_urls$X2)] <- fixed_error_urls$X1[81:length(fixed_error_urls$X2)]
+# ## Re-run above loop
+
+## removing spaces (\r) in the url which was causing an error
+fixed_error_urls$X2[grep("\r",fixed_error_urls$X1)] <- gsub("\r","",fixed_error_urls[grep("\r",fixed_error_urls$X1),1])
+  
+
+## Fixing organic/AMIDE.HTML URLs
+fixed_error_urls$X2[grep("/AMIDE.HTML",fixed_error_urls$X1)] <- gsub("/AMIDE.HTML","",fixed_error_urls[grep("/AMIDE.HTML",fixed_error_urls$X1),1])
+
+
+
+## Adding parent domain to URL to check if it works
+for(i in seq_along(fixed_error_urls$X1)){
+  tryCatch(
+    {  
+      parent_url <- edge_list$from_url[edge_list$to_url == fixed_error_urls[i,1]][2]
+      parent_domain <- strsplit(parent_url,"/")[[1]][max(1,length(strsplit(parent_url,"/")[[1]])-1)]
+      fixed_url <- paste0(parent_domain,"/",fixed_error_urls$X1[i])
+      temp_url <- paste0(url_prefix,fixed_url)
+      temp_page <- read_html(temp_url)   
+      fixed_error_urls[i,2] <- fixed_url
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
+}
+
+fixed_error_urls$X2[grep("relcon.html",fixed_error_urls$X1)] <-"relativ/relcon.html"
+
+## Remove URLs with reference to class sub-domain as they don't pertain to physics content
+page_details <- page_details[!grepl("class/",page_details$url),]
+edge_list <- edge_list[!grepl("class/",edge_list$from_url),]
+edge_list <- edge_list[!grepl("class/",edge_list$to_url),]
+
+## Removing self edges from edge_list and 1st row with an NA
+edge_list <- edge_list[-1,]
+page_details <- page_details[-1,]
+edge_list <- edge_list[-which(edge_list$from_url == edge_list$to_url),]
+
+## Checking for and removing duplicate entries in page_details and edge_list
+edge_list <- edge_list[!duplicated(edge_list), ]
+page_details <- page_details[!duplicated(page_details),] ## URL and Title match
+page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplicated
+
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
+setwd("./Data")
+write.csv(page_details,file="page_details.csv",row.names = FALSE)
+write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
+
+```
+
+## Network
+
+* ~20 mins and a lot of cleaning later, we have the complete hyperlink sturucture
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
+library(igraph)
+library(sna)
+library(network)
+library(statnet)
+library(intergraph)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+## Importing Data Sets
+edge_list <- read.csv("/Users/kaushikmohan/Documents/NYU/Fall '17/APSTANET/project/git_repo/networks_project/code/Data/edge_list.csv",stringsAsFactors = FALSE)
+page_details <- read.csv("/Users/kaushikmohan/Documents/NYU/Fall '17/APSTANET/project/git_repo/networks_project/code/Data/page_details.csv",stringsAsFactors = FALSE)
+## Creating Network object
+hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
+
+node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
+set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[order(page_details$url)])
+
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+## IGraph object
+hyperphysics_graph <- asIgraph(hyperphysics_network)
+
+degree_dist <- data.frame(matrix(NA,nrow=dim(page_details)[1],ncol=2),stringsAsFactors = FALSE)
+row.names(degree_dist) <- page_details$url
+colnames(degree_dist) <- c("K_in","K_out")
+
+for(i in seq_along(page_details$url)){
+  degree_dist$K_in[i] <- length(which(edge_list$to_url == page_details$url[i]))
+  degree_dist$K_out[i] <- length(which(edge_list$from_url == page_details$url[i]))
+}
+
+geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
+avg_path_length <- average.path.length(hyperphysics_graph)
+dist_path_length <- path.length.hist(hyperphysics_graph)
+
+betweenness_centrality <- centr_betw(hyperphysics_graph)
+page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
+```
+
+
+```{r, tidy=TRUE}
+head(page_details,4) ## Vetrex and Vertex attribute (title)
+head(edge_list,4) ## Edgelist 
+```
+## Network Statistics
+
+```{r, echo=FALSE}
+paste("No. of Nodes: ",dim(page_details)[1])
+paste("No. of Edges: ",dim(edge_list)[1])
+network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
+paste("Density: ",round(network_density,5))
+paste("Mean In-Degree: ",round(mean(degree_dist$K_in),4))
+paste("Mean Out-Degree: ",round(mean(degree_dist$K_out),4))
+paste("Network Centralization: ",round(betweenness_centrality$centralization,3))
+paste("Average Geodesic Distance: ",round(avg_path_length,3))
+```
+
+
+## Degree Distribution
+
+```{r, echo=FALSE}
+
+# head(degree_dist[order(degree_dist$K_in,decreasing = TRUE ),])
+# head(degree_dist[order(degree_dist$K_out,decreasing = TRUE ),])
+
+par(mfrow=c(1,2))
+plot(log(as.numeric(row.names(table(degree_dist$K_in)))[-1]),log(table(degree_dist$K_in)[-1]),main="Log-log plot of In-Degree Dist.",xlab="log(In-Degree)",ylab="log(frequency)",type="p",pch=1)
+
+plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_dist$K_out)[-1]),main="Log-log plot of Out-Degree Dist.",xlab="log(Out-Degree)",ylab="log(frequency)",type="p",pch=8)
+```
+
+
+## Geodesic distance Distribution
+
+```{r, echo=FALSE}
+options(scipen=1)
+plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Count",type='o',pch=1)
+```
+
+## Hierarchy Extraction
+
+* Looking at a random tree-structure, we can see that greater centrality corresponds to the higher level in the hierarchy
+
+```{r, echo=FALSE}
+g <- make_tree(40,children=3,mode="out")
+bw_g <- centr_betw(g,directed=FALSE)$res
+V(g)$bw <- ifelse(bw_g > 0,bw_g,"")
+plot(g, vertex.size=8,vertex.label=V(g)$bw ,vertex.label.cex=0.8,vertex.label.dist=2,edge.arrow.size=.3)
+```
+
+## Hierarchy Extraction
+
+1. Define a suitable hierarchy score for each node
+2. Compare scores for 2 neighboring nodes (in the underlying undirected network)
+    i) If ratio of scores is between a lower and an upper threshold
+    ii) Then, the node with the higher score is higher in the hierarchy
+3. Cutoff eliminates 
+    i) relations between two highly different nodes 
+    ii) relations where the nodes are too similar (i.e. ratio ~1) 
+    iii) edges to leaf nodes in the hierarchy
+
+## Betweenness Centrality based
+
+- definition of score
+- result
+
+## Page-Rank Centrality based
+
+- definition of measure
+- result
+
+## Attraction Basin Hierarchy score
+
+- definition of metric
+- results
+
+## Still to do/Challenges
+
+- plotting better to visualise easily
+- full network validation measure
+- sensitivity to cutoff
+- take a dig at Wiki network
+
+
+
+
+
+
+
