@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 author: "Kaushik Mohan"
-output: github_document
+output: html_document
 ---
 
 This project is an attempt to use methods described in the paper by Muchnik, et.al. for extracting hierarchies from a network. The paper has been made available for reference in the respective folder within the repo. The end goal is to be able to use these techniques to create a knowledge tree from the Wikipedia EN article network which could be used to create a more structured online-reference/learning platform akin to a traditional Encyclopedia.    
@@ -24,5 +24,10 @@ The second part is where we use this data to create a network object and perform
 
 #### Part 3: Extracting hierarchies
 
-In this section, we create the functions to extract hierarchies from a network and use these on the HyperPhysics article network. 
+In this section, we create the functions to extract hierarchies from a network and use these on the HyperPhysics article network. Three different hierarchy extraction methods are explored, namely
 
+1. Betweenness Centrality based  
+2. Page-Rank based  
+3. Attraction Basin   
+
+The specific formulae and methodology are presented in *hierarchy_extraction.Rmd*
