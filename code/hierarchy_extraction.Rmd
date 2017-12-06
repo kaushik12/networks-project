@@ -1,0 +1,57 @@
+---
+title: "Hierarchy Extraction"
+output: github_document
+---
+
+
+```{r}
+library(igraph)
+library(sna)
+library(network)
+library(statnet)
+library(intergraph)
+```
+
+1. Betweenness based hierarchy extraction
+
+```{r}
+
+vertex_titles <- vertex_attr(hyperphysics_graph,"Titles")
+vertex_urls <- vertex_attr(hyperphysics_graph,"vertex.names")
+in_degrees <- igraph::degree(hyperphysics_graph,mode="in")
+out_degrees <- igraph::degree(hyperphysics_graph,mode="out")
+
+hyperphysics_adjacency <- as_adj(hyperphysics_graph,type = "both")
+hyperphysics_edgelist <- as_edgelist(hyperphysics_graph)
+undirected_edgelist <- data.frame(rbind(hyperphysics_edgelist,cbind(hyperphysics_edgelist[,2],hyperphysics_edgelist[,1])))
+undirected_edgelist <- undirected_edgelist[!duplicated(undirected_edgelist), ]
+
+bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degrees)*(1+out_degrees)))
+bw_hierarchy_edges <- bw_hierarchy_score[undirected_edgelist[,1]]/ifelse(bw_hierarchy_score[undirected_edgelist[,2]]==0,0.00001,bw_hierarchy_score[undirected_edgelist[,2]])
+```
+
+```{r}
+upper_cutoff <- 0.8
+lower_cutoff <- 0
+
+bw_hierarchy_matrix <- cbind(undirected_edgelist,bw_hierarchy_score[undirected_edgelist[,1]], bw_hierarchy_score[undirected_edgelist[,2]], bw_hierarchy_edges)
+colnames(bw_hierarchy_matrix) <- c("V1","V2","BW_Score_V1","BW_Score_V2","BW_Score_Ratio")
+
+bw_hierarchy_matrix <- bw_hierarchy_matrix[bw_hierarchy_matrix$BW_Score_Ratio > lower_cutoff & bw_hierarchy_matrix$BW_Score_Ratio <= upper_cutoff,]
+
+bw_hierarchy_matrix <- cbind(bw_hierarchy_matrix,ifelse(bw_hierarchy_matrix[,3] > bw_hierarchy_matrix[,4],bw_hierarchy_matrix[,1],bw_hierarchy_matrix[,2]))
+bw_hierarchy_matrix <- cbind(bw_hierarchy_matrix,ifelse(bw_hierarchy_matrix[,3] > bw_hierarchy_matrix[,4],bw_hierarchy_matrix[,2],bw_hierarchy_matrix[,1]))
+colnames(bw_hierarchy_matrix) <- c("V1","V2","BW_Score_V1","BW_Score_V2","BW_Score_Ratio","Higher_Node","Lower_Node")
+
+vertex_titles[as.numeric(rownames(head(sort(table(bw_hierarchy_matrix[,6]),decreasing = TRUE))))]
+vertex_urls[as.numeric(rownames(head(sort(table(bw_hierarchy_matrix[,6]),decreasing = TRUE))))]
+
+bw_hierarchy_edgelist <- as.matrix(bw_hierarchy_matrix[,c(6,7)])
+bw_hierarchy_network <- network(bw_hierarchy_edgelist,matrix.type="edgelist",directed = TRUE)
+bw_hierarchy_graph <- asIgraph(bw_hierarchy_network)
+
+
+```
+
+
+2. Attraction basin hierarchy

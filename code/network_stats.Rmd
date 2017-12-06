@@ -19,7 +19,17 @@ edge_list <- read.csv("Data/edge_list.csv",stringsAsFactors = FALSE)
 page_details <- read.csv("Data/page_details.csv",stringsAsFactors = FALSE)
 ```
 
-First, we looking at some high-level Networks Stats
+```{r}
+## Creating Network object
+hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
+
+node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
+set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[order(page_details$url)])
+
+## IGraph object
+hyperphysics_graph <- asIgraph(hyperphysics_network)
+```
+
 
 ```{r}
 
@@ -43,8 +53,6 @@ degree_dist <- data.frame(matrix(NA,nrow=dim(page_details)[1],ncol=2),stringsAsF
 row.names(degree_dist) <- page_details$url
 colnames(degree_dist) <- c("K_in","K_out")
 
-
-
 for(i in seq_along(page_details$url)){
   degree_dist$K_in[i] <- length(which(edge_list$to_url == page_details$url[i]))
   degree_dist$K_out[i] <- length(which(edge_list$from_url == page_details$url[i]))
@@ -66,22 +74,15 @@ plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_d
 
 ```
 
+
 ```{r}
-## Creating Network object
-hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
-
-node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
-set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[which(page_details$url %in% get.vertex.attribute(hyperphysics_network,"vertex.names"))])
-
-## IGraph object
-hyperphysics_graph <- asIgraph(hyperphysics_network)
-
+## Geodesic Distances
 
 geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
-geodesic_distances_vector <- as.vector(geodesic_distances$gdist)
-geodesic_distances_table <- table(geodesic_distances_vector)
-geodesic_distances_table <- geodesic_distances_table/sum(geodesic_distances_table)
-plot(as.numeric(row.names(geodesic_distances_table)[2:(length(geodesic_distances_table)-1)]),geodesic_distances_table[2:(length(geodesic_distances_table)-1)],main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Frequency",type='o',pch=1)
+avg_path_length <- average.path.length(hyperphysics_graph)
+dist_path_length <- path.length.hist(hyperphysics_graph)
+paste("Average Geodesic Distance: ",round(avg_path_length,3))
+plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Count",type='o',pch=1)
 
 ```
 
