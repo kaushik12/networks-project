@@ -416,9 +416,24 @@ options(scipen=1)
 plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Count",type='o',pch=1)
 ```
 
+## Network sample
+
+A sample of the full Network
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+sample_nodes <- order(degree_dist$K_in,decreasing = TRUE)[1:50]
+sample_nodes <- sample_nodes[which((degree_dist$K_in[sample_nodes]+degree_dist$K_in[sample_nodes])> 2)]
+sample_nodes <- sample(V(hyperphysics_graph),700,replace = FALSE)
+sub_hyperphysics_graph <- induced_subgraph(hyperphysics_graph,sample_nodes)
+plot(sub_hyperphysics_graph,edge.arrow.size=.3,vertex.size=3,vertex.label=NA)
+```
+
 ## Hierarchy Extraction
 
-* Looking at a random tree-structure, we can see that greater centrality corresponds to the higher level in the hierarchy
+* Looking at a random tree-structure, we can see that 
+    + Greater centrality corresponds to the higher level 
+    + Similar centrality for nodes at the same level
+    + Large difference in centrality for nodes unconnected with an edge
 
 ```{r, echo=FALSE}
 g <- make_tree(40,children=3,mode="out")
