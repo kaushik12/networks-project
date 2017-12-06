@@ -3,7 +3,10 @@ title: "Extracting knowledge trees"
 subtitle: "Statistical Analysis of Networks"
 author: Kaushik Mohan
 date: December 6, 2017
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+    mathjax: local
+    self_contained: false
 
 ---
 
@@ -428,34 +431,171 @@ plot(g, vertex.size=8,vertex.label=V(g)$bw ,vertex.label.cex=0.8,vertex.label.di
 
 1. Define a suitable hierarchy score for each node
 2. Compare scores for 2 neighboring nodes (in the underlying undirected network)
-    i) If ratio of scores is between a lower and an upper threshold
-    ii) Then, the node with the higher score is higher in the hierarchy
+    - If ratio of scores is between a lower and an upper threshold
+    - Then, the node with the higher score is higher in the hierarchy
 3. Cutoff eliminates 
-    i) relations between two highly different nodes 
-    ii) relations where the nodes are too similar (i.e. ratio ~1) 
-    iii) edges to leaf nodes in the hierarchy
+    - relations between two highly different nodes 
+    - relations where the nodes are too similar (i.e. ratio ~1) 
+    - edges to leaf nodes in the hierarchy
 
-## Betweenness Centrality based
+## Betweenness Centrality 
+$$I(i) = \frac{C_B(i)}{\sqrt{[k_{in}(i)+1][k_{out}(i)+1]}} $$
+$I(i)$: Betweenness based hierarchy score for node $i$  
+$C_B(i)$: Betweenness Centrality of node $i$  
+$k_{in}(i)$: In-degree of node $i$  
+$k_{out}(i)$: Out-degree of node $i$  
 
-- definition of score
-- result
+## Results
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+vertex_titles <- vertex_attr(hyperphysics_graph,"Titles")
+vertex_urls <- vertex_attr(hyperphysics_graph,"vertex.names")
+vertex_urls <- str_to_lower(vertex_urls)
+vertex_titles <- str_to_lower(vertex_titles)
+in_degrees <- igraph::degree(hyperphysics_graph,mode="in")
+out_degrees <- igraph::degree(hyperphysics_graph,mode="out")
+
+hyperphysics_adjacency <- as_adj(hyperphysics_graph,type = "both")
+hyperphysics_edgelist <- as_edgelist(hyperphysics_graph)
+undirected_edgelist <- data.frame(rbind(hyperphysics_edgelist,cbind(hyperphysics_edgelist[,2],hyperphysics_edgelist[,1])))
+undirected_edgelist <- undirected_edgelist[!duplicated(undirected_edgelist), ]
+
+get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
+  
+  ## Score ratio for all edges
+  score_ratio <- h_scores[edgelist[,1]]/ifelse(h_scores[edgelist[,2]]==0,0.00001,h_scores[edgelist[,2]])
+  hierarchy_matrix <- cbind(edgelist,h_scores[edgelist[,1]], h_scores[edgelist[,2]], score_ratio)
+  colnames(hierarchy_matrix) <- c("V1","V2","Score_V1","Score_V2","Score_Ratio")
+
+  hierarchy_matrix <- hierarchy_matrix[hierarchy_matrix$Score_Ratio > lower & hierarchy_matrix$Score_Ratio <= upper,]
+  
+  hierarchy_matrix <- cbind(hierarchy_matrix,ifelse(hierarchy_matrix[,3] > hierarchy_matrix[,4],hierarchy_matrix[,1],hierarchy_matrix[,2]))
+  hierarchy_matrix <- cbind(hierarchy_matrix,ifelse(hierarchy_matrix[,3] > hierarchy_matrix[,4],hierarchy_matrix[,2],hierarchy_matrix[,1]))
+  colnames(hierarchy_matrix) <- c("V1","V2","Score_V1","Score_V2","Score_Ratio","Higher_Node","Lower_Node")
+
+  hierarchy_edgelist <- as.matrix(hierarchy_matrix[,c(6,7)])
+  hierarchy_network <- network(hierarchy_edgelist,matrix.type="edgelist",directed = TRUE)
+  hierarchy_graph <- asIgraph(hierarchy_network)
+  return(hierarchy_graph)
+}
+
+get_sub_tree <- function(st,levels=1,el,n=10){
+  down_nodes <- NA
+  reduced_el <- matrix(NA,ncol=2)
+  for(i in c(1:levels)){
+    down_nodes <- c(down_nodes,sample(el[which(el[,1] %in% st),2],min(n,length(el[which(el[,1] %in% st),2]))))
+    # down_nodes <- c(down_nodes,el[which(el[,1] %in% st),2])
+    down_nodes <- down_nodes[!is.na(down_nodes)]
+    reduced_el <- rbind(reduced_el,el[which(el[,2] %in% down_nodes & el[,1] %in% st),])
+    st <- down_nodes
+  }
+  reduced_el <-  reduced_el[-1,]
+  reduced_el <-  reduced_el[!duplicated(reduced_el),]
+  # reduced_el <- el[which(el[,2] %in% down_nodes & el[,1] %in% st),]  
+  
+  # down_nodes <- sample(el[which(el[,1]==st),2],min(20,length(el[which(el[,1]==st),2])))
+  # reduced_el <- el[which(el[,1]==st & el[,2]==down_nodes ),]
+  g <- graph_from_edgelist(reduced_el,directed = TRUE)
+  return(g)
+}
+  
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degrees)*(1+out_degrees)))
+
+upper_cutoff <- 0.8
+lower_cutoff <- 0.2
+
+bw_hierarchy_graph <- get_hierarchy_graph(bw_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
+
+## plotting sub-tree
+g <- get_sub_tree(2708,5,bw_hierarchy_edgelist,n=3)
+V(g)$titles <- as.character(vertex_titles[V(g)])
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+```
+
 
 ## Page-Rank Centrality based
-
 - definition of measure
-- result
+
+## Results
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+pr_hierarchy_score <- page_rank_centrality$vector
+
+upper_cutoff <- 0.8
+lower_cutoff <- 0.2
+
+pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
+
+## plotting sub-tree
+g <- get_sub_tree(2708,5,pr_hierarchy_edgelist,n=3)
+V(g)$titles <- as.character(vertex_titles[V(g)])
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+```
 
 ## Attraction Basin Hierarchy score
 
-- definition of metric
-- results
+$$ A(i) = \big(\sum_m \alpha^{-m}\frac{N_{-m}(i)}{<N_{-m}>})\Big/\big(\sum_m \alpha^{-m}\frac{N_{m}(i)}{<N_{m}>}) $$  
+$A(i)$:Attraction basin based hierarchy score for node $i$    
+$\alpha$: weighting parameter which weighs closer nodes higher  
+$N_{-m}(i)$: Number of nodes which can reach node $i$ in $m$ directional edges  
+$N_{m}(i)$: Number of nodes which node $i$ can reach in $m$ directional edges  
+$<N_{-m}>$: Average $N_{-m}(i)$ for all nodes $i$ in the graph   
+$<N_{m}>$: Average $N_{m}(i)$ for all nodes $i$ in the graph  
 
-## Still to do/Challenges
 
-- plotting better to visualise easily
-- full network validation measure
-- sensitivity to cutoff
-- take a dig at Wiki network
+## Results
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+get_ab_hierarchy_score <- function(gdist,alpha,m){
+  h_plus <- rep(0,dim(gdist)[1])
+  h_minus <- rep(0,dim(gdist)[1])
+  
+  for(j in c(1:m)){  
+    N_plus <- rep(0,dim(gdist)[1])
+    N_minus <- rep(0,dim(gdist)[1])
+    for(i in c(1:dim(gdist)[1])){
+      N_plus[i] <- max(1,sum(gdist[i,] == m))
+      N_minus[i] <- sum(gdist[,i] == m)
+    }
+    N_plus_avg <- mean(N_plus)
+    N_minus_avg <- mean(N_minus)
+    h_plus <- h_plus + alpha^(-j) * (N_plus / N_plus_avg)
+    h_minus <- h_minus + alpha^(-j) * (N_minus / N_minus_avg)
+  }
+  h_score <- h_minus / h_plus
+  return(h_score)
+}
+
+ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=3)
+
+upper_cutoff <- 0.8
+lower_cutoff <- 0.2
+
+ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
+
+## plotting sub-tree
+g <- get_sub_tree(2708,5,ab_hierarchy_edgelist,n=3)
+V(g)$titles <- as.character(vertex_titles[V(g)])
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+```
+
+## Challenges & work to do
+
+* Better plotting for easier visualization of the hierarchy
+* A formal validation of the full hierarchical network
+    + Comparing the output from different methods
+* Better understanding of the sensitivity to cutoff
+* If time permits (or over the winter), taking a dig at the Wikipedia Network 
 
 
 
