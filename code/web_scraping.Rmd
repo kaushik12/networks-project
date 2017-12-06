@@ -47,8 +47,8 @@ get_links <- function(url,prefix=url_prefix,heading){
   links <- html_attr(nodes,"href")
 
   ## Removing any javascript or external (starting with http:// or https://) links 
-  titles <- titles[!grepl("^javascript|Javascript|http://|https://",links)]
-  links <- links[!grepl("^javascript|Javascript|http://|https://",links)]
+  titles <- titles[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
+  links <- links[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
   
   ## Removing multimedia links (.gif/.mp4/.jpg/.png/.mov)
   titles <- titles[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
@@ -65,12 +65,18 @@ get_links <- function(url,prefix=url_prefix,heading){
   excluded_urls <- c("",NA)
   titles <- titles[!links %in% excluded_urls]
   links <- links[!links %in% excluded_urls]
+  
+  
     
   ## If the main page url is a sub-url of the form xx/yy/zz.html, we need to prefix yy/ to results of the form    xx.html
   if(grepl("^.*/",url)){
     string_to_add <- paste0(sub("\\/.*html","\\",url),"/")
     links[!grepl("^../",links)] <- paste0(string_to_add,links[!grepl("^../",links)])
   }
+  
+  ## Removing any links to sub-domain class as they don;t have physics content
+  titles <- titles[!grepl("class/",links)]
+  links <- links[!grepl("class/",links)]
 
   ## Trimming URLs of the form ../xxx.html
   links <- sub("^../","\\",links)
@@ -93,13 +99,14 @@ get_links <- function(url,prefix=url_prefix,heading){
   titles <- titles[!links %in% excluded_urls]
   links <- links[!links %in% excluded_urls]
   
-  unique_links <- unique(links)
-  unique_titles <- trimws(titles[match(unique_links,links)]) ## Trimming leading/trailing whitespace
+  unique_links <- trimws(links[!duplicated(links)])
+  unique_titles <- trimws(titles[!duplicated(links)]) ## Trimming leading/trailing whitespace
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("sound/p2030.html",heading="sound")
+l <- get_links("class/",heading="sound")
 l
+
 ```
 
 Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit.
@@ -144,8 +151,7 @@ get_edges <- function(l){
 visited_urls <- NA
 error_urls <- NA
 errors <- NA
-unvisited_urls <- unvisited_urls[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",unvisited_urls)]
-length(unvisited_urls)
+unvisited_urls <- c("acca.html")
 page_details <- rbind(page_details,c("acca.html","acceleration"))
 
 # 133300, 4:55pm
@@ -226,7 +232,7 @@ for(i in seq_along(error_urls)){
     {
       fixed_error_urls[i,2] <- substring(error_urls[i],regexpr("/",error_urls[i])[1]+1)
       temp_url <- paste0(url_prefix,fixed_error_urls[i,2])
-      if(!(temp_url %in% edge_list$from_url)){
+      if(!(fixed_error_urls[i,2] %in% edge_list$from_url)){
         temp_page <- read_html(temp_url)  
       }
       ## Replace URL in Page Details
@@ -266,28 +272,6 @@ for(i in seq_along(error_url_fixes)){
 }
 fixed_error_urls <- fixed_error_urls[is.na(fixed_error_urls$X2),]
 
-## First fixes (sound urls without "/Sound")
-fixed_error_urls$X2[104:length(fixed_error_urls$X2)] <- paste0("Sound/",fixed_error_urls$X1[104:length(fixed_error_urls$X2)])
-## Re-run above loop
-
-## Second fixes (Sound URLs which work but under error URLs)                                                    
-fixed_error_urls$X2[81:length(fixed_error_urls$X2)] <- fixed_error_urls$X1[81:length(fixed_error_urls$X2)]
-## Re-run above loop
-
-## interf.html and timbre.html p2030.html (removing spaces/.. in the url)
-fixed_error_urls$X2[59] <- "sound/interf.html"
-fixed_error_urls$X2[57] <- "sound/timbre.html"
-
-## Fixing organic/AMIDE.HTML URLs
-fixed_error_urls$X2[38:43] <- sub("/AMIDE.HTML","",fixed_error_urls$X1[38:43])
-## Re-run above loop
-
-## Removing external URLs
-fixed_error_urls <- fixed_error_urls[-c(15:18,22),]
-
-fixed_error_urls$X2[grep("sound/p2030.html",fixed_error_urls$X1)] <- "sound/p2030.html"
-fixed_error_urls$X2[grep("thermo/",fixed_error_urls$X1)] <- "thermo/"
-
 ## Check if these URls are infact broken (some seem to work on manual inspection)
 for(i in seq_along(fixed_error_urls$X1)){
   tryCatch(
@@ -301,18 +285,44 @@ for(i in seq_along(fixed_error_urls$X1)){
     }
   )
 }
-## Re-run above loop
 
-## Add parent URL to the data frame
+# ## First fixes (sound urls without "/Sound")
+# fixed_error_urls$X2[104:length(fixed_error_urls$X2)] <- paste0("Sound/",fixed_error_urls$X1[104:length(fixed_error_urls$X2)])
+# ## Re-run above loop
+
+# ## Second fixes (Sound URLs which work but under error URLs)                                                  
+# fixed_error_urls$X2[81:length(fixed_error_urls$X2)] <- fixed_error_urls$X1[81:length(fixed_error_urls$X2)]
+# ## Re-run above loop
+
+## removing spaces (\r) in the url which was causing an error
+fixed_error_urls$X2[grep("\r",fixed_error_urls$X1)] <- gsub("\r","",fixed_error_urls[grep("\r",fixed_error_urls$X1),1])
+  
+
+## Fixing organic/AMIDE.HTML URLs
+fixed_error_urls$X2[grep("/AMIDE.HTML",fixed_error_urls$X1)] <- gsub("/AMIDE.HTML","",fixed_error_urls[grep("/AMIDE.HTML",fixed_error_urls$X1),1])
+
+
+
+## Adding parent domain to URL to check if it works
 for(i in seq_along(fixed_error_urls$X1)){
-    parent_url <- edge_list$from_url[edge_list$to_url == fixed_error_urls[i,1]][2]
-    fixed_error_urls[i,3] <- parent_url
+  tryCatch(
+    {  
+      parent_url <- edge_list$from_url[edge_list$to_url == fixed_error_urls[i,1]][2]
+      parent_domain <- strsplit(parent_url,"/")[[1]][max(1,length(strsplit(parent_url,"/")[[1]])-1)]
+      fixed_url <- paste0(parent_domain,"/",fixed_error_urls$X1[i])
+      temp_url <- paste0(url_prefix,fixed_url)
+      temp_page <- read_html(temp_url)   
+      fixed_error_urls[i,2] <- fixed_url
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
 }
 
-## 
-fixed_error_urls$X2[7] <- "relativ/reldop3.html"
-fixed_error_urls$X2[15] <-"relativ/relcon.html"
-fixed_error_urls$X2[20:31] <- paste0("organic/",fixed_error_urls$X1[20:31])
+
+fixed_error_urls$X2[grep("relcon.html",fixed_error_urls$X1)] <-"relativ/relcon.html"
+
 ## Re-run above loop
 
 # ## small fix in page_details
@@ -321,7 +331,7 @@ fixed_error_urls$X2[20:31] <- paste0("organic/",fixed_error_urls$X1[20:31])
 # edge_list$to_url[which(edge_list$to_url == "")] <- "Sound/infrasound.html"
 # edge_list[which(edge_list$from_url == ""),]
 
-## Ignoring 42 broken URLs for now
+## Ignoring 33 broken URLs for now
 
 ```
 
@@ -346,11 +356,6 @@ page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplica
 
 
 ```{r}
-
-page_details <- page_details[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",page_details$url),]
-edge_list <- edge_list[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",edge_list$to_url),]
-edge_list <- edge_list[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",edge_list$from_url),]
-
 setwd("./Data")
 write.csv(page_details,file="page_details.csv",row.names = FALSE)
 write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
