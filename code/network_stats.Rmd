@@ -86,6 +86,20 @@ plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution o
 
 ```
 
+```{r}
+## Clustering Coefficient
+
+clustering_coefficient <- transitivity(hyperphysics_graph,type="local",isolates = "zero")
+total_degrees <- igraph::degree(hyperphysics_graph,mode="total")
+unique_degrees <- unique(total_degrees)
+avg_clustering_coefficient <- rep(0,length(unique_degrees))
+for(i in seq_along(unique_degrees)){
+  avg_clustering_coefficient[i] <- mean(clustering_coefficient[which(total_degrees == unique_degrees[i])])  
+}
+plot(sort(unique_degrees),avg_clustering_coefficient[order(unique_degrees)],log="x",type="o",main="Avg. Clustering coefficient vs. Degree",ylab="Clustering Coefficient",xlab="Degree")
+
+```
+
 
 ```{r}
 ## Centrality Measures
