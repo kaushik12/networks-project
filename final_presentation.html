@@ -214,44 +214,42 @@ links &lt;- html_attr(nodes, &quot;href&quot;)</pre>
 <li>Define a suitable hierarchy score for each node</li>
 <li>Compare scores for 2 neighboring nodes (in the underlying undirected network)
 
-<ol>
+<ul>
 <li>If ratio of scores is between a lower and an upper threshold</li>
 <li>Then, the node with the higher score is higher in the hierarchy</li>
-</ol></li>
+</ul></li>
 <li>Cutoff eliminates
 
-<ol>
+<ul>
 <li>relations between two highly different nodes</li>
 <li>relations where the nodes are too similar (i.e. ratio ~1)</li>
 <li>edges to leaf nodes in the hierarchy</li>
-</ol></li>
+</ul></li>
 </ol>
 
 </article></slide><slide class=''><hgroup><h2>Betweenness Centrality</h2></hgroup><article  id="betweenness-centrality">
 
 <p>\[I(i) = \frac{C_B(i)}{\sqrt{[k_{in}(i)+1][k_{out}(i)+1]}} \] \(I(i)\): Betweenness based hierarchy score for node \(i\)<br/>\(C_B(i)\): Betweenness Centrality of node \(i\)<br/>\(k_{in}(i)\): In-degree of node \(i\)<br/>\(k_{out}(i)\): Out-degree of node \(i\)</p>
 
-</article></slide><slide class=''><hgroup><h2>Results: Betweenness Centrality based score</h2></hgroup><article  id="results-betweenness-centrality-based-score">
-
-<p><img src="final_presentation_files/figure-html/unnamed-chunk-16-1.png" width="720" /></p>
-
-</article></slide><slide class=''><hgroup><h2>Page-Rank Centrality based</h2></hgroup><article  id="page-rank-centrality-based">
-
-<ul>
-<li>definition of measure</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Results: Page-Rank Centrality based score</h2></hgroup><article  id="results-page-rank-centrality-based-score">
+</article></slide><slide class=''><hgroup><h2>Results</h2></hgroup><article  id="results">
 
 <p><img src="final_presentation_files/figure-html/unnamed-chunk-17-1.png" width="720" /></p>
 
+</article></slide><slide class=''><hgroup><h2>Page-Rank Centrality based</h2></hgroup><article  id="page-rank-centrality-based">
+
+<p>\[PR(u) = \sum_{v\in B_u}\frac{PR(v)}{L(v)} \] \(PR(u)\): Page-Rank for node \(u\)<br/>\(B_u\): The set containing all nodes linking to node \(u\)<br/>\(L(v)\): No. of edges from node \(v\)</p>
+
+</article></slide><slide class=''><hgroup><h2>Results</h2></hgroup><article  id="results-1">
+
+<p><img src="final_presentation_files/figure-html/unnamed-chunk-19-1.png" width="720" /></p>
+
 </article></slide><slide class=''><hgroup><h2>Attraction Basin Hierarchy score</h2></hgroup><article  id="attraction-basin-hierarchy-score">
 
-<p>\[ A(i) = \big(\sum_m \alpha^{-m}\frac{N_{-m}(i)}{&lt;N_{-m}&gt;})\Big/\big(\sum_m \alpha^{-m}\frac{N_{m}(i)}{&lt;N_{m}&gt;}) \] \(A(i)\):Attraction basin based hierarchy score for node \(i\)<br/>\(\alpha\): weighting parameter which weighs closer nodes higher \(N_{-m}(i)\): Number of nodes which can reach node \(i\) in \(m\) directional edges \(N_{m}(i)\): Number of nodes which node \(i\) can reach in \(m\) directional edges \(&lt;N_{-m}&gt;\): Average \(N_{-m}(i)\) for all nodes \(i\) in the graph \(&lt;N_{m}&gt;\): Average \(N_{m}(i)\) for all nodes \(i\) in the graph</p>
+<p>\[ A(i) = \big(\sum_m \alpha^{-m}\frac{N_{-m}(i)}{&lt;N_{-m}&gt;})\Big/\big(\sum_m \alpha^{-m}\frac{N_{m}(i)}{&lt;N_{m}&gt;}) \]<br/>\(A(i)\): Attraction basin based hierarchy score for node \(i\)<br/>\(\alpha\): Weighting parameter which weighs closer nodes higher<br/>\(N_{-m}(i)\): Number of nodes which can reach node \(i\) in \(m\) directional edges<br/>\(N_{m}(i)\): Number of nodes which node \(i\) can reach in \(m\) directional edges<br/>\(&lt;N_{-m}&gt;\): Average \(N_{-m}(i)\) for all nodes \(i\) in the graph<br/>\(&lt;N_{m}&gt;\): Average \(N_{m}(i)\) for all nodes \(i\) in the graph</p>
 
-</article></slide><slide class=''><hgroup><h2>Results: Attraction Basin based score</h2></hgroup><article  id="results-attraction-basin-based-score">
+</article></slide><slide class=''><hgroup><h2>Results</h2></hgroup><article  id="results-2">
 
-<p><img src="final_presentation_files/figure-html/unnamed-chunk-18-1.png" width="720" /></p>
+<p><img src="final_presentation_files/figure-html/unnamed-chunk-21-1.png" width="720" /></p>
 
 </article></slide><slide class=''><hgroup><h2>Challenges &amp; work to do</h2></hgroup><article  id="challenges-work-to-do">
 
@@ -260,7 +258,7 @@ links &lt;- html_attr(nodes, &quot;href&quot;)</pre>
 <li>A formal validation of the full hierarchical network
 
 <ul>
-<li>Comparing the output from different methods</li>
+<li>To compare the output from different methods</li>
 </ul></li>
 <li>Better understanding of the sensitivity to cutoff</li>
 <li>If time permits (or over the winter), taking a dig at the Wikipedia Network</li>

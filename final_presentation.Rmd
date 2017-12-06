@@ -371,9 +371,9 @@ for(i in seq_along(page_details$url)){
 geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
 avg_path_length <- average.path.length(hyperphysics_graph)
 dist_path_length <- path.length.hist(hyperphysics_graph)
-
 betweenness_centrality <- centr_betw(hyperphysics_graph)
 page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
+
 ```
 
 
@@ -504,47 +504,58 @@ get_sub_tree <- function(st,levels=1,el,n=10){
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degrees)*(1+out_degrees)))
 
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
+upper_cutoff <- 0.7
+lower_cutoff <- 0
 
 bw_hierarchy_graph <- get_hierarchy_graph(bw_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
 
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ## plotting sub-tree
-g <- get_sub_tree(2708,5,bw_hierarchy_edgelist,n=3)
-V(g)$titles <- as.character(vertex_titles[V(g)])
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+g_bw <- get_sub_tree(551,levels=3,bw_hierarchy_edgelist,n=4)
+V(g_bw)$titles <- ifelse(nchar(as.character(vertex_titles[V(g_bw)])) <= 17,as.character(vertex_titles[V(g_bw)]),"")
+iso <- V(g_bw)[igraph::degree(g_bw)==0]
+g2_bw <- delete_vertices(g_bw, iso)
+plot(g2_bw,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=7, vertex.label=V(g2_bw)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
 ```
 
 
 ## Page-Rank Centrality based
-- definition of measure
+$$PR(u) = \sum_{v\in B_u}\frac{PR(v)}{L(v)} $$
+$PR(u)$: Page-Rank for node $u$  
+$B_u$: The set containing all nodes linking to node $u$  
+$L(v)$: No. of edges from node $v$  
 
 ## Results
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 pr_hierarchy_score <- page_rank_centrality$vector
 
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
+upper_cutoff <- 0.7
+lower_cutoff <- 0
 
 pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
 
-## plotting sub-tree
-g <- get_sub_tree(2708,5,pr_hierarchy_edgelist,n=3)
-V(g)$titles <- as.character(vertex_titles[V(g)])
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
 ```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+## plotting sub-tree
+g_pr <- get_sub_tree(551,3,pr_hierarchy_edgelist,n=4)
+V(g_pr)$titles <- ifelse(nchar(as.character(vertex_titles[V(g_pr)])) <= 25,as.character(vertex_titles[V(g_pr)]),"")
+iso <- V(g_pr)[igraph::degree(g_pr)==0]
+g2_pr <- delete_vertices(g_pr, iso)
+plot(g2_pr,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2_pr)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+
+```
+
 
 ## Attraction Basin Hierarchy score
 
 $$ A(i) = \big(\sum_m \alpha^{-m}\frac{N_{-m}(i)}{<N_{-m}>})\Big/\big(\sum_m \alpha^{-m}\frac{N_{m}(i)}{<N_{m}>}) $$  
-$A(i)$:Attraction basin based hierarchy score for node $i$    
-$\alpha$: weighting parameter which weighs closer nodes higher  
+$A(i)$: Attraction basin based hierarchy score for node $i$    
+$\alpha$: Weighting parameter which weighs closer nodes higher  
 $N_{-m}(i)$: Number of nodes which can reach node $i$ in $m$ directional edges  
 $N_{m}(i)$: Number of nodes which node $i$ can reach in $m$ directional edges  
 $<N_{-m}>$: Average $N_{-m}(i)$ for all nodes $i$ in the graph   
@@ -575,26 +586,31 @@ get_ab_hierarchy_score <- function(gdist,alpha,m){
 
 ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=3)
 
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
+upper_cutoff <- 0.7
+lower_cutoff <- 0
 
 ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
 
-## plotting sub-tree
-g <- get_sub_tree(2708,5,ab_hierarchy_edgelist,n=3)
-V(g)$titles <- as.character(vertex_titles[V(g)])
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
 ```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+## plotting sub-tree
+g_ab <- get_sub_tree(551,6,ab_hierarchy_edgelist,n=5)
+V(g_ab)$titles <- ifelse(nchar(as.character(vertex_titles[V(g_ab)])) <= 25,as.character(vertex_titles[V(g_ab)]),"")
+iso <- V(g_ab)[igraph::degree(g_ab)==0]
+g2_ab <- delete_vertices(g_ab, iso)
+plot(g2_ab,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2_ab)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+
+```
+
 
 ## Challenges & work to do
 
 * Better plotting for easier visualization of the hierarchy
 * A formal validation of the full hierarchical network
-    + Comparing the output from different methods
-* Better understanding of the sensitivity to cutoff
+    + To compare the output from different methods
+* Better understanding and testing the sensitivity to cutoff
 * If time permits (or over the winter), taking a dig at the Wikipedia Network 
 
 
