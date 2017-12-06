@@ -18,6 +18,8 @@ library(intergraph)
 
 vertex_titles <- vertex_attr(hyperphysics_graph,"Titles")
 vertex_urls <- vertex_attr(hyperphysics_graph,"vertex.names")
+vertex_urls <- str_to_lower(vertex_urls)
+vertex_titles <- str_to_lower(vertex_titles)
 in_degrees <- igraph::degree(hyperphysics_graph,mode="in")
 out_degrees <- igraph::degree(hyperphysics_graph,mode="out")
 
@@ -50,6 +52,39 @@ bw_hierarchy_edgelist <- as.matrix(bw_hierarchy_matrix[,c(6,7)])
 bw_hierarchy_network <- network(bw_hierarchy_edgelist,matrix.type="edgelist",directed = TRUE)
 bw_hierarchy_graph <- asIgraph(bw_hierarchy_network)
 
+```
+
+
+```{r}
+starting_node <- 100
+levels_up <- 1
+levels_down <- 1
+
+get_sub_tree <- function(st,levels=1,el,n=10){
+  down_nodes <- NA
+  reduced_el <- matrix(NA,ncol=2)
+  for(i in c(1:levels)){
+    down_nodes <- c(down_nodes,sample(el[which(el[,1] %in% st),2],min(n,length(el[which(el[,1] %in% st),2]))))
+    # down_nodes <- c(down_nodes,el[which(el[,1] %in% st),2])
+    down_nodes <- down_nodes[!is.na(down_nodes)]
+    reduced_el <- rbind(reduced_el,el[which(el[,2] %in% down_nodes & el[,1] %in% st),])
+    st <- down_nodes
+  }
+  reduced_el <-  reduced_el[-1,]
+  reduced_el <-  reduced_el[!duplicated(reduced_el),]
+  # reduced_el <- el[which(el[,2] %in% down_nodes & el[,1] %in% st),]  
+  
+  # down_nodes <- sample(el[which(el[,1]==st),2],min(20,length(el[which(el[,1]==st),2])))
+  # reduced_el <- el[which(el[,1]==st & el[,2]==down_nodes ),]
+  g <- graph_from_edgelist(reduced_el,directed = TRUE)
+  return(g)
+}
+  
+g <- get_sub_tree(2708,5,bw_hierarchy_edgelist,n=3)
+V(g)$titles <- as.character(vertex_titles[V(g)])
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
 
 ```
 
