@@ -72,6 +72,11 @@ plot(log(as.numeric(row.names(table(degree_dist$K_in)))[-1]),log(table(degree_di
 plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_dist$K_out)[-1]),main="Log-log plot of Out-Degree Dist.",xlab="log(Out-Degree)",ylab="log(frequency)",type="p",pch=8)
 
 
+in_deg <- igraph::degree(hyperphysics_graph,mode="in")
+out_deg <- igraph::degree(hyperphysics_graph,mode="out")
+mean(in_deg)
+mean(out_deg)
+
 ```
 
 

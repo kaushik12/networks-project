@@ -154,26 +154,35 @@ In this file, we look at the network data obtained using the code in *web\_scrap
 
     ## unable to reach CRAN
 
-First, we looking at some high-level Networks Stats
+``` r
+## Creating Network object
+hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
+
+node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
+set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[order(page_details$url)])
+
+## IGraph object
+hyperphysics_graph <- asIgraph(hyperphysics_network)
+```
 
 ``` r
 paste("No. of Nodes: ",dim(page_details)[1])
 ```
 
-    ## [1] "No. of Nodes:  3909"
+    ## [1] "No. of Nodes:  3747"
 
 ``` r
 paste("No. of Edges: ",dim(edge_list)[1])
 ```
 
-    ## [1] "No. of Edges:  27989"
+    ## [1] "No. of Edges:  27817"
 
 ``` r
 network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
 paste("Density: ",round(network_density,5))
 ```
 
-    ## [1] "Density:  0.00183"
+    ## [1] "Density:  0.00198"
 
 ``` r
 print("Sample of Nodes:")
@@ -216,8 +225,6 @@ degree_dist <- data.frame(matrix(NA,nrow=dim(page_details)[1],ncol=2),stringsAsF
 row.names(degree_dist) <- page_details$url
 colnames(degree_dist) <- c("K_in","K_out")
 
-
-
 for(i in seq_along(page_details$url)){
   degree_dist$K_in[i] <- length(which(edge_list$to_url == page_details$url[i]))
   degree_dist$K_out[i] <- length(which(edge_list$from_url == page_details$url[i]))
@@ -227,11 +234,11 @@ head(degree_dist[order(degree_dist$K_in,decreasing = TRUE ),])
 ```
 
     ##                      K_in K_out
-    ## geophys/geophys.html  802     2
-    ## geophys/mineral.html  764   540
-    ## emcon.html            359     1
-    ## quacon.html           325     2
-    ## heacon.html           322     1
+    ## geophys/geophys.html  798     2
+    ## geophys/mineral.html  763   540
+    ## emcon.html            356     1
+    ## heacon.html           323     1
+    ## quacon.html           322     2
     ## astro/astcon.html     300     1
 
 ``` r
@@ -239,25 +246,25 @@ head(degree_dist[order(degree_dist$K_out,decreasing = TRUE ),])
 ```
 
     ##                      K_in K_out
-    ## geophys/mineral.html  764   540
-    ## thermo/                 1   116
-    ## qcc/qcc6.html           0   100
+    ## geophys/mineral.html  763   540
+    ## thermo/                 2   116
     ## quantum/ ../exp.html    2    96
-    ## Sound                   0    86
     ## Tables/ttab.html       37    73
+    ## tables/ttab.html       44    73
+    ## pertab/cu.html         99    60
 
 ``` r
 ## Avg. Degrees
 paste("Mean In-Degree: ",round(mean(degree_dist$K_in),4))
 ```
 
-    ## [1] "Mean In-Degree:  7.1601"
+    ## [1] "Mean In-Degree:  7.4238"
 
 ``` r
 paste("Mean Out-Degree: ",round(mean(degree_dist$K_out),4))
 ```
 
-    ## [1] "Mean Out-Degree:  7.1601"
+    ## [1] "Mean Out-Degree:  7.4238"
 
 ``` r
 ## Plots of Degree Distribution
@@ -267,28 +274,49 @@ plot(log(as.numeric(row.names(table(degree_dist$K_in)))[-1]),log(table(degree_di
 plot(log(as.numeric(row.names(table(degree_dist$K_out)))[-1]),log(table(degree_dist$K_out)[-1]),main="Log-log plot of Out-Degree Dist.",xlab="log(Out-Degree)",ylab="log(frequency)",type="p",pch=8)
 ```
 
-![](network_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-1.png)
-
-``` r
-## Creating Network object
-hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
-
-node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
-set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[which(page_details$url %in% get.vertex.attribute(hyperphysics_network,"vertex.names"))])
-
-## IGraph object
-hyperphysics_graph <- asIgraph(hyperphysics_network)
-
-
-geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
-geodesic_distances_vector <- as.vector(geodesic_distances$gdist)
-geodesic_distances_table <- table(geodesic_distances_vector)
-geodesic_distances_table <- geodesic_distances_table/sum(geodesic_distances_table)
-plot(as.numeric(row.names(geodesic_distances_table)[2:(length(geodesic_distances_table)-1)]),geodesic_distances_table[2:(length(geodesic_distances_table)-1)],main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Frequency",type='o',pch=1)
-```
-
 ![](network_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
 
 ``` r
-betweenness_centrality <- betweenness(hyperphysics_network)
+## Geodesic Distances
+
+geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
+avg_path_length <- average.path.length(hyperphysics_graph)
+dist_path_length <- path.length.hist(hyperphysics_graph)
+paste("Average Geodesic Distance: ",round(avg_path_length,3))
+```
+
+    ## [1] "Average Geodesic Distance:  6.093"
+
+``` r
+options(scipen=3)
+plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Count",type='o',pch=1)
+```
+
+![](network_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
+
+``` r
+## Clustering Coefficient
+
+clustering_coefficient <- transitivity(hyperphysics_graph,type="local",isolates = "zero")
+total_degrees <- igraph::degree(hyperphysics_graph,mode="total")
+unique_degrees <- unique(total_degrees)
+avg_clustering_coefficient <- rep(0,length(unique_degrees))
+for(i in seq_along(unique_degrees)){
+  avg_clustering_coefficient[i] <- mean(clustering_coefficient[which(total_degrees == unique_degrees[i])])  
+}
+plot(sort(unique_degrees),avg_clustering_coefficient[order(unique_degrees)],log="x",type="o",main="Avg. Clustering coefficient vs. Degree",ylab="Clustering Coefficient",xlab="Degree")
+```
+
+![](network_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-7-1.png)
+
+``` r
+## Centrality Measures
+betweenness_centrality <- centr_betw(hyperphysics_graph)
+paste("Network Centralization: ",round(betweenness_centrality$centralization,3))
+```
+
+    ## [1] "Network Centralization:  0.275"
+
+``` r
+page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
 ```

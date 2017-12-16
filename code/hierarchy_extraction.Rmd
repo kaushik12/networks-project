@@ -10,15 +10,48 @@ library(sna)
 library(network)
 library(statnet)
 library(intergraph)
+library(stringr)
+library(stringi)
+
 ```
 
 
 ```{r}
+## Importing Data Sets
+edge_list <- read.csv("Data/edge_list.csv",stringsAsFactors = FALSE)
+page_details <- read.csv("Data/page_details.csv",stringsAsFactors = FALSE)
+```
+
+```{r}
+## Creating Network object
+hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
+
+node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
+set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[order(page_details$url)])
+
+## IGraph object
+hyperphysics_graph <- asIgraph(hyperphysics_network)
+degree_dist <- data.frame(matrix(NA,nrow=dim(page_details)[1],ncol=2),stringsAsFactors = FALSE)
+row.names(degree_dist) <- page_details$url
+colnames(degree_dist) <- c("K_in","K_out")
+
+for(i in seq_along(page_details$url)){
+  degree_dist$K_in[i] <- length(which(edge_list$to_url == page_details$url[i]))
+  degree_dist$K_out[i] <- length(which(edge_list$from_url == page_details$url[i]))
+}
+
+geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
+avg_path_length <- average.path.length(hyperphysics_graph)
+dist_path_length <- path.length.hist(hyperphysics_graph)
+betweenness_centrality <- centr_betw(hyperphysics_graph)
+page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
+
+#####
 
 vertex_titles <- vertex_attr(hyperphysics_graph,"Titles")
 vertex_urls <- vertex_attr(hyperphysics_graph,"vertex.names")
 vertex_urls <- str_to_lower(vertex_urls)
-vertex_titles <- str_to_lower(vertex_titles)
+# vertex_titles <- str_to_lower(vertex_titles)
 in_degrees <- igraph::degree(hyperphysics_graph,mode="in")
 out_degrees <- igraph::degree(hyperphysics_graph,mode="out")
 
@@ -72,13 +105,34 @@ get_sub_tree <- function(st,levels=1,el,n=10){
   g <- graph_from_edgelist(reduced_el,directed = TRUE)
   return(g)
 }
+
+wrap_strings <- function(vector_of_strings,width){
+  as.character(sapply(vector_of_strings, FUN=function(x){
+                        paste(strwrap(x, width=width), collapse="\n")
+                        }))
+  }
   
+
+# Function to increase node separation (for explanatory details, see the link below)
+# Source: http://stackoverflow.com/a/28722680/496488
+layout.by.attr <- function(graph, wc, cluster.strength=1,layout=layout_as_tree) {  
+  g <- graph.edgelist(get.edgelist(graph)) # create a lightweight copy of graph w/o the attributes.
+  E(g)$weight <- 1
+
+  attr <- cbind(id=1:vcount(g), val=wc)
+  g <- g + vertices(unique(attr[,2])) + igraph::edges(unlist(t(attr)), weight=cluster.strength)
+
+  l <- layout(g)[1:vcount(graph),]
+  return(l)
+}
+
+
 ```
 
 
 1. Betweenness based hierarchy extraction
 
-```{r}
+```{r, out.height='500px', out.width='500px', warning=FALSE, message=FALSE}
 bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degrees)*(1+out_degrees)))
 
 upper_cutoff <- 0.8
@@ -88,11 +142,20 @@ bw_hierarchy_graph <- get_hierarchy_graph(bw_hierarchy_score,undirected_edgelist
 bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
 
 ## plotting sub-tree
-g <- get_sub_tree(2708,5,bw_hierarchy_edgelist,n=3)
+set.seed(1)
+g <- get_sub_tree(1729,2,bw_hierarchy_edgelist,n=3)
 V(g)$titles <- as.character(vertex_titles[V(g)])
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
-plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+# Apply the function to wrap the node labels
+V(g2)$label = wrap_strings(V(g2)$titles, 10)
+## Shrink font
+V(g2)$label.cex = 0.5
+## Make layout reproducible. Different values will produce different layouts,
+##  but setting a seed will allow you to reproduce a layout if you like it.
+set.seed(3)
+
+plot(g2,layout=layout_as_tree, vertex.shape="square", layout=layout.by.attr(g2, wc=1),vertex.size=nchar(V(g2)$titles)*2,edge.arrow.size=.5)
 
 ```
 
@@ -109,12 +172,20 @@ pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist
 pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
 
 ## plotting sub-tree
-g <- get_sub_tree(2708,5,pr_hierarchy_edgelist,n=3)
+set.seed(1)
+g <- get_sub_tree(2177,3,pr_hierarchy_edgelist,n=3)
 V(g)$titles <- as.character(vertex_titles[V(g)])
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
-plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+# Apply the function to wrap the node labels
+V(g2)$label = wrap_strings(V(g2)$titles, 10)
+## Shrink font
+V(g2)$label.cex = 0.5
+## Make layout reproducible. Different values will produce different layouts,
+##  but setting a seed will allow you to reproduce a layout if you like it.
+set.seed(3)
 
+plot(g2,layout=layout_as_tree, vertex.shape="square", layout=layout.by.attr(g2, wc=1),vertex.size=nchar(V(g2)$titles)*2,edge.arrow.size=.5)
 ```
 
 3. Attraction basin hierarchy
@@ -149,11 +220,30 @@ ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist
 ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
 
 ## plotting sub-tree
-g <- get_sub_tree(2708,5,ab_hierarchy_edgelist,n=3)
+set.seed(1)
+g <- get_sub_tree(2177,3,ab_hierarchy_edgelist,n=3)
 V(g)$titles <- as.character(vertex_titles[V(g)])
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
-plot(g2,layout=layout_as_tree,edge.arrow.size=.5, vertex.size=5, vertex.label=V(g2)$titles,vertex.label.cex=0.8,vertex.label.dist=3)
+
+# Apply the function to wrap the node labels
+V(g2)$label = wrap_strings(V(g2)$titles, 10)
+## Shrink font
+V(g2)$label.cex = 0.5
+## Make layout reproducible. Different values will produce different layouts,
+##  but setting a seed will allow you to reproduce a layout if you like it.
+set.seed(3)
+
+plot(g2,layout=layout_as_tree, vertex.shape="square", layout=layout.by.attr(g2, wc=1),vertex.size=nchar(V(g2)$titles)*2,edge.arrow.size=.5)
+
+```
+
+```{r}
+## Eigenvalue centrality with local cluster identification through Eigenvectors of the laplacian of the adjacency matrix
+
+eingenvector_centrality <- centr_eigen(hyperphysics_graph,directed = TRUE)
+hyperphysics_laplacian <- laplacian_matrix(hyperphysics_graph,normalized = TRUE)
+eigenvector_laplacian <- eigen(hyperphysics_laplacian)
 
 
 ```

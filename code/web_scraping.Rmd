@@ -19,16 +19,27 @@ We use the package 'rvest' which is similar to 'beautifulsoup' in Python used fo
 ```{r}
 ## We start with the first article in the Index, acceleration as the index page itself is a hframe and we are unable to parse it for links. 
 
-url <- "http://hyperphysics.phy-astr.gsu.edu/hbase/acca.html#c1"
+url <- "http://hyperphysics.phy-astr.gsu.edu/hbase/vel2.html#c1"
 webpage <- read_html(url)
 nodes <- html_nodes(webpage,'a')
 titles <- html_text(nodes)
-links <- html_attr(nodes,"href")
+links <- tolower(html_attr(nodes,"href"))
+headings <- html_nodes(webpage,'h1')
+h_regex <- regexpr(">(.*)<",as.character(headings[1]))
+heading <- substr(as.character(headings[1]),(h_regex[1]+1),h_regex[1]+attr(h_regex,"match.length")-2)
+heading
 print("Links")
 links
 print("Titles")
 titles
 
+
+attr(regexpr(">(.*)<",as.character(heading)),"match.length")
+substr(as.character(heading),20,27)
+
+gsub("<(.*)>(/w)<(.*)>","/w",as.character(heading))
+
+strsplit(strsplit(as.character(heading),">")[[1]][2],"<")[[1]][1]
 
 ```
 
@@ -45,6 +56,9 @@ get_links <- function(url,prefix=url_prefix,heading){
   nodes <- html_nodes(webpage,'a')
   titles <- stri_encode(html_text(nodes), "", "UTF-8")
   links <- html_attr(nodes,"href")
+  headings <- html_nodes(webpage,'h1')
+  h_regex <- regexpr(">(.*)<",as.character(headings[1]))
+  heading <- substr(as.character(headings[1]),(h_regex[1]+1),h_regex[1]+attr(h_regex,"match.length")-2)
 
   ## Removing any javascript or external (starting with http:// or https://) links 
   titles <- titles[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
@@ -58,16 +72,15 @@ get_links <- function(url,prefix=url_prefix,heading){
   titles <- titles[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
   links <- links[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
   
-  ## Removing certain URLs to exclude within page references (of the form #xxxD)
+  ## Removing certain URLs to exclude within page references (of the form #xxxD) and removeing extra /
   links <- sub("\\#.*","\\",links)
+  links <- gsub("//|///","/",links)
   
   ## Removing the Index and Main page URLs along with any null or missing cases
   excluded_urls <- c("",NA)
   titles <- titles[!links %in% excluded_urls]
   links <- links[!links %in% excluded_urls]
   
-  
-    
   ## If the main page url is a sub-url of the form xx/yy/zz.html, we need to prefix yy/ to results of the form    xx.html
   if(grepl("^.*/",url)){
     string_to_add <- paste0(sub("\\/.*html","\\",url),"/")
@@ -98,13 +111,14 @@ get_links <- function(url,prefix=url_prefix,heading){
   excluded_urls <- c("hframe.html","hph.html")
   titles <- titles[!links %in% excluded_urls]
   links <- links[!links %in% excluded_urls]
+  links <- tolower(links)
   
   unique_links <- trimws(links[!duplicated(links)])
   unique_titles <- trimws(titles[!duplicated(links)]) ## Trimming leading/trailing whitespace
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("class/",heading="sound")
+l <- get_links("thermo//nickel.html",heading="sound")
 l
 
 ```
@@ -126,6 +140,10 @@ add_page_details <- function(l,df){
   existing_titles <- df$title
   new_urls <- c(l$main_page,l$page_links)
   new_titles <- c(l$main_page_title,l$page_titles)
+  ## Checking if Title is as per page and not the hyperlink text
+  if(!(df[df$url == l$main_page,2] == l$main_page_title)){
+    df[df$url == l$main_page,2] <- l$main_page_title
+  }
   ## Removing duplicates before appending
   new_titles <- new_titles[!new_urls %in% existing_urls]
   new_urls <- new_urls[!new_urls %in% existing_urls]
@@ -152,7 +170,8 @@ visited_urls <- NA
 error_urls <- NA
 errors <- NA
 unvisited_urls <- c("acca.html")
-page_details <- rbind(page_details,c("acca.html","acceleration"))
+page_details <- rbind(page_details,c("acca.html","Acceleration"))
+page_details <- page_details[-1,]
 
 # 133300, 4:55pm
 counter <- 0
@@ -173,7 +192,7 @@ while(length(unvisited_urls) > 0){
       visited_urls <- c(visited_urls,unvisited_urls[1])
       unvisited_urls <- page_details$url[!page_details$url %in% visited_urls]
       counter <- counter + 1   
-      print(length(unvisited_urls))
+      # print(length(unvisited_urls))
     }
   )
 }
@@ -222,6 +241,7 @@ length(error_urls)
 
 ```{r, warning=FALSE,echo=FALSE}
 
+error_urls <- gsub("//|///","/",error_urls)
 fixed_error_urls <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
 unvisited_urls <- ""
 st <- proc.time()
@@ -255,9 +275,6 @@ for(i in seq_along(error_urls)){
   )
 }
 proc.time() - st
-# to_check_fixed <- substring(to_check,regexpr("/",to_check)[1]+1)
-# to_check_fixed
-
 
 error_url_fixes <- fixed_error_urls[!is.na(fixed_error_urls$X2),]
 for(i in seq_along(error_url_fixes)){
@@ -322,16 +339,26 @@ for(i in seq_along(fixed_error_urls$X1)){
 
 
 fixed_error_urls$X2[grep("relcon.html",fixed_error_urls$X1)] <-"relativ/relcon.html"
+fixed_error_urls$X2[grep("reldop3.html",fixed_error_urls$X1)] <-"relativ/reldop3.html"
+fixed_error_urls$X2[grep("music/..sound/timbre.html",fixed_error_urls$X1)] <-"sound/timbre.html"
+
 
 ## Re-run above loop
+error_url_fixes <- fixed_error_urls[!is.na(fixed_error_urls$X2),]
+for(i in seq_along(error_url_fixes)){
+  err_url <- error_url_fixes$X1[i]
+  fixed_url <- error_url_fixes$X2[i]
+  page_details$url[which(page_details$url == err_url)] <- fixed_url
+  edge_list$from_url[which(edge_list$from_url == err_url)] <- fixed_url  
+  edge_list$to_url[which(edge_list$to_url == err_url)] <- fixed_url  
+  if(!fixed_url %in% edge_list$from_url){
+        unvisited_urls <- c(unvisited_urls,fixed_url)
+      }
+}
+fixed_error_urls <- fixed_error_urls[is.na(fixed_error_urls$X2),]
 
-# ## small fix in page_details
-# page_details[which(page_details$url == ""),] <- c("Sound/infrasound.html","Infrasonic Sound")
-# edge_list$from_url[which(edge_list$from_url == "")] <- "Sound/infrasound.html"
-# edge_list$to_url[which(edge_list$to_url == "")] <- "Sound/infrasound.html"
-# edge_list[which(edge_list$from_url == ""),]
 
-## Ignoring 33 broken URLs for now
+## Ignoring 27 broken URLs for now
 
 ```
 
@@ -340,17 +367,27 @@ fixed_error_urls$X2[grep("relcon.html",fixed_error_urls$X1)] <-"relativ/relcon.h
 page_details <- page_details[!grepl("class/",page_details$url),]
 edge_list <- edge_list[!grepl("class/",edge_list$from_url),]
 edge_list <- edge_list[!grepl("class/",edge_list$to_url),]
+page_details$url <- gsub("//|///","/",page_details$url) 
+edge_list$from_url <- gsub("//|///","/",edge_list$from_url) 
+edge_list$to_url <- gsub("//|///","/",edge_list$to_url) 
 
 ## Removing self edges from edge_list and 1st row with an NA
 edge_list <- edge_list[-1,]
-page_details <- page_details[-1,]
 edge_list <- edge_list[-which(edge_list$from_url == edge_list$to_url),]
 
 ## Checking for and removing duplicate entries in page_details and edge_list
 edge_list <- edge_list[!duplicated(edge_list), ]
 page_details <- page_details[!duplicated(page_details),] ## URL and Title match
 page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplicated
+sum(duplicated(page_details$title))
+duplicated_pages <- page_details[duplicated(page_details$title),]  
+duplicated_pages <- duplicated_pages[order(duplicated_pages[,2]),]
 
+merge_url_duplicates <- function(df){
+  
+}
+
+page_details[duplicated(page_details$title),]
 ```
 
 
