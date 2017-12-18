@@ -378,6 +378,10 @@ new_error_urls <- scrape$errors
 Finally, we check the dataset once more to remove self-edges and any duplicates.
 
 ```{r, warning=FALSE, message=FALSE}
+## Removing self edges from edge_list and 1st row with an NA
+edge_list <- edge_list[-1,]
+edge_list <- edge_list[-which(edge_list$from_url == edge_list$to_url),]
+
 ## Checking for and removing duplicate entries in page_details and edge_list
 edge_list <- edge_list[!duplicated(edge_list), ]
 page_details <- page_details[!duplicated(page_details),] ## URL and Title both match
@@ -387,8 +391,6 @@ page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplica
 We store these final Edge List and Page Details data frames as CSVs as a backup, for easier access in the following sections and to work with a clean environment.
 
 ```{r, warning=FALSE, message=FALSE}
-## Removing self edges from edge_list and 1st row with an NA
-edge_list <- edge_list[-1,]
 setwd("code/Data")
 write.csv(page_details,file="page_details.csv",row.names = FALSE)
 write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
@@ -506,8 +508,8 @@ out_deg_est$coefficients[2]
 
 The estimated co-efficient or the power in the power-law form for the degree distributions are -1.365 and -1.552 for the In and Out degrees respectively. That is the in and out degrees roughly follow the following distributions. 
 
-$$ f_{in} \simeq  d_{in}^{-1.365} $$ where $f_{in}$ is the frequency and $d_{in}$ is the in-degree
-$$ f_{out} \simeq  d_{out}^{-1.552} $$ where $f_{out}$ is the frequency and $d_{out}$ is the out-degree
+![Degree Distribution](images/degrees.png)
+
 
 
 ###### Geodesic Distance Distribution
@@ -565,9 +567,9 @@ undirected_edgelist <- undirected_edgelist[!duplicated(undirected_edgelist), ]
 ###### Overview
 To understand the core idea behind extracting hierarchies from a network, we look at a regular tree to start with. From the below sample tree marked by it's corresponding betweenness centralities, we can make the following observations:
     
-    + Greater centrality corresponds to a higher level in the hierarchy
-    + Nodes at the same level of hierarchy have similar centrality
-    + Large difference in centrality for nodes unconnected with by an edge in the hierarchy
+- Greater centrality corresponds to a higher level in the hierarchy
+- Nodes at the same level of hierarchy have similar centrality
+- Large difference in centrality for nodes unconnected with by an edge in the hierarchy
 
 ```{r, echo=FALSE}
 g <- make_tree(40,children=3,mode="out")
@@ -578,16 +580,13 @@ plot(g, vertex.size=8,vertex.label=V(g)$bw ,vertex.label.cex=0.8,vertex.label.di
 
 These three fundamental ideas form the basis of hierarchy extraction in each of the following methods. The overall process of hierarchy extraction can be summarized as the following set of steps
 
-1. Define a suitable hierarchy score for each node
-
+1. Define a suitable hierarchy score for each node:
 A hierarchy score for a node is a measure such as it's betweenness centrality which can be used to compare two nodes to determine the hierarchical relation between them. For a regular node such as the above example, we can simply use the betweenness centrality as the graph is regular. But in the case of real-world networks such as the one we are dealing with, every node need not have the same degree and hence we look at nodal measures which are scaled by their respective degrees. 
 
-2. Compare scores for 2 neighboring nodes (in the underlying undirected network)
-  
+2. Compare scores for 2 neighboring nodes (in the underlying undirected network):
 We then compare the scores of two nodes in the underlying network and determine if one is higher in the hierarchy if the ratio of the scores is between a lower and an upper threshold and it has a higher score. This does not depend on the direction of the edge between the two nodes in the underlying network. 
 
-3. Define the right cutoffs
-  
+3. Define the right cutoffs:
 The choice of cutoffs affects the hierarchical network output. A high upper cutoff would create hierarchical relations between two similar nodes at the same level in the hierarchy such as two disjoint topics in physics such as Kinetics and Optics, say. A low or no lower cutoff would include a hierarchical relation between two nodes connected in the underlying network but not necessarily directly related in a hierarchical sense. It may leed to creation of triangles in the hierarchy with a node being connected to several nodes at higher levels in the hierarchy. 
 
 The paper performs the analysis on the Wikipedia article network where it's corresponding Wikipedia Category network was used to validate the results of the methodologies. This allowed the authors to optimize the cutoffs based on correct classification of the hierarchical relations with respect to the category network. In our case, we do not have a hierarchical network to validate against and hence try out different levels of cutoff. As a aprt of continuing work on this, I hope to survey educators in the Physics community to help classify the estimated hierarchical relations to validate the results. 
@@ -686,12 +685,8 @@ tree_plot_func <- function(graph) {
 
 As the name suggests, in the method we use a simple betweenness centrality based hierarchy score to determine hierarchical relation between the nodes. As discussed above, in order to scale the score to account for the non-regular network structure, we define a hierarchy score as below:
 
-$$I(i) = \frac{C_B(i)}{\sqrt{[k_{in}(i)+1][k_{out}(i)+1]}} $$
+![Betweenness Centrality Score](images/betweenness_centrality.png)
 
-$I(i)$: Betweenness based hierarchy score for node $i$  
-$C_B(i)$: Betweenness Centrality of node $i$  
-$k_{in}(i)$: In-degree of node $i$  
-$k_{out}(i)$: Out-degree of node $i$  
 
 ```{r, warning=FALSE, message=FALSE}
 bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degree)*(1+out_degree)))
@@ -722,6 +717,8 @@ tree_plot_func(g2)
 ###### Page-Rank based hierarchy extraction
 
 The idea behind page-rank based hierarchy scoring is similar to betweenness based approach. Page-Rank algorithm gives us a centrality measure for a node that is weighted by the centrality measures of it's neighbours. As this measure is already weighted, we don't need to scale it by the degree of the node. Page-Rank centrality is defined as below:
+
+![Page-Rank Centrality](images/page_rank_centrality.png)
 
 $$PR(u) = \sum_{v\in B_u}\frac{PR(v)}{L(v)} $$
 
@@ -755,19 +752,12 @@ This is a method developed by the authors of the paper. The purpose behind it wa
 
 The authors define the score as comparision between the weighted fraction of the network from which the node can be reached to the weighted fraction of the network that can be reached from each node. In a sense, the quantity summarizes the "flow"" of information/references through a node. It takes into account local and structural properties of the network using the weighting parameter. A high value of this parameter uses more structural information of the network by using a greater range of influence for a node and low value of the parameter measures the metric locally. The idea of information flow can be better understood with the help of the below image:
 
-![Attraction Basin](attraction_basin.png)
+![Attraction Basin (source: Muchnik, et.al. (2007))](images/attraction_basin.png)
 
 Given this idea, the hierarchy score is defined as the following:
 
+![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
 
-$$ A(i) = \big(\sum_m \alpha^{-m}\frac{N_{-m}(i)}{<N_{-m}>})\Big/\big(\sum_m \alpha^{-m}\frac{N_{m}(i)}{<N_{m}>}) $$ 
-
-$A(i)$: Attraction basin based hierarchy score for node $i$    
-$\alpha$: Weighting parameter which weighs closer nodes higher  
-$N_{-m}(i)$: Number of nodes which can reach node $i$ in $m$ directional edges  
-$N_{m}(i)$: Number of nodes which node $i$ can reach in $m$ directional edges  
-$<N_{-m}>$: Average $N_{-m}(i)$ for all nodes $i$ in the graph   
-$<N_{m}>$: Average $N_{m}(i)$ for all nodes $i$ in the graph  
 
 ```{r}
 get_ab_hierarchy_score <- function(gdist,alpha,m){

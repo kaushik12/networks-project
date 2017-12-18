@@ -20,8 +20,7 @@
 "magnetic/magfie.html","Magnetic Field"
 "math/derfunc.html","Derivatives of Common Functions"
 "dercon.html","Derivative concepts"
-"hmat.html"," About HyperMath:
-HyperMath is a growing collection of examples of applied mathematics with links to their applications to problems in physics and astronomy. It is not systematic or complete in any sense, but is a collection of foundation mathematics principles and applications which were collected as the need was encountered in developing the <a href=""hph.html"">HyperPhysics</a> material. "
+"hmat.html"," About HyperMath:HyperMath is a growing collection of examples of applied mathematics with links to their applications to problems in physics and astronomy. It is not systematic or complete in any sense, but is a collection of foundation mathematics principles and applications which were collected as the need was encountered in developing the <a href=""hph.html"">HyperPhysics</a> material. "
 "calc.html","Calculus"
 "newt.html","Newton's First Law"
 "mechanics/motgraph.html","Motion Graphs"
@@ -36,19 +35,13 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "trig.html","Trigonometry"
 "dens.html","Density"
 "pbuoy2.html","Archimedes' Principle"
-"thermo/seclaw.html","Second Law of Thermodynamics
-"
-"relativ/tdil.html","Length Contraction
-"
-"relativ/muon.html","Muon Experiment
-"
-"relativ/relrange.html","Relativistic Range
-"
-"astro/blkhol.html","Black Hole Conditions
-"
+"thermo/seclaw.html","Second Law of Thermodynamics"
+"relativ/tdil.html","Length Contraction"
+"relativ/muon.html","Muon Experiment"
+"relativ/relrange.html","Relativistic Range"
+"astro/blkhol.html","Black Hole Conditions"
 "astro/bbang.html","big bang"
-"solar/seasons.html"," Seasons
-"
+"solar/seasons.html"," Seasons"
 "nuclear/cardat.html","Carbon Dating"
 "varve.html","Lake Varves as Natural Calendars"
 "nuclear/clkroc.html","Clocks in the Rocks"
@@ -71,8 +64,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/elefie.html","Electric Field"
 "electric/elecur.html","Electric Current"
 "magnetic/movchg.html","Magnetic Forces on Moving Charges"
-"magnetic/magfield.html","Magnetic Field Strength H
-"
+"magnetic/magfield.html","Magnetic Field Strength H"
 "math/statcon.html","Applied statistics concepts"
 "math/mathref.html","Mathematics References"
 "conser.html","Conservation Laws"
@@ -80,10 +72,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "truckc.html","Truck Collision"
 "electric/capcyl.html","Cylindrical Capacitor"
 "electric/elecyl.html","Electric Field of Line Charge"
-"quantum/sch3d.html","3-D Schrodinger Equation
-"
-"kinetic/maxspe.html","Maxwell Speed Distribution Directly from Boltzmann Distribution
-"
+"quantum/sch3d.html","3-D Schrodinger Equation"
+"kinetic/maxspe.html","Maxwell Speed Distribution Directly from Boltzmann Distribution"
 "electric/laplace.html","LaPlace's and Poisson's Equations"
 "vecal.html","Vector Calculus"
 "diverg.html","The Divergence"
@@ -93,10 +83,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "intdef.html","Definite Integral"
 "logm.html","Types of Logaritms"
 "nuclear/halfli2.html","Radioactive Half-Life"
-"thermo/firlaw.html","First Law of Thermodynamics
-"
-"thermo/isoth.html","Isothermal Process
-"
+"thermo/firlaw.html","First Law of Thermodynamics"
+"thermo/isoth.html","Isothermal Process"
 "pespr.html","Elastic Potential Energy"
 "mi2.html","Rotational and Linear Example"
 "icyl.html","Moment of Inertia: Cylinder"
@@ -105,80 +93,55 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "gpot.html","Gravitational Potential Energy"
 "electric/capeng2.html","Storing Energy in a Capacitor"
 "electric/potpoi.html","Point Charge Potential "
-"thermo/adiab.html","Adiabatic Process
-"
+"thermo/adiab.html","Adiabatic Process"
 "exprob/exmec.html","Example Problems in Mechanics"
 "chemical/watercon.html","water"
-"tables/density.html","Densities of Common Substances
-"
+"tables/density.html","Densities of Common Substances"
 "pbuoy.html","Buoyancy"
 "pbuoy4.html","Buoyant Force"
 "buocon.html","Buoyancy concepts"
 "fluid.html","Fluids"
-"thermo/heatra.html","Heat Transfer
-"
-"thermo/heaeng.html","Heat Engine Cycle
-"
-"thermo/carnot.html","Carnot Cycle
-"
-"thermo/seclaw2.html","The Thermal Bottleneck
-"
+"thermo/heatra.html","Heat Transfer"
+"thermo/heaeng.html","Heat Engine Cycle"
+"thermo/carnot.html","Carnot Cycle"
+"thermo/seclaw2.html","The Thermal Bottleneck"
 "thermo/seclawcon.html","Second law concepts"
-"thermo/heatengcon.html","Heat Engine Examples
-"
+"thermo/heatengcon.html","Heat Engine Examples"
 "heacon.html","Thermodynamics"
-"thermo/heat.html","Heat
-"
-"thermo/temper.html","What is Temperature?
-"
-"thermo/refrig.html","Heat Flow to Hotter Region
-"
-"thermo/heatpump.html","Heat Pump
-"
+"thermo/heat.html","Heat"
+"thermo/temper.html","What is Temperature?"
+"thermo/refrig.html","Heat Flow to Hotter Region"
+"thermo/heatpump.html","Heat Pump"
 "therm/entrop2.html","Entropy as a Measure of the Multiplicity of a System"
 "therm/entrop.html","Entropy as Time's Arrow"
-"thermo/bioentropy.html","Energy and Order in Biological Systems
-"
+"thermo/bioentropy.html","Energy and Order in Biological Systems"
 "therm/entropcon.html","Entropy concepts"
-"relativ/ltrans.html","Galilean Transformation
-"
+"relativ/ltrans.html","Galilean Transformation"
 "relativ/relcon.html","Relativity concepts"
 "alg3.html","Common Products and Factors"
-"relativ/gratim.html","Gravitational Red Shift
-"
-"relativ/twin.html","Time Dilation Experiments
-"
-"relativ/releng.html","Relativistic Energy
-"
-"relativ/blahol.html","Black Hole
-"
+"relativ/gratim.html","Gravitational Red Shift"
+"relativ/twin.html","Time Dilation Experiments"
+"relativ/releng.html","Relativistic Energy"
+"relativ/blahol.html","Black Hole"
 "relativ/relref.html","Relativity References"
-"relativ/relmom.html","Relativistic Mechanical Quantities
-"
+"relativ/relmom.html","Relativistic Mechanical Quantities"
 "particles/lepton.html","Leptons"
-"relativ/muonex.html","Muon Velocity
-"
-"astro/pulsar.html","Neutron Star
-"
-"astro/blkbin.html","Black Holes in Binary Systems
-"
+"relativ/muonex.html","Muon Velocity"
+"astro/pulsar.html","Neutron Star"
+"astro/blkbin.html","Black Holes in Binary Systems"
 "astro/bhocon.html","Black hole concepts"
 "astro/astcon.html","Astrophysics"
-"astro/whdwar.html","White Dwarf
-"
+"astro/whdwar.html","White Dwarf"
 "eclip.html","Ecliptic Plane"
 "earg.html","The Earth's Spin Maintains its Direction in Space"
-"solar/earthprecess.html"," Precession of the Earth's Spin Axis
-"
+"solar/earthprecess.html"," Precession of the Earth's Spin Axis"
 "gyr.html","Gyroscope"
 "solar/solill.html","Solar System Illustration"
 "solar/solarcon.html","Solar System Concepts"
-"solar/earthcon.html"," Earth
-"
+"solar/earthcon.html"," Earth"
 "astro/astref.html","Astronomy and Astrophysics References"
 "nuclear/raddat.html","Radioactive Dating"
-"kinetic/barfor.html","The Barometric Formula
-"
+"kinetic/barfor.html","The Barometric Formula"
 "nuclear/nucnot.html","Nuclear Notation"
 "nuccon.html","Nuclear"
 "nucref.html","Nuclear References"
@@ -198,11 +161,9 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "nuclear/raddat2.html","Radioactive Dating"
 "nuclear/nucuni.html","Some Nuclear Units"
 "pertab/sr.html","Strontium"
-"solar/apollo.html"," Apollo Moon Exploration
-"
+"solar/apollo.html"," Apollo Moon Exploration"
 "geophys/gphysref.html","Geology and Geophysics  References"
-"solar/apollo17.html"," Apollo 17
-"
+"solar/apollo17.html"," Apollo 17"
 "geophys/olivine.html","Olivine"
 "rocket3.html","Vertical Rocket"
 "callim.html","Limits"
@@ -227,8 +188,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/elefor.html","Coulomb's Law"
 "forces/qed.html","Quantum Electrodynamics (QED)"
 "forces/isq.html","Inverse Square Law, General"
-"astro/procyc.html","Proton-Proton Fusion
-"
+"astro/procyc.html","Proton-Proton Fusion"
 "astro/nucsyn.html","Nuclear Synthesis"
 "particles/qrkdec.html","Transformation of Quark Flavors by the Weak Interaction"
 "nuclear/beta.html","Beta Radioactivity"
@@ -239,16 +199,12 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "particles/parint2.html","Crossing Symmetry"
 "particles/feyn.html","Twisted Feynman Diagrams and Crossing Symmetry"
 "mechanics/sphshell.html","Gravity Force of a Spherical Shell"
-"astro/quasar.html","Quasars or QSOs
-"
-"relativ/conrel.html","Conceptual Framework: Relativity
-"
-"relativ/grel.html","Principle of Equivalence
-"
+"astro/quasar.html","Quasars or QSOs"
+"relativ/conrel.html","Conceptual Framework: Relativity"
+"relativ/grel.html","Principle of Equivalence"
 "forces/gravwav.html","Gravitational Waves"
 "forces/einun.html","Einstein's Effort Toward Unification of Forces"
-"astro/unify.html","Big Bang Expansion and the Fundamental Forces
-"
+"astro/unify.html","Big Bang Expansion and the Fundamental Forces"
 "traj.html"," Freefall "
 "torq2.html","Torque Calculation"
 "vctorq.html","Torque as a Vector Product"
@@ -258,19 +214,14 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "mechanics/slug.html","What is a Slug?"
 "vvec.html","Vector Product of Vectors"
 "magnetic/elemag.html","Bar Magnet"
-"solids/ferro.html","Ferromagnetism
-"
+"solids/ferro.html","Ferromagnetism"
 "magnetic/magcur.html","Magnetic Field of Current"
 "magnetic/curloo.html","Magnetic Field of Current Loop"
-"solar/mariner.html"," Mariner Exploration Missions
-"
-"solar/venus.html"," Venus
-"
-"solar/solwin.html"," The Solar Wind
-"
+"solar/mariner.html"," Mariner Exploration Missions"
+"solar/venus.html"," Venus"
+"solar/solwin.html"," The Solar Wind"
 "atmos/aurora.html","Aurora"
-"solar/soldata2.html"," <a href=""mercury.html#c1"">Mercury</a> Data
-"
+"solar/soldata2.html"," <a href=""mercury.html#c1"">Mercury</a> Data"
 "magnetic/bcursrc.html","Magnetic Fields from Currents"
 "magnetic/genwir.html","Voltage Generated in a Moving Wire"
 "electric/eleref.html","Electricity and Magnetism  References"
@@ -292,10 +243,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/mulpoi.html","Multiple Point Charges "
 "electric/capac.html","Capacitors"
 "electric/dielec.html","Polarization of Dielectric"
-"tables/diel.html","Dielectric Constants at 20°C
-"
-"ems1.html","The Electromagnetic Spectrum
-"
+"tables/diel.html","Dielectric Constants at 20°C"
+"ems1.html","The Electromagnetic Spectrum"
 "electric/engfie.html","Energy in Electric and Magnetic Fields"
 "electric/pplate.html","Parallel Plate Capacitor"
 "magnetic/indcur.html","Increasing Current in Coil"
@@ -312,14 +261,12 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/watcir.html","DC Circuit Water Analogy"
 "magnetic/amplaw.html","Ampere's Law"
 "magnetic/biosav.html","Biot-Savart Law"
-"solids/magpr.html","Magnetic Properties of Solids
-"
+"solids/magpr.html","Magnetic Properties of Solids"
 "solcon.html","Condensed Matter"
 "mom.html","Momentum"
 "wcon.html","work"
 "enecon.html","Energy concepts"
-"pber.html","Bernoulli Equation
-"
+"pber.html","Bernoulli Equation"
 "amom.html","Angular Momentum of a Particle"
 "mi.html","Rotational-Linear Parallels"
 "rotv.html","Rotation Vectors"
@@ -334,17 +281,12 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/capsph.html","Spherical Capacitor"
 "electric/gausur.html","Gaussian Surfaces"
 "electric/elelin.html","Electric Field of Line Charge"
-"quantum/scheq.html","Time Dependent Schrodinger Equation
-"
-"quantum/hydsch.html","The Hydrogen Atom
-"
+"quantum/scheq.html","Time Dependent Schrodinger Equation"
+"quantum/hydsch.html","The Hydrogen Atom"
 "quantum/schrcn.html","Schrodinger equation concepts"
-"quantum/disfcn.html","The Energy Distribution Function
-"
-"quantum/disbol.html","The distribution of 9 units of energy among 6 identical particles
-"
-"kinetic/kintem.html","Kinetic Temperature
-"
+"quantum/disfcn.html","The Energy Distribution Function"
+"quantum/disbol.html","The distribution of 9 units of energy among 6 identical particles"
+"kinetic/kintem.html","Kinetic Temperature"
 "kinetic/ktcon.html","Kinetic theory concepts"
 "math/defint.html","Some Physically Useful Definite Integrals"
 "electric/diverg.html","Relation of Electric Field to Charge Density"
@@ -353,11 +295,9 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "vecal2.html","Vector Calculus Identities"
 "vsca.html","Scalar Product of Vectors"
 "electric/maxeq2.html","Gauss' Law for Electricity"
-"thermo/thercond.html","Thermal Conductivity
-"
+"thermo/thercond.html","Thermal Conductivity"
 "deter.html","Determinants"
-"solids/chrlen.html","Characteristic Lengths in Superconductors
-"
+"solids/chrlen.html","Characteristic Lengths in Superconductors"
 "math/intalg.html","Indefinite Integrals of Common Algebraic Forms"
 "math/intrigi.html","Indefinite Integrals of Trigonometric Functions"
 "math/intexp.html","Indefinite Integrals of Exponents and Logs"
@@ -366,22 +306,15 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "cplxcon.html","Complex numbers"
 "nuclear/meanlif.html","Mean Lifetime for Particle Decay"
 "nuclear/raddec.html","Radioactive Decay Calculation"
-"thermo/inteng.html","Internal Energy
-"
-"thermo/therid.html","The Thermodynamic Identity
-"
-"thermo/thepot.html","Thermodynamic Potentials
-"
-"thermo/helmholtz.html","Helmholtz Free Energy
-"
-"kinetic/idegas.html","Ideal Gas Law
-"
-"tables/therprop.html","Thermodynamic Properties of Selected Substances
-"
+"thermo/inteng.html","Internal Energy"
+"thermo/therid.html","The Thermodynamic Identity"
+"thermo/thepot.html","Thermodynamic Potentials"
+"thermo/helmholtz.html","Helmholtz Free Energy"
+"kinetic/idegas.html","Ideal Gas Law"
+"tables/therprop.html","Thermodynamic Properties of Selected Substances"
 "thermo/intengcon.html","Internal energy concepts"
 "woang.html","Work Example"
-"thermo/workcp.html","Constant Pressure Work
-"
+"thermo/workcp.html","Constant Pressure Work"
 "pegrav.html","Potential Energy"
 "permot2.html","Elasticity"
 "wint.html","Work done by a variable force"
@@ -404,16 +337,12 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "intare.html","Area Integral"
 "thermo/adiabc.html","Development of the Adiabatic Condition"
 "sound/souspe3.html","Sound Speed in Gases"
-"kinetic/idegasc.html","Ideal Gas Law
-"
-"kinetic/shegas.html","Specific Heats of Gases
-
-"
+"kinetic/idegasc.html","Ideal Gas Law"
+"kinetic/shegas.html","Specific Heats of Gases"
 "exprob/motx1.html","Distance, velocity and time"
 "exprob/motx2.html","Auto stopping distance"
 "exprob/trains.html","Two Train Relative Velocity"
-"n2st.html","Standard Newton's Laws Problems
-"
+"n2st.html","Standard Newton's Laws Problems"
 "work2.html","Work"
 "crstp.html","Stopping Distance for Auto"
 "flobj.html","Energy as a tool for mechanics problem solving"
@@ -429,207 +358,129 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "toreq.html","Torque Equilibrium Examples"
 "prcal.html","Pressure Calculation"
 "pman.html","Fluid Pressure Measurement"
-"pflu.html","Static Fluid Pressure
-"
+"pflu.html","Static Fluid Pressure"
 "pasc.html","Pascal's Principle"
 "ppois.html","Poiseuille's Law"
-"ppois4.html","Blood Flow Examples
-"
+"ppois4.html","Blood Flow Examples"
 "pertab/pertab.html","periodic table"
-"tables/ttab.html","Tables of Physical Data
-"
+"tables/ttab.html","Tables of Physical Data"
 "lindrg.html","Motion with Linear Drag"
 "pbuoy5.html","Buoyant Force, General Fluid"
-"thermo/heatcond.html","Heat Conduction
-"
-"tables/thrcn.html","Thermal Conductivity
-"
+"thermo/heatcond.html","Heat Conduction"
+"tables/thrcn.html","Thermal Conductivity"
 "thermo/heatloss.html","
-<h1 align=""center"">Calculating Home Heating Energy
-</h1>
-"
+<h1 align=""center"">Calculating Home Heating Energy</h1>"
 "thermo/heatranex.html","Heat transfer examples"
 "geoopt/refr.html","Refraction of Light"
-"solar/sun.html"," Sun
-"
-"thermo/bodcon.html","Conduction Cooling of Body
-
-"
-"thermo/engcyc.html","Engine Cycles
-"
-"thermo/otto.html","The Otto Cycle
-"
+"solar/sun.html"," Sun"
+"thermo/bodcon.html","Conduction Cooling of Body"
+"thermo/engcyc.html","Engine Cycles"
+"thermo/otto.html","The Otto Cycle"
 "thermo/pvdiagcon.html","PV diagram concepts"
 "thermo/carnotcon.html","Carnot cycle concepts"
 "thermo/heatrf.html","Heat and Thermodynamics References"
-"thermo/clausius.html","The Clausius Theorem and Inequality
-"
-"thermo/diesel.html","The Diesel Engine
-"
-"thermo/thereq.html","Thermal Equilibrium
-"
+"thermo/clausius.html","The Clausius Theorem and Inequality"
+"thermo/diesel.html","The Diesel Engine"
+"thermo/thereq.html","Thermal Equilibrium"
 "elacol.html","Elastic and Inelastic Collisions"
 "thermo/entropcon.html","entropy"
-"thermo/temper2.html","A More General View of Temperature
-"
-"kinetic/kinthe.html","Kinetic Theory
-"
+"thermo/temper2.html","A More General View of Temperature"
+"kinetic/kinthe.html","Kinetic Theory"
 "thermo/tempercon.html","Temperature concepts"
-"kinetic/vappre.html","Saturated Vapor Pressure
-"
-"kinetic/waal.html","van der Waals Equation of State
-"
-"tables/phase.html","Melting Points and Heat of Fusion
-"
-"thermo/phase.html","Phase changes
-"
-"thermo/phase2.html","Heat of Fusion
-"
-"math/dice.html","Statistics of Dice Throw
-"
-"biology/chloroplast.html","Chloroplasts
-"
+"kinetic/vappre.html","Saturated Vapor Pressure"
+"kinetic/waal.html","van der Waals Equation of State"
+"tables/phase.html","Melting Points and Heat of Fusion"
+"thermo/phase.html","Phase changes"
+"thermo/phase2.html","Heat of Fusion"
+"math/dice.html","Statistics of Dice Throw"
+"biology/chloroplast.html","Chloroplasts"
 "biology/photosyn.html","photosynthesis"
 "organic/carb.html","Carbohydrates"
-"biology/mitochondria.html","Mitochondria
-"
-"biology/tree.html","A tree converts disorder to order with a little help from the Sun
-"
-"relativ/vec4.html","Four-vectors in Relativity
-"
-"relativ/lighthist.html","Measurement of the Speed of Light
-"
-"relativ/einvel.html","Einstein Velocity Addition
-"
+"biology/mitochondria.html","Mitochondria"
+"biology/tree.html","A tree converts disorder to order with a little help from the Sun"
+"relativ/vec4.html","Four-vectors in Relativity"
+"relativ/lighthist.html","Measurement of the Speed of Light"
+"relativ/einvel.html","Einstein Velocity Addition"
 "alg.html","Algebra"
-"relativ/airtim.html","Hafele and Keating Experiment
-"
+"relativ/airtim.html","Hafele and Keating Experiment"
 "relativ/reldop3.html","Low Speed Doppler Shift"
 "nuclear/mossb.html","Mossbauer Absorption, Ir-191"
 "nuclear/mossfe.html","Mossbauer Effect in Iron-57"
-"solar/gravproba.html"," Gravity Probe A
-"
-"relativ/polebarn.html","The Pole-Barn Paradox
-"
-"relativ/bugrivet.html","The Bug-Rivet Paradox
-"
+"solar/gravproba.html"," Gravity Probe A"
+"relativ/polebarn.html","The Pole-Barn Paradox"
+"relativ/bugrivet.html","The Bug-Rivet Paradox"
 "nucene/nucbin.html","Nuclear Binding Energy"
-"ems3.html","Infrared
-"
-"mod2.html","Early Photoelectric Effect Data
-"
-"mod3.html","Microwave Interactions
-"
-"relativ/rellim.html","Threshold for Relativistic Effects
-"
-"electric/ev.html","Energies in Electron Volts
-"
-"quantum/debrog2.html","DeBroglie Wavelength
-"
-"debrog.html","Wave Nature of Electron
-"
-"astro/hydhel.html","Hydrogen-Helium Abundance
-"
+"ems3.html","Infrared"
+"mod2.html","Early Photoelectric Effect Data"
+"mod3.html","Microwave Interactions"
+"relativ/rellim.html","Threshold for Relativistic Effects"
+"electric/ev.html","Energies in Electron Volts"
+"quantum/debrog2.html","DeBroglie Wavelength"
+"debrog.html","Wave Nature of Electron"
+"astro/hydhel.html","Hydrogen-Helium Abundance"
 "particles/parcon.html","Particle concepts"
 "particles/spinc.html","Spin Classification"
-"pauli.html","Pauli Exclusion Principle
-"
+"pauli.html","Pauli Exclusion Principle"
 "atpro.html","Atomic Properties"
 "particles/antimatter.html","Antiparticles"
-"spin.html","Electron Spin
-"
+"spin.html","Electron Spin"
 "particles/electfun.html","What evidence suggests that the electron is a fundamental particle?"
 "particles/neutrino2.html","Super-Kamiokande Neutrino Detector"
-"astro/cosmic.html","Cosmic Rays
-"
+"astro/cosmic.html","Cosmic Rays"
 "particles/muonhist.html","<h1 align=""center"">Discovery of the Muon</h1>"
 "particles/muonatm.html","<h1 align=""center"">Atmospheric Muons</h1>"
-"davger.html","Davisson-Germer Experiment
-"
+"davger.html","Davisson-Germer Experiment"
 "nucene/nucmed.html","Nuclear Medicine Examples"
-"astro/crab.html","The Crab Nebula
-"
-"solar/aricebo.html"," Arecibo
-"
+"astro/crab.html","The Crab Nebula"
+"solar/aricebo.html"," Arecibo"
 "astro/pulsrel.html","Binary Pulsars as a Test of General Relativity"
-"astro/para.html","Stellar Parallax
-"
+"astro/para.html","Stellar Parallax"
 "astro/magclo.html","The Magellanic Clouds"
-"astro/nova.html","Novae
-"
-"astro/helfus.html","Triple Alpha Process
-"
-"astro/redgia.html","Red Giants
-"
-"astro/carbcyc.html","Hans Bethe and the Carbon Cycle
-"
-"astro/herrus.html","Main Sequence on the Hertzsprung-Russell Diagram
-"
-"astro/helix.html","The Helix Nebula
-"
-"astro/ngc2440.html","White Dwarf Cocoon
-"
-"astro/ic5148.html","Nebula IC-5148
-"
+"astro/nova.html","Novae"
+"astro/helfus.html","Triple Alpha Process"
+"astro/redgia.html","Red Giants"
+"astro/carbcyc.html","Hans Bethe and the Carbon Cycle"
+"astro/herrus.html","Main Sequence on the Hertzsprung-Russell Diagram"
+"astro/helix.html","The Helix Nebula"
+"astro/ngc2440.html","White Dwarf Cocoon"
+"astro/ic5148.html","Nebula IC-5148"
 "astro/m4.html","White Dwarfs in Globular Cluster M4"
-"wien.html","Star Temperatures
-"
-"astro/astfus.html","Nuclear Reactions in Stars
-"
-"starlog/strclos.html","Stellar Neighbors of the Sun
-"
-"astro/snovcn.html","Supernovae
-"
-"astro/stdcand.html","Standard Candle Approach to Distance Measurement
-"
-"solar/pluto.html"," Pluto
-"
-"solar/mercury.html"," Mercury
-"
+"wien.html","Star Temperatures"
+"astro/astfus.html","Nuclear Reactions in Stars"
+"starlog/strclos.html","Stellar Neighbors of the Sun"
+"astro/snovcn.html","Supernovae"
+"astro/stdcand.html","Standard Candle Approach to Distance Measurement"
+"solar/pluto.html"," Pluto"
+"solar/mercury.html"," Mercury"
 "orbit.html","Orbit concepts"
 "astro/obscoord.html","Observer Coordinate Systems"
-"astro/redsup.html","Red Supergiants
-"
-"solar/retromars.html"," Retrograde Motion of Mars
-"
+"astro/redsup.html","Red Supergiants"
+"solar/retromars.html"," Retrograde Motion of Mars"
 "vrox.html","Rotation Vector Examples"
 "rotv2.html","Precession Torque"
 "top.html","Precession of Spinning Top"
 "mechanics/bicycle.html","Bicycle Wheel"
 "brng.html","Boomerang as Vector Rotation Example"
-"solar/earth.html"," Earth
-"
-"solar/earthimg.html"," Earth Images
-"
-"solar/solecl.html"," Solar Eclipse
-"
-"solar/lunecl.html"," Lunar Eclipse
-"
+"solar/earth.html"," Earth"
+"solar/earthimg.html"," Earth Images"
+"solar/solecl.html"," Solar Eclipse"
+"solar/lunecl.html"," Lunar Eclipse"
 "geophys/geophys.html","Geophysics"
-"thermo/grnhse.html","Greenhouse Effect
+"thermo/grnhse.html","Greenhouse Effect"
+"thermo/earthebal.html","Earth's Energy Balance"
+"tables/elabund.html","Abundances of the Elements in the Earth's Crust"
+"solar/moonimg.html"," Earth's Moon"
+"solar/moonphase.html"," Phases of the Moon"
+"solar/mooncon.html"," <a href=""earth.html#c2"">Earth's Moon</a>
 "
-"thermo/earthebal.html","Earth's Energy Balance
-"
-"tables/elabund.html","Abundances of the Elements in the Earth's Crust
-"
-"solar/moonimg.html"," Earth's Moon
-"
-"solar/moonphase.html"," Phases of the Moon
-"
-"solar/mooncon.html"," <a href=""earth.html#c2"">Earth's Moon
-</a>
-"
-"bkg3k.html","The 3K Cosmic Background Radiation
-"
+"bkg3k.html","The 3K Cosmic Background Radiation"
 "gps.html","Global Positioning Satellites"
 "nuclear/nuclk.html","The Radioactive Nucleus as a Clock"
 "kinetic/idgcon.html","Gas law concepts"
-"kinetic/eqpar.html","Equipartition of Energy
-"
+"kinetic/eqpar.html","Equipartition of Energy"
 "diff.html","Differential Equations"
 "diff2.html","Second Order Homogeneous DE"
-"kinetic/henry.html","Henry's Law
-"
+"kinetic/henry.html","Henry's Law"
 "nuclear/crosec.html","Scattering Cross Section"
 "rutcon.html","nuclear scattering"
 "chemical/atom.html","Atoms and Elements"
@@ -641,8 +492,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "nuclear/rutsca3.html","Evidence for Nuclear Interaction"
 "nuclear/rutsca2.html","History of Rutherford Experiment"
 "magnetic/forchg.html","Magnetic Force on Moving Charge"
-"solar/soho.html"," SOHO Satellite
-"
+"solar/soho.html"," SOHO Satellite"
 "magnetic/maspex.html","Mass Spectrometer Analysis"
 "nuclear/radrisk.html","Radiation Risk"
 "nuclear/rdpath.html","Radioactive Decay Paths"
@@ -651,20 +501,14 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "nuclear/alpcon.html","Alpha particle concepts"
 "nuclear/alptun.html","Alpha Halflife vs Kinetic Energy"
 "nuclear/alptun2.html","Modeling Polonium-212 Alpha Half-life"
-"solar/meteor4.html"," Stony Meteorites
-"
-"solar/meteor2.html"," Iron Meteorites
-"
-"solar/diablo.html"," Canyon Diablo Meteorite
-"
-"solar/meteor.html"," Classification of Meteorites
-"
+"solar/meteor4.html"," Stony Meteorites"
+"solar/meteor2.html"," Iron Meteorites"
+"solar/diablo.html"," Canyon Diablo Meteorite"
+"solar/meteor.html"," Classification of Meteorites"
 "chemical/cheref.html","Chemical References"
 "pertab/be.html","Beryllium"
-"quantum/xterm.html","X-ray Transitions
-"
-"atomic/auger.html","Auger Effect
-"
+"quantum/xterm.html","X-ray Transitions"
+"atomic/auger.html","Auger Effect"
 "pertab/ag.html","Silver"
 "pertab/co.html","Cobalt"
 "pertab/k.html","Potassium"
@@ -687,20 +531,13 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "minerals/brewsterite.html"," Brewsterite "
 "minerals/heulandite.html"," Heulandite "
 "nucene/fisfrag.html","Fission Fragments"
-"solar/surveyor.html"," Surveyor
-"
-"solar/apollo2.html"," Apollo 14
-"
-"solar/apollo15.html"," Apollo 15
-"
-"solar/apollo16.html"," Apollo 16
-"
-"solar/apoland.html"," Apollo Landing Sites
-"
-"geophys/mafic.html","Mafic or Basaltic Rock
-"
-"geophys/bowen.html","Bowen's Reaction Series
-"
+"solar/surveyor.html"," Surveyor"
+"solar/apollo2.html"," Apollo 14"
+"solar/apollo15.html"," Apollo 15"
+"solar/apollo16.html"," Apollo 16"
+"solar/apoland.html"," Apollo Landing Sites"
+"geophys/mafic.html","Mafic or Basaltic Rock"
+"geophys/bowen.html","Bowen's Reaction Series"
 "geophys/rockbox.html","Common Minerals"
 "rocket2.html","Vertical Rocket"
 "intphy.html","Physical Applications of Integrals"
@@ -708,10 +545,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "frict3.html","Friction Assumptions"
 "mechanics/frictire.html","Friction and Automobile Tires"
 "rke.html","Rotational Kinetic Energy"
-"quantum/schr.html","Schroedinger Equation
-"
-"uncer.html","The Uncertainty Principle
-"
+"quantum/schr.html","Schroedinger Equation"
+"uncer.html","The Uncertainty Principle"
 "particles/qbag.html","Bag Model of Quark Confinement"
 "particles/weastr.html","Decays Caused by Weak and Strong Forces"
 "particles/pquark.html","Pentaquark"
@@ -741,73 +576,51 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "particles/bmeson.html","The B Meson"
 "vision/pricol.html","Primary Colors"
 "particles/parref.html","Particle References"
-"quantum/lamb.html","The Lamb Shift
-"
+"quantum/lamb.html","The Lamb Shift"
 "particles/cern.html","CERN"
 "particles/neucur.html","Neutral Currents and the Z<sup>0</sup>
 "
-"hyde.html","Electron Transitions
-"
-"quantum/hydazi.html","The Azimuthal Equation
-"
+"hyde.html","Electron Transitions"
+"quantum/hydazi.html","The Azimuthal Equation"
 "particles/zeromass.html","What evidence suggests that the photon has zero mass?"
 "forces/ligo.html","LIGO"
 "electric/hsehldcn.html","household circuits"
 "pertab/cu.html","Copper"
 "vision/isql.html","Inverse Square Law, Light"
 "acoustic/invsqs.html","Inverse Square Law, Sound"
-"astro/solarpp.html","Nuclear Reactions in the p-p Chain
-"
+"astro/solarpp.html","Nuclear Reactions in the p-p Chain"
 "astro/solneu.html","The Solar Neutrino  Problem"
 "nucene/coubar.html","Coulomb Barrier for Fusion"
-"quantum/barr.html","Barrier Penetration
-"
+"quantum/barr.html","Barrier Penetration"
 "nucene/nucbin2.html","The Most Tightly Bound Nuclei"
-"starlog/pop12.html","Populations I and II Stars
-"
-"quantum/fermi2.html","Fermi Theory of Beta Decay
-"
+"starlog/pop12.html","Populations I and II Stars"
+"quantum/fermi2.html","Fermi Theory of Beta Decay"
 "nuclear/beta2.html","Energy and Momentum Spectra for Beta Decay"
 "forces/higgs.html","The Higgs Boson"
-"lhel.html","Liquid Helium
-"
-"mod6.html","Blackbody Radiation
-"
-"astro/neutemp.html","Neutrino Transparency Temperature
-"
+"lhel.html","Liquid Helium"
+"mod6.html","Blackbody Radiation"
+"astro/neutemp.html","Neutrino Transparency Temperature"
 "particles/sno.html","Neutrino Detection at Sudbury"
-"astro/sn87a.html","Supernova 1987A
-"
+"astro/sn87a.html","Supernova 1987A"
 "particles/cpt.html","CPT Invariance"
 "particles/allfor.html","Allowed and Forbidden Particle Decays"
 "quantum/parity.html","Parity"
-"quantum/qangm.html","Quantized Angular Momentum
-"
-"quantum/comptint.html","Compton Scattering 
-"
+"quantum/qangm.html","Quantized Angular Momentum"
+"quantum/comptint.html","Compton Scattering "
 "lcos.html","Law of Cosines"
 "mechanics/sphshell2.html","Gravity Force Inside a Spherical Shell"
-"astro/redshf.html","Red Shift
-"
-"astro/galax.html","Milky Way Galaxy
-"
-"astro/darmat.html","Dark Matter
-"
-"solar/hst.html","Hubble Space Telescope
-"
-"astro/glens.html","Magnification with a Gravitational Lens?
-"
-"astro/eincros.html","Einstein Cross
-"
-"astro/einring.html","Einstein Ring
-"
-"relativ/morley.html","Michelson-Morley Experiment
-"
+"astro/redshf.html","Red Shift"
+"astro/galax.html","Milky Way Galaxy"
+"astro/darmat.html","Dark Matter"
+"solar/hst.html","Hubble Space Telescope"
+"astro/glens.html","Magnification with a Gravitational Lens?"
+"astro/eincros.html","Einstein Cross"
+"astro/einring.html","Einstein Ring"
+"relativ/morley.html","Michelson-Morley Experiment"
 "phyhis/solvay.html","The Solvay Conference of 1911 "
 "kepler.html","Kepler's Laws"
 "nucene/bomb.html","Thermonuclear Explosions"
-"astro/planck.html","Models of Earlier Events
-"
+"astro/planck.html","Models of Earlier Events"
 "mechanics/fallq.html","Freefall From Specified Height"
 "mechanics/ffallgh.html","Gravitational Freefall"
 "mechanics/ffallex.html","Freefall Experiment with Spark Timer"
@@ -815,63 +628,40 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "tord.html","Right Hand Rule for Torque"
 "mechanics/earthole.html","Journey through the center of the Earth"
 "starlog/bistar.html","Binary Stars"
-"molecule/rotrig.html","Rotational Spectra
-
-"
-"quantum/hydfin.html","Hydrogen Fine Structure
-"
+"molecule/rotrig.html","Rotational Spectra"
+"quantum/hydfin.html","Hydrogen Fine Structure"
 "magnetic/solenoid.html","Solenoid"
-"solids/magperm.html","Coercivity and Remanence in Permanent Magnets
-"
-"solids/hyst.html","Hysteresis
-"
-"solids/magstrict.html","Magnetostriction
-"
-"tables/magprop.html","Magnetic Susceptibilities of Paramagnetic and Diamagnetic Materials at 20°C
-"
-"tables/curie.html","Ferromagnetic Curie Temperatures
-"
+"solids/magperm.html","Coercivity and Remanence in Permanent Magnets"
+"solids/hyst.html","Hysteresis"
+"solids/magstrict.html","Magnetostriction"
+"tables/magprop.html","Magnetic Susceptibilities of Paramagnetic and Diamagnetic Materials at 20°C"
+"tables/curie.html","Ferromagnetic Curie Temperatures"
 "solids/solref.html","Solid State References"
 "audio/tape.html","Tape Recording Process"
 "magnetic/transf.html","Transformer"
 "magnetic/wirfor.html","Magnetic Force Between Wires"
-"solar/mars.html"," Mars
-"
-"solar/marsoly.html"," Olympus Mons
-"
+"solar/mars.html"," Mars"
+"solar/marsoly.html"," Olympus Mons"
 "doubal.html","Double Ball Drop"
-"solar/nasa.html"," NASA Websites for Solar System Information
-"
+"solar/nasa.html"," NASA Websites for Solar System Information"
 "solar/marscon.html","Mars Concepts"
-"solar/venusglob.html"," Venus
-"
-"solar/venera.html"," Venera
-"
-"solar/magellan.html"," Magellan
-"
+"solar/venusglob.html"," Venus"
+"solar/venera.html"," Venera"
+"solar/magellan.html"," Magellan"
 "solar/venuscon.html","Venus Concepts"
 "solar/suncon.html","Sun Concepts"
-"solar/satear.html"," Early Earth Satellites
-"
-"solar/pioneer.html"," Pioneer
-"
-"mod5.html","Quantum Processes
-"
-"quantum/atspect.html","Atomic Spectra
-"
-"solar/jupiter.html"," Jupiter
-"
-"solar/sataur.html"," Saturn Aurora
-"
+"solar/satear.html"," Early Earth Satellites"
+"solar/pioneer.html"," Pioneer"
+"mod5.html","Quantum Processes"
+"quantum/atspect.html","Atomic Spectra"
+"solar/jupiter.html"," Jupiter"
+"solar/sataur.html"," Saturn Aurora"
 "atmos/atmoscon.html","Atmospheric optics concepts"
 "ligcon.html","Light and Vision"
 "solar/jupitercon.html","Jupiter Concepts"
-"solar/soldata3.html"," <a href=""saturn.html#c1"">Saturn</a> Data
-"
-"solar/soldata.html"," Planetary Data
-"
-"phyopt/albedo.html","Albedo
-"
+"solar/soldata3.html"," <a href=""saturn.html#c1"">Saturn</a> Data"
+"solar/soldata.html"," Planetary Data"
+"phyopt/albedo.html","Albedo"
 "magnetic/toroid.html","Magnetic Field of Toroid"
 "particles/cyclo.html","Cyclotron Accelerators"
 "magnetic/elecur.html","electric current"
@@ -918,8 +708,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/e2p.html","Point Charge Electric Fields and Voltages"
 "electric/airtank.html","Air Tank Analogy for a Capacitor"
 "electric/indcon.html","Inductance concepts"
-"tables/semgap.html","Semiconductor Band Gaps
-"
+"tables/semgap.html","Semiconductor Band Gaps"
 "electric/indeng.html","Energy in an Inductor"
 "waves/emwv.html","Electromagnetic Wave Equation"
 "electric/elesht.html","Electric Field: Sheet of Charge"
@@ -930,51 +719,40 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/accircon.html","AC Circuits"
 "electric/acres.html","Resistor AC Response"
 "electric/restmp.html","Resistance: Temperature Coefficient "
-"quantum/sodium.html","Sodium Energy Levels
-"
+"quantum/sodium.html","Sodium Energy Levels"
 "electronic/rescarb.html","Carbon Resistors"
 "electric/skineffect.html","Skin Effect in AC Conduction"
-"tables/rstiv.html","Resistivity and Temperature Coefficient at 20 C
-"
-"tables/wirega.html","Common Wire Gauges
-"
+"tables/rstiv.html","Resistivity and Temperature Coefficient at 20 C"
+"tables/wirega.html","Common Wire Gauges"
 "electric/ohmmic.html","Microscopic View of Ohm's Law"
 "electric/dcex3.html","DC Parallel Circuit"
 "electric/acohml.html","AC Ohm's Law"
 "electric/watcir2.html","Current Law and Flowrate"
-"solids/intrin.html","Intrinsic Semiconductor
-"
+"solids/intrin.html","Intrinsic Semiconductor"
 "electric/diph2o.html","Molecular Dipole Moments"
 "nuclear/elequad.html","Electric Quadrupole Moments of Nuclei"
 "electric/maxeq.html","Maxwell's Equations"
 "electric/maxwcon.html","Maxwell's equations concepts"
 "waves/waveq.html","The Wave Equation"
-"solids/sili.html","Silicon and Germanium
-"
+"solids/sili.html","Silicon and Germanium"
 "pertab/metal.html","Metals and Nonmetals"
 "solids/supcon.html","Superconductors"
-"solids/band.html","Band Theory of Solids
-"
+"solids/band.html","Band Theory of Solids"
 "electronic/etroncon.html","electronics"
 "electric/watcir3.html","What's Wrong with the Water circuit analogy?"
 "press.html","Pressure"
 "pfric.html","resistance"
 "electric/bregnd.html","Fuses and Breakers"
 "electric/hsehld.html","Household Wiring"
-"solids/meis.html","The Meissner Effect
-"
-"pber2.html","Bernoulli Pressure Lowering
-"
+"solids/meis.html","The Meissner Effect"
+"pber2.html","Bernoulli Pressure Lowering"
 "airfri.html","Air Friction"
 "bercon.html","Bernoulli concepts"
 "pturb.html","Turbulent Flow"
 "pfric2.html","Kinetic Energy of Tube Flow"
-"fluids/angatt.html","The Angle of Attack for an Airfoil
-"
-"fluids/kutta.html","Kutta-Joukowski Lift Theorem
-"
-"fluids/airfoil.html","Bernoulli or Newton's Laws for Lift?
-"
+"fluids/angatt.html","The Angle of Attack for an Airfoil"
+"fluids/kutta.html","Kutta-Joukowski Lift Theorem"
+"fluids/airfoil.html","Bernoulli or Newton's Laws for Lift?"
 "fluids/downwash.html","Downwash Behind an Airfoil"
 "math/derint.html","Derivatives and Integrals"
 "mechanics/rstoo2.html","Rotating Stool"
@@ -988,98 +766,61 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "weapp.html","  Work and the Work-Energy Principle "
 "electric/filter.html","Filter Circuits"
 "electric/potlin.html","Potential of Line Charge "
-"quantum/qm2.html","The Operator Postulate
-"
+"quantum/qm2.html","The Operator Postulate"
 "waves/wavsol.html","String Wave Solutions"
-"quantum/schr2.html","Free particle approach to the Schrodinger equation
-"
+"quantum/schr2.html","Free particle approach to the Schrodinger equation"
 "cmplx.html","Complex Numbers"
-"quantum/pbox.html","Particle in a Box
-"
-"quantum/qm.html","Varieties of Wave Equations
-"
+"quantum/pbox.html","Particle in a Box"
+"quantum/qm.html","Varieties of Wave Equations"
 "hframe.html","Index"
-"quantum/wvfun.html","Wavefunction Properties
-"
-"quantum/qmoper.html","Operators in Quantum Mechanics
-"
-"quantum/hamil.html","The Hamiltonian
-"
-"quantum/eigen.html","Eigenvalues and Eigenfunctions
-"
-"quantum/hosc.html","Quantum Harmonic Oscillator
-"
-"molecule/vibspe.html","Vibrational Spectra of Diatomic Molecules
-"
-"quantum/hosc5.html","Quantum Harmonic Oscillator: Wavefunctions
-"
+"quantum/wvfun.html","Wavefunction Properties"
+"quantum/qmoper.html","Operators in Quantum Mechanics"
+"quantum/hamil.html","The Hamiltonian"
+"quantum/eigen.html","Eigenvalues and Eigenfunctions"
+"quantum/hosc.html","Quantum Harmonic Oscillator"
+"molecule/vibspe.html","Vibrational Spectra of Diatomic Molecules"
+"quantum/hosc5.html","Quantum Harmonic Oscillator: Wavefunctions"
 "quantum/hydcn.html","Hydrogen concepts"
-"quantum/hydrad.html","Radial Equation Separation
-"
-"quantum/hydcol.html","The Colatitude Equation
-"
-"qunoh.html","Geometry of Hydrogen Atom Solution
-"
-"math/probas.html","Basic Probability
-"
-"quantum/disbe.html","The Bose-Einstein Distribution
-"
-"quantum/disfd.html","The Fermi-Dirac Distribution
-"
-"quantum/disene.html","The Distribution of Energy
-"
-"solids/phonon.html","What is a Phonon?
-"
-"solids/fermi2.html","Fermi Energies for Metals
-"
-"solids/fermi.html","Fermi Level
-"
+"quantum/hydrad.html","Radial Equation Separation"
+"quantum/hydcol.html","The Colatitude Equation"
+"qunoh.html","Geometry of Hydrogen Atom Solution"
+"math/probas.html","Basic Probability"
+"quantum/disbe.html","The Bose-Einstein Distribution"
+"quantum/disfd.html","The Fermi-Dirac Distribution"
+"quantum/disene.html","The Distribution of Energy"
+"solids/phonon.html","What is a Phonon?"
+"solids/fermi2.html","Fermi Energies for Metals"
+"solids/fermi.html","Fermi Level"
 "math/disfcn.html","Comparison of Distribution Functions"
 "quantum/statcn.html","Quantum statistics concepts"
-"kinetic/statcom.html","Physical Applications of Distribution Functions
-"
-"quantum/disbex.html","The average distribution of 9 units of energy among 6 identical particles
-"
-"quantum/disfdx.html","The average distribution of 9 units of energy among 6 identical particles
-"
-"math/permut.html","Permutations and Combinations
-"
+"kinetic/statcom.html","Physical Applications of Distribution Functions"
+"quantum/disbex.html","The average distribution of 9 units of energy among 6 identical particles"
+"quantum/disfdx.html","The average distribution of 9 units of energy among 6 identical particles"
+"math/permut.html","Permutations and Combinations"
 "math/multeng.html","Multiplity for Energy Distribution"
-"kinetic/molke.html","Average Molecular Kinetic Energy
-"
-"kinetic/maxdev.html","Relation of particle velocity to height
-"
-"kinetic/frecol.html","Frequency of Molecular Collisions
-"
-"kinetic/menfre.html","Mean Free Path
-"
+"kinetic/molke.html","Average Molecular Kinetic Energy"
+"kinetic/maxdev.html","Relation of particle velocity to height"
+"kinetic/frecol.html","Frequency of Molecular Collisions"
+"kinetic/menfre.html","Mean Free Path"
 "math/gaufcn.html","Gaussian Distribution Function"
 "electric/powerac.html","AC Power"
-"quantum/radpow.html","Radiated Energy as a Function of Energy Density
-"
+"quantum/radpow.html","Radiated Energy as a Function of Energy Density"
 "magnetic/magpot.html","Magnetic Potential Energy"
 "math/matrix.html","Matrices"
-"tables/elecon.html","Electrical Conductivity and Resistivity at 295K
-"
+"tables/elecon.html","Electrical Conductivity and Resistivity at 295K"
 "lalg.html","Linear Algebra"
-"solids/bcs.html","BCS Theory of Superconductivity
-"
+"solids/bcs.html","BCS Theory of Superconductivity"
 "math/mean.html","The Mean"
-"math/intpart.html","Integration by Parts
-"
-"thermo/molbas.html","Of Molecules and Baseballs
-"
-"thermo/spht.html","Specific Heat
-"
+"math/intpart.html","Integration by Parts"
+"thermo/molbas.html","Of Molecules and Baseballs"
+"thermo/spht.html","Specific Heat"
 "chemical/water.html","Water"
 "therm/entropgas.html","Entropy of an Ideal Gas"
 "organic/sugar.html","Glucose"
-"thermo/electrol.html","Electrolysis of Water
-"
+"thermo/electrol.html","Electrolysis of Water"
 "chemical/gibbspon.html","Gibbs Free Energy and the Spontaneity of Chemical Reactions"
 "chemical/electrode2.html","Strengths of Oxidizing and Reducing Agents"
-"thermo/pvtsur.html","PvT Surface for a Substance which Contracts Upon Freezing
-"
+"thermo/pvtsur.html","PvT Surface for a Substance which Contracts Upon Freezing"
 "vsca2.html","Work as a Scalar Product"
 "thermo/cppro.html","Constant Pressure Process"
 "permot3.html","Bulk Elastic Properties"
@@ -1092,13 +833,11 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/phase.html","Phase"
 "electric/powerp.html","Electric Generation"
 "sound/souspe.html","Speed of Sound in Air"
-"kinetic/watvap.html","Saturated Vapor Pressure, Density for Water
-"
+"kinetic/watvap.html","Saturated Vapor Pressure, Density for Water"
 "sound/trawvcon.html","Traveling wave concepts"
 "sound/sprop.html","Sound Propagation"
 "sound/tralon.html","Transverse Waves"
-"tables/heatcap.html","Molar Heat Capacities, Gases
-"
+"tables/heatcap.html","Molar Heat Capacities, Gases"
 "pasc2.html","Tennis Ball Impact on Eye"
 "sound/pitch.html","Pitch"
 "soushm.html","Simple Harmonic Motion"
@@ -1118,87 +857,52 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "pascon.html","Pascal's principle concepts"
 "ppois2.html","Poiseuille's Law"
 "poicon.html","Poiseuille's law concepts"
-"tables/funcon.html","Fundamental Physical Constants
-"
-"tables/concom.html","Convenient Combinations of Physical Constants
-"
-"solids/scond.html","Superconductivity
-"
+"tables/funcon.html","Fundamental Physical Constants"
+"tables/concom.html","Convenient Combinations of Physical Constants"
+"solids/scond.html","Superconductivity"
 "electronic/ascii.html","ASCII Alphanumeric Code"
-"tables/sphtt.html","Specific heats and molar heat capacities for various substances at 20 C
-"
-"tables/thexp.html","Thermal Expansion Coefficients at 20 C
-"
-"tables/rvalue.html","Insulation R-Value
-"
-"tables/thrcn2.html","Thermal Conductivity and Debye Temperature
-"
-"tables/triple.html","Triple Points
-"
-"tables/compress.html","Compressibility of Liquids
-"
-"tables/liqprop.html","Physical Properties of Some Typical Liquids
-"
-"tables/viscosity.html","Viscosity of Liquids and Gases
-"
-"tables/indrf.html","Index of Refraction
-"
-"vision/efficacy.html","Luminous Efficacy Tables
-"
+"tables/sphtt.html","Specific heats and molar heat capacities for various substances at 20 C"
+"tables/thexp.html","Thermal Expansion Coefficients at 20 C"
+"tables/rvalue.html","Insulation R-Value"
+"tables/thrcn2.html","Thermal Conductivity and Debye Temperature"
+"tables/triple.html","Triple Points"
+"tables/compress.html","Compressibility of Liquids"
+"tables/liqprop.html","Physical Properties of Some Typical Liquids"
+"tables/viscosity.html","Viscosity of Liquids and Gases"
+"tables/indrf.html","Index of Refraction"
+"vision/efficacy.html","Luminous Efficacy Tables"
 "vision/cie1976.html","The 1976 CIE Chromaticity Diagram"
 "vision/cie.html","The C.I.E. Color Space"
-"vision/solirrad.html","Solar Iradiance
-"
-"tables/suncomp.html","Composition of the Sun
-"
+"vision/solirrad.html","Solar Iradiance"
+"tables/suncomp.html","Composition of the Sun"
 "music/et.html","Equal Temperament"
-"tables/soundv.html","Speed of Sound in Various Bulk Media
-"
-"tables/spectra.html"," Atomic Line Spectra
-"
-"tables/diatomic.html","Properties of Ionic Diatomic Molecules
-"
-"tables/vibspec.html","Vibrational Frequencies, Diatomic Molecules
-"
-"tables/moldata.html","Bond Data for Some Common Molecules
-"
-"chemical/eleaff.html","Electron Affinities of the Main-Group Elements*
-
-"
+"tables/soundv.html","Speed of Sound in Various Bulk Media"
+"tables/spectra.html"," Atomic Line Spectra"
+"tables/diatomic.html","Properties of Ionic Diatomic Molecules"
+"tables/vibspec.html","Vibrational Frequencies, Diatomic Molecules"
+"tables/moldata.html","Bond Data for Some Common Molecules"
+"chemical/eleaff.html","Electron Affinities of the Main-Group Elements*"
 "particles/parpop.html","Elementary Particle Populations"
-"tables/photoelec.html","Work Functions for Photoelectric Effect
-"
-"tables/kxray.html","Experimental K-alpha x ray energies
-"
-"tables/fermi.html","Fermi Energies, Fermi Temperatures, and Fermi Velocities
-"
-"tables/supcon.html","Superconductivity Transition Temperatures and Critical Fields
-"
-"solids/bravais.html","The 14 Bravais Lattices
-"
+"tables/photoelec.html","Work Functions for Photoelectric Effect"
+"tables/kxray.html","Experimental K-alpha x ray energies"
+"tables/fermi.html","Fermi Energies, Fermi Temperatures, and Fermi Velocities"
+"tables/supcon.html","Superconductivity Transition Temperatures and Critical Fields"
+"solids/bravais.html","The 14 Bravais Lattices"
 "nuclear/nucrea.html","Nuclear Reactions"
-"tables/electpot.html","Standard Electrode Potentials in Aqueous Solution at 25°C
-"
-"tables/therprop2.html","Thermodynamic Properties of Substances and Ions at 25° C
-"
-"tables/bpelev.html","Freezing Point Depression and Boiling Point Elevation
-"
-"geophys/minhard.html","Mineral Hardness
-"
-"biology/neurtran.html","Chemical Neurotransmitters
-"
+"tables/electpot.html","Standard Electrode Potentials in Aqueous Solution at 25°C"
+"tables/therprop2.html","Thermodynamic Properties of Substances and Ions at 25° C"
+"tables/bpelev.html","Freezing Point Depression and Boiling Point Elevation"
+"geophys/minhard.html","Mineral Hardness"
+"biology/neurtran.html","Chemical Neurotransmitters"
 "organic/gencode.html","The Genetic Code"
-"biology/biocon.html","Biology Concepts
-"
+"biology/biocon.html","Biology Concepts"
 "lindrg2.html","Velocity with Linear Drag"
 "flufri.html","Fluid friction"
 "gaseng.html","Gasoline Energy Comparison"
 "egex.html","Some General Energy Examples"
-"thermo/houseenergy.html","Household Energy Use
-"
+"thermo/houseenergy.html","Household Energy Use"
 "geoopt/lenscon.html","lenses"
-"vision/eye.html","Section of Eye's Lens Structure
-"
+"vision/eye.html","Section of Eye's Lens Structure"
 "phyopt/huygen.html","Huygens' Principle"
 "vision/rfreye.html","Refraction and the Eye"
 "sound/refrac.html","Refraction of Sound"
@@ -1208,51 +912,35 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "geoopt/dispersion.html","Dispersion"
 "phyopt/fermat.html","Law of Reflection"
 "phyopt/totint.html","Total Internal Reflection"
-"starlog/staspe.html","Stellar Spectral Types
-"
-"solar/sunspot.html"," Sunspots and Solar Storms
-"
-"thermo/coobod.html","Cooling of the Human Body
-"
-"thermo/hques2.html","Hot Water Freezing?
-"
+"starlog/staspe.html","Stellar Spectral Types"
+"solar/sunspot.html"," Sunspots and Solar Storms"
+"thermo/coobod.html","Cooling of the Human Body"
+"thermo/hques2.html","Hot Water Freezing?"
 "thermo/cvpro.html","Constant Volume Process"
 "inecol.html","Inelastic Collisions"
 "elacol2.html","Head-on Elastic Collisions, Target at Rest"
 "colsta.html","Head-on Elastic Collisions"
 "balls.html","Swinging Balls"
-"thermo/dulong.html","Law of Dulong and Petit
-"
+"thermo/dulong.html","Law of Dulong and Petit"
 "therm/einsol.html","Einstein Model of a Solid"
-"kinetic/weighgas.html","Weighing a Gas
-"
+"kinetic/weighgas.html","Weighing a Gas"
 "kinetic/kapcon.html","Applications of kinetic theory"
 "kinetic/vapcon.html","Vapor application concepts"
-"thermo/sweat.html","Perspiration Cooling of Body
-
-"
+"thermo/sweat.html","Perspiration Cooling of Body"
 "chemical/boilpt.html","Boiling Point Elevation in Solutions"
-"thermo/precook.html","Pressure Cooker
-"
-"thermo/autocool.html","Automobile Cooling Systems
-"
+"thermo/precook.html","Pressure Cooker"
+"thermo/autocool.html","Automobile Cooling Systems"
 "pertab/n.html","Nitrogen"
 "thermo/phasecon.html","Phase change concepts"
 "surten.html","Surface Tension"
 "chemical/meltpt.html","Freezing Point Depression in Solutions"
-"biology/pigpho.html","Pigments for Photosynthesis
-"
-"biology/antpho.html","Antenna Complexes for Photosynthesis
-"
-"biology/etnoncyc.html","Non-cyclic Electron Transport in Photosynthesis
-"
-"biology/atp.html","Adenosine Triphosphate
-"
+"biology/pigpho.html","Pigments for Photosynthesis"
+"biology/antpho.html","Antenna Complexes for Photosynthesis"
+"biology/etnoncyc.html","Non-cyclic Electron Transport in Photosynthesis"
+"biology/atp.html","Adenosine Triphosphate"
 "organic/coenzyme.html","Coenzymes"
-"biology/calvin.html","The Calvin Cycle
-"
-"biology/enercyc.html","Energy Cycle in Living Things
-"
+"biology/calvin.html","The Calvin Cycle"
+"biology/enercyc.html","Energy Cycle in Living Things"
 "biology/psyncon.html","Photosynthesis Concepts"
 "biology/bioref.html","Biology References"
 "organic/biochemcon.html","Biochemical concepts"
@@ -1261,231 +949,145 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "organic/dna.html","DNA"
 "organic/rna.html","RNA"
 "organic/enzyme.html","Enzymes"
-"biology/mitostruct.html","Mitochondrion Structure
-"
-"biology/cell.html","The Eukaryotic Cell
-"
-"biology/celres.html","Cellular Respiration
-"
-"relativ/photel.html","Photon-Electron Interaction
-"
+"biology/mitostruct.html","Mitochondrion Structure"
+"biology/cell.html","The Eukaryotic Cell"
+"biology/celres.html","Cellular Respiration"
+"relativ/photel.html","Photon-Electron Interaction"
 "relativ/mmhist.html","A bit of history: Michelson"
-"relativ/einvel2.html","Einstein Velocity Addition
-"
-"relativ/veltran.html","Relativistic Velocity Transformation
-"
+"relativ/einvel2.html","Einstein Velocity Addition"
+"relativ/veltran.html","Relativistic Velocity Transformation"
 "acloc.html","Atomic Clocks"
 "sound/radar.html","Police RADAR"
 "relativ/reldop2.html","Relativistic Doppler Shift"
 "relativ/reldop.html","Doppler concepts"
-"quantum/parlif.html","Particle lifetimes from the uncertainty principle
-"
+"quantum/parlif.html","Particle lifetimes from the uncertainty principle"
 "pertab/fe.html","Iron"
 "nuclear/ironze.html","Nuclear Zeeman Effect in Iron-57"
-"solar/astinst.html"," Astronomical Instrumentation
-"
+"solar/astinst.html"," Astronomical Instrumentation"
 "nucene/fiscon.html","Nature's Nuclear Fission Reactor"
 "nucene/fuscon.html","Nuclear fusion concepts"
 "nucene/fission.html","Nuclear Fission"
 "nucene/eneein.html","Energy a la Einstein"
-"solar/spitzer.html"," Spitzer Space Telescope
-"
-"thermo/stefan.html","Stefan-Boltzmann Law
-"
-"bbrc.html","Radiation Curves
-"
-"thermo/eartherm.html","Infrared Ear Thermometer
-"
+"solar/spitzer.html"," Spitzer Space Telescope"
+"thermo/stefan.html","Stefan-Boltzmann Law"
+"bbrc.html","Radiation Curves"
+"thermo/eartherm.html","Infrared Ear Thermometer"
 "vision/specol.html","Spectral Colors"
 "geoopt/prism.html","Prisms"
 "vision/colviscon.html","Color vision"
-"mod4.html","Radiation and the Human Body
-"
-"quantum/xrayc.html","Characteristic X-Rays
-"
-"solar/chandra.html"," Chandra X-ray Observatory
-"
-"quantum/moseley.html","Moseley's Modeling of X-ray Frequencies
-"
-"quantum/bragg.html","Bragg's Law
-"
-"mod1.html","Wave-Particle Duality
-"
+"mod4.html","Radiation and the Human Body"
+"quantum/xrayc.html","Characteristic X-Rays"
+"solar/chandra.html"," Chandra X-ray Observatory"
+"quantum/moseley.html","Moseley's Modeling of X-ray Frequencies"
+"quantum/bragg.html","Bragg's Law"
+"mod1.html","Wave-Particle Duality"
 "bohrcn.html","Bohr theory"
-"ems2.html","AM Radio Band
-"
-"bohr.html","Quantized Energy States
-"
-"quantum/eedens.html","Electron Energy Density
-"
-"astro/cosmo.html","Physical Keys to Cosmology
-"
-"astro/bbnuc.html","Big Bang Nucleosynthesis
-"
+"ems2.html","AM Radio Band"
+"bohr.html","Quantized Energy States"
+"quantum/eedens.html","Electron Energy Density"
+"astro/cosmo.html","Physical Keys to Cosmology"
+"astro/bbnuc.html","Big Bang Nucleosynthesis"
 "quantum/raddens.html","Radiation Energy Density"
-"solids/coop.html","Cooper Pairs
-"
-"optmod/lascool.html","Laser Cooling
-
-"
-"quantum/magtrap.html","Cooling by Magnetic Trapping
-"
+"solids/coop.html","Cooper Pairs"
+"optmod/lascool.html","Laser Cooling"
+"quantum/magtrap.html","Cooling by Magnetic Trapping"
 "quantum/rubbec.html","Bose-Einstein Condensates with Rubidium Atoms"
 "quantum/atomstructcon.html","Atomic Structure Concepts"
-"molecule/nacl.html","Sodium Chloride, NaCl
-
-"
-"molecule/hmol.html","Hydrogen Molecule
-
-"
+"molecule/nacl.html","Sodium Chloride, NaCl"
+"molecule/hmol.html","Hydrogen Molecule"
 "nuclear/shell.html","Shell Model of Nucleus"
 "nuclear/shellpau.html","Pauli Principle Influence in Nuclear Models"
 "frhz.html","Franck-Hertz experiment"
-"quantum/orbdep.html","What Causes Electron Energies to Depend Upon the Orbital Quantum Number?
-"
-"quantum/zeeman.html","Zeeman Effect in Hydrogen
-"
-"atomic/stark.html","Stark Effect in Atomic Spectra
-"
+"quantum/orbdep.html","What Causes Electron Energies to Depend Upon the Orbital Quantum Number?"
+"quantum/zeeman.html","Zeeman Effect in Hydrogen"
+"atomic/stark.html","Stark Effect in Atomic Spectra"
 "chemical/ionize.html","Ionization Energies"
 "chemical/atomrad.html","Atomic Radii"
 "atomic/atstruct.html","Influences on Atomic Energy Levels"
-"quantum/qnenergy.html","Quantum Numbers and Atomic Energy Levels
-"
-"molecule/molec.html","Properties of Molecules
-
-"
+"quantum/qnenergy.html","Quantum Numbers and Atomic Energy Levels"
+"molecule/molec.html","Properties of Molecules"
 "pertab/perfill.html","Order of Filling of Electron States"
 "chemical/lewis.html","Lewis Diagrams for Compound Formation"
 "pertab/perlewis.html","Lewis Dot Diagrams of Selected Elements"
 "particles/kaon.html","Kaons"
-"quantum/orbmag.html","Electron Orbit Magnetic Moment
-"
+"quantum/orbmag.html","Electron Orbit Magnetic Moment"
 "grexp.html","Great experiments of physics"
 "particles/parsea.html","Why Higher Energy?"
 "particles/kamio.html","Photomultiplier Accident at Super-Kamiokande"
-"starlog/cygx3.html","Cygnus X-3
-"
+"starlog/cygx3.html","Cygnus X-3"
 "particles/cloud.html","<h1 align=""center"">The Cloud Chamber</h1>"
-"quantum/davger2.html","Davisson-Germer Experiment
-"
+"quantum/davger2.html","Davisson-Germer Experiment"
 "nuclear/myoinf.html"," Myocardial Infusion Imaging"
 "nuclear/nucmed.html"," Nuclear Medicine"
 "pertab/f.html","Fluorine"
-"astro/nebula.html"," Nebula
-"
-"starlog/blusup.html","Blue Supergiant Stars
-"
+"astro/nebula.html"," Nebula"
+"starlog/blusup.html","Blue Supergiant Stars"
 "phyopt/raylei.html","The Rayleigh Criterion"
-"starlog/cygni.html","61 Cygni
-"
-"solar/hipparcos.html"," Hipparcos
-"
-"astro/distance.html","Distance Measurement in Astronomy
-"
-"starlog/start1.html","Visible Stars
-"
+"starlog/cygni.html","61 Cygni"
+"solar/hipparcos.html"," Hipparcos"
+"astro/distance.html","Distance Measurement in Astronomy"
+"starlog/start1.html","Visible Stars"
 "astro/andromeda.html","Andromeda Galaxy"
 "astro/galaxcon.html","Galaxy concepts"
 "astro/pleiades.html","The Pleiades"
-"astro/globular.html","Globular Clusters
-"
+"astro/globular.html","Globular Clusters"
 "math/logplot.html","Log Plot for Power Relationships"
-"astro/startime.html","Stellar Lifetimes
-"
-"solar/hubinst.html","Hubble Space Telescope Instruments
-"
+"astro/startime.html","Stellar Lifetimes"
+"solar/hubinst.html","Hubble Space Telescope Instruments"
 "astro/helixnebula.html","Helix Nebula"
-"solar/palomar.html"," Palomar
-"
-"bbcon.html","Blackbody Radiation
-"
-"quantum/wien3.html","Wien's Displacement Law and Other Ways to Characterize the Peak of Blackbody Radiation
-"
-"quantum/wien2.html","Peak of Blackbody Radiation
-"
+"solar/palomar.html"," Palomar"
+"bbcon.html","Blackbody Radiation"
+"quantum/wien3.html","Wien's Displacement Law and Other Ways to Characterize the Peak of Blackbody Radiation"
+"quantum/wien2.html","Peak of Blackbody Radiation"
 "starlog/starcon.html","Star Concepts"
-"astro/dist2.html","Planetary Nebulae Distance
-"
+"astro/dist2.html","Planetary Nebulae Distance"
 "starlog/cassa.html","Cassiopeia A"
-"astro/univacc.html","Evidence for an accelerating universe
-"
-"astro/pinwheel.html","Pinwheel Galaxy, M101
-"
-"astro/cepheid.html","delta Cephei
-"
-"solar/newhorizons.html"," New Horizons Spacecraft
-"
-"solar/kuiper.html"," The Kuiper Belt
-"
+"astro/univacc.html","Evidence for an accelerating universe"
+"astro/pinwheel.html","Pinwheel Galaxy, M101"
+"astro/cepheid.html","delta Cephei"
+"solar/newhorizons.html"," New Horizons Spacecraft"
+"solar/kuiper.html"," The Kuiper Belt"
 "solar/mercon.html","Mercury Concepts"
 "rotv3.html","Precession of Spinning Wheel"
-"solar/galileo.html"," Galileo Mission
-"
-"solar/jupec.html"," Triple Eclipse on Jupiter
-"
+"solar/galileo.html"," Galileo Mission"
+"solar/jupec.html"," Triple Eclipse on Jupiter"
 "chemical/watabs.html","Transparency of Water in the Visible Range"
-"solar/venusenv.html"," The Atmosphere of Venus
-"
-"thermo/ipccghg.html","IPCC Graphs of Increases in Greenhouse Gases
-"
-"thermo/radfor.html","Radiative Forcing of Earth's Atmosphere
-"
-"thermo/globair.html","Global Air Temperature
-"
-"thermo/snocov.html","Snow Cover
-"
-"thermo/searise.html","Sea Level Rise from Global Warming
-"
-"thermo/humimp.html","Modeling Human Impact on Global Warming
-"
-"thermo/gwskeptic.html","Skeptical Views of Global Warming
-"
-"thermo/templine.html","Global Temperature History
-"
-"geophys/mincomp.html","Igneous Rock Composition
-"
-"biology/life.html","The Characteristics of Living Things
-"
+"solar/venusenv.html"," The Atmosphere of Venus"
+"thermo/ipccghg.html","IPCC Graphs of Increases in Greenhouse Gases"
+"thermo/radfor.html","Radiative Forcing of Earth's Atmosphere"
+"thermo/globair.html","Global Air Temperature"
+"thermo/snocov.html","Snow Cover"
+"thermo/searise.html","Sea Level Rise from Global Warming"
+"thermo/humimp.html","Modeling Human Impact on Global Warming"
+"thermo/gwskeptic.html","Skeptical Views of Global Warming"
+"thermo/templine.html","Global Temperature History"
+"geophys/mincomp.html","Igneous Rock Composition"
+"biology/life.html","The Characteristics of Living Things"
 "organic/protein.html","Proteins"
-"solar/mooncrater.html"," Moon Craters
-"
+"solar/mooncrater.html"," Moon Craters"
 "tide.html","Tides"
-"solar/moonscale.html"," Moon and Earth to Scale
-"
-"astro/moonhab.html","The Moon's Role in the Habitability of the Earth
-"
+"solar/moonscale.html"," Moon and Earth to Scale"
+"astro/moonhab.html","The Moon's Role in the Habitability of the Earth"
 "astro/wcmoon.html","How did the Moon form and why is it crucial to life?"
-"astro/transp.html","Transparency Temperature
-"
-"astro/wmap.html","The Wilkinson Microwave Anisotropy Probe (WMAP)
-"
-"astro/planckcmb.html","The Planck Satellite 
-"
-"astro/penwil.html","Discovery of Cosmic Background Radiation
-"
-"molecule/cn.html","Spectrum of Cyanogen, CN
-
-"
+"astro/transp.html","Transparency Temperature"
+"astro/wmap.html","The Wilkinson Microwave Anisotropy Probe (WMAP)"
+"astro/planckcmb.html","The Planck Satellite "
+"astro/penwil.html","Discovery of Cosmic Background Radiation"
+"molecule/cn.html","Spectrum of Cyanogen, CN"
 "gpsrec.html","GPS Receivers"
 "mechanics/gpsag.html","Agricultural Applications of GPS"
-"astro/gravc.html","Gravitational Collapse
-"
-"quantum/rayj.html","Electromagnetic Waves in a Cubical Cavity
-"
+"astro/gravc.html","Gravitational Collapse"
+"quantum/rayj.html","Electromagnetic Waves in a Cubical Cavity"
 "waves/magnetron.html","The Magnetron"
-"kinetic/popfrac.html","Fractional Population of Excited States
-"
+"kinetic/popfrac.html","Fractional Population of Excited States"
 "de.html","differential equation"
 "math/deinhom.html","First Order Non-homogeneous Differential Equation"
 "alg4.html","Quadratic Formula"
 "cmplx2.html","Multiplication and Division "
 "math/denh2.html","Second Order Non-homogeneous Differential Equation"
-"kinetic/diffus.html","Diffusion
-"
+"kinetic/diffus.html","Diffusion"
 "biology/respir.html","Respiration"
-"ptens2.html","Alveoli of the Lungs
-"
+"ptens2.html","Alveoli of the Lungs"
 "nuclear/ruthcross.html","Scattering Cross Section"
 "nuclear/crosec2.html","The Value of the Cross-Section Concept"
 "nuclear/shell2.html","Enhanced Abundance of Magic Number Nuclei"
@@ -1515,12 +1117,9 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "pertab/po.html","Polonium"
 "nuclear/alpdet.html","Modeling Polonium-212 Alpha Half-life"
 "nuclear/alpdet2.html","Modeling Alpha Half-life"
-"solar/meteor3.html"," Stony-Iron Meteorites
-"
-"solar/asteroid.html"," Asteroids
-"
-"solar/meteormars.html"," Mars Meteorites
-"
+"solar/meteor3.html"," Stony-Iron Meteorites"
+"solar/asteroid.html"," Asteroids"
+"solar/meteormars.html"," Mars Meteorites"
 "organic/amino.html","Amino Acids"
 "geophys/watabund.html","Abundance of Water"
 "minerals/beryl.html","Beryl"
@@ -1543,8 +1142,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "minerals/alexandrite.html"," Alexandrite "
 "minerals/hambergite.html","Hambergite"
 "minerals/taafeite.html"," Taafeite "
-"atomic/auginn.html","Auger Spectrum of Indium Nitride Surface
-"
+"atomic/auginn.html","Auger Spectrum of Indium Nitride Surface"
 "geophys/silver.html","Silver"
 "minerals/acanthite.html","Acanthite"
 "minerals/stephanite.html","Stephanite"
@@ -1583,8 +1181,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "geophys/platetec.html","Plate Tectonics"
 "geophys/hematite.html","Hematite"
 "geophys/chert.html","Chert"
-"biology/prokar.html","Prokaryotic Cells
-"
+"biology/prokar.html","Prokaryotic Cells"
 "pertab/ir.html","Iridium"
 "geophys/pyroxene.html","Pyroxene"
 "minerals/augite.html","Augite"
@@ -1598,8 +1195,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "minerals/elpidite.html","Elpidite"
 "minerals/zektzerite.html"," Zektzerite "
 "minerals/painite.html","Painite"
-"solids/sili2.html","Silicon Crystal Structure
-"
+"solids/sili2.html","Silicon Crystal Structure"
 "minerals/kimberlite.html","Kimberlite"
 "minerals/carat.html","The Carat"
 "geophys/gold.html","Gold"
@@ -2003,28 +1599,19 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "pertab/b.html","Boron"
 "pertab/cs.html","Cesium"
 "nucene/bomb2.html","Nuclear Blast Damage"
-"solar/luna.html"," Russian Luna Program
-"
-"solar/galileoimg.html"," Earth's Moon from Galileo
-"
+"solar/luna.html"," Russian Luna Program"
+"solar/galileoimg.html"," Earth's Moon from Galileo"
 "geophys/ignecon.html","Igneous rock concepts"
-"geophys/texture.html","Aphanitic Rock
-"
-"geophys/intrus.html","Intrusive Rocks
-"
-"geophys/magma.html","Magma
-"
-"geophys/meltrock.html","Melting Points of Rocks
-"
+"geophys/texture.html","Aphanitic Rock"
+"geophys/intrus.html","Intrusive Rocks"
+"geophys/magma.html","Magma"
+"geophys/meltrock.html","Melting Points of Rocks"
 "rkecon.html","Rotational kinetic energy concepts"
 "quantum/schapp.html","Applications of the Schroedinger equation"
-"quantum/carbconfine.html","Energy to Confine Particles in a Carbon Atom
-"
+"quantum/carbconfine.html","Energy to Confine Particles in a Carbon Atom"
 "unccon.html","Uncertainty principle concepts"
-"quantum/uncer2.html","Uncertainty Principle Application: Particle in a 3-D Box
-"
-"quantum/fermi.html","Transition Probabilities and Fermi's Golden Rule
-"
+"quantum/uncer2.html","Uncertainty Principle Application: Particle in a 3-D Box"
+"quantum/fermi.html","Transition Probabilities and Fermi's Golden Rule"
 "particles/linac.html","Linear Accelerators"
 "particles/synch.html","Synchrotrons"
 "particles/kek.html","KEK Accelerator Facility"
@@ -2032,8 +1619,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "particles/detect.html","Detection Devices for High Energy Physics"
 "particles/accel3.html","Cockroft-Walton Accelerators"
 "particles/synchrotron.html","Synchrotron Radiation"
-"solids/scmag.html","Superconducting Magnets
-"
+"solids/scmag.html","Superconducting Magnets"
 "particles/sigma.html","The Sigma Baryon"
 "particles/delta.html","The Delta Baryon"
 "particles/xi.html","The Xi Baryon"
@@ -2041,25 +1627,17 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "math/poifcn.html","Poisson Distribution Function"
 "nucene/control.html","Control Rods for Fission Reactors"
 "optmod/lassol.html","Neodymium-YAG Laser"
-"quantum/lamb2.html","The Lamb Shift by Saturation Spectroscopy
-"
+"quantum/lamb2.html","The Lamb Shift by Saturation Spectroscopy"
 "hydwf.html","Hydrogen 1s Radial Probability"
-"atomic/grotrian.html","Atomic Energy Level Diagrams
-"
-"quantum/h21.html","The Hydrogen 21-cm Line
-"
+"atomic/grotrian.html","Atomic Energy Level Diagrams"
+"quantum/h21.html","The Hydrogen 21-cm Line"
 "phyopt/grating.html","Diffraction Grating"
-"tables/hydspec.html","Measured Hydrogen Spectrum
-"
-"quantum/vecmod.html","Vector Model for Orbital Angular Momentum
-"
+"tables/hydspec.html","Measured Hydrogen Spectrum"
+"quantum/vecmod.html","Vector Model for Orbital Angular Momentum"
 "phyopt/michel.html","Michelson Interferometer"
-"vision/lumpow.html","Luminous Flux
-"
-"vision/areance.html","Power Per Unit Area of Surface
-"
-"vision/photom.html","Power Per Unit Solid Angle
-"
+"vision/lumpow.html","Luminous Flux"
+"vision/areance.html","Power Per Unit Area of Surface"
+"vision/photom.html","Power Per Unit Solid Angle"
 "vision/photomcon.html","Photometry concepts"
 "vision/visioncon.html","Vision concepts"
 "acoustic/reverb.html","Reverberation"
@@ -2069,88 +1647,53 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "acoustic/auditcon.html","Auditorium acoustics"
 "acoustic/dbcon.html","Sound level measurement"
 "acoustic/isprob2.html","Estimating Sound Levels With the Inverse Square Law"
-"quantum/phase.html","Phase Space: a Framework for Statistics
-"
-"iras.html","The Technology of IRAS
-"
-"quantum/phodens.html","Photon Energy Density
-"
+"quantum/phase.html","Phase Space: a Framework for Statistics"
+"iras.html","The Technology of IRAS"
+"quantum/phodens.html","Photon Energy Density"
 "quantum/planckapp.html","Applications of the Planck Radiation Formula"
-"mod7.html","Low Frequency Radiation
-"
-"astro/expand.html","Division of Energy Between Photons and Massive Particles
-"
+"mod7.html","Low Frequency Radiation"
+"astro/expand.html","Division of Energy Between Photons and Massive Particles"
 "particles/cronin.html","Cronin and Fitch Experiment with Kaons"
 "nuclear/nstate.html","Notation for nuclear energy states"
-"quantum/sodzee.html","The Sodium Doublet
-"
-"molecule/rotqm.html","Energy Calculation for Rigid Rotor Molecules
-"
+"quantum/sodzee.html","The Sodium Doublet"
+"molecule/rotqm.html","Energy Calculation for Rigid Rotor Molecules"
 "quantum/compton.html",""
-"quantum/compdat.html","Compton Scattering Data
-"
-"quantum/compeq.html","Compton Scattering Equation
-"
+"quantum/compdat.html","Compton Scattering Data"
+"quantum/compeq.html","Compton Scattering Equation"
 "lsin.html","Law of Sines"
-"quantum/lande.html","Magnetic Interactions and the Lande' g-Factor
-"
+"quantum/lande.html","Magnetic Interactions and the Lande' g-Factor"
 "airpw3.html","Airplane in Wind: Desired Heading and Resultant Speed"
-"astro/hubble.html","Expanding Universe
-"
-"starlog/h2reg.html","Examples of H II Regions
-"
-"astro/redshf2.html","Example Red Shift Problem
-"
-"astro/expuni.html","Newtonian Model of Expanding Universe
-"
-"astro/m61.html","M61
-"
-"astro/deepfield.html"," The Hubble Space Telescope ""Ultra Deep Field"" View
-"
-"solar/hstdeep.html","Hubble Deep Space Image
-"
-"astro/xdeepfield.html"," The Hubble Space Telescope ""Extreme Deep Field"" View
-"
+"astro/hubble.html","Expanding Universe"
+"starlog/h2reg.html","Examples of H II Regions"
+"astro/redshf2.html","Example Red Shift Problem"
+"astro/expuni.html","Newtonian Model of Expanding Universe"
+"astro/m61.html","M61"
+"astro/deepfield.html"," The Hubble Space Telescope ""Ultra Deep Field"" View"
+"solar/hstdeep.html","Hubble Deep Space Image"
+"astro/xdeepfield.html"," The Hubble Space Telescope ""Extreme Deep Field"" View"
 "astro/ngc4414.html","Spiral Galaxy NGC 4414"
 "astro/ngc4603.html","Spiral Galaxy NGC 4603"
 "astro/galpair.html","Galaxy Pair NGC 3314"
-"astro/ngc6822.html","NGC6822
-"
-"astro/m33.html","M33
-"
-"astro/m87.html","M87 as Black Hole Candidate
-"
-"astro/whirlpool.html","Whirlpool Galaxy, M51a
-"
-"starlog/strindx.html","Star Index
-"
+"astro/ngc6822.html","NGC6822"
+"astro/m33.html","M33"
+"astro/m87.html","M87 as Black Hole Candidate"
+"astro/whirlpool.html","Whirlpool Galaxy, M51a"
+"starlog/strindx.html","Star Index"
 "astro/hubdeep.html","Hubble Deep Space Image"
-"astro/actgal.html","Active Galaxies
-"
-"astro/denpar.html","Density Parameter, Ω
-"
+"astro/actgal.html","Active Galaxies"
+"astro/denpar.html","Density Parameter, Ω"
 "mechanics/keporb.html","Orbit Speed Inside and Outside a Mass Distribution"
-"astro/coma.html","The Coma Cluster
-"
-"astro/velcurv.html","Velocity Curves for Spiral Galaxies
-"
-"solar/hstr93.html","Hubble Telescope Repair
-"
-"solar/hstba.html","Hubble Space Telescope Before and After
-"
-"solar/hstbal.html","Galaxy Imaged by Hubble Space Telescope 
-"
-"solar/melnick.html","Star Image Comparisons
-"
-"solar/hstjup.html","Hubble Image of Jupiter
-"
-"starlog/m16l.html","M16, The Eagle Nebula
-"
+"astro/coma.html","The Coma Cluster"
+"astro/velcurv.html","Velocity Curves for Spiral Galaxies"
+"solar/hstr93.html","Hubble Telescope Repair"
+"solar/hstba.html","Hubble Space Telescope Before and After"
+"solar/hstbal.html","Galaxy Imaged by Hubble Space Telescope "
+"solar/melnick.html","Star Image Comparisons"
+"solar/hstjup.html","Hubble Image of Jupiter"
+"starlog/m16l.html","M16, The Eagle Nebula"
 "astro/catseye.html","Catseye Nebula"
-"solar/wfpc.html","Wide Field and Planetary Camera
-"
-"solar/jameswebb.html","James Webb Space Telescope
-"
+"solar/wfpc.html","Wide Field and Planetary Camera"
+"solar/jameswebb.html","James Webb Space Telescope"
 "phyhis/solvay2.html","The Solvay Conference of 1911 "
 "math/ellipse.html","Ellipses and Elliptic Orbits"
 "mechanics/keplerd.html","Developing Kepler's Law of Orbits"
@@ -2160,108 +1703,62 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "nucene/ligwat.html","Light Water Reactors"
 "nucene/fasbre.html","Fast Breeder Reactors"
 "nucene/bomb3.html","Implosion-Type Bomb"
-"astro/timlin.html","Big Bang Time Line
-"
-"astro/inflat.html","Inflationary Period in Big Bang
-"
+"astro/timlin.html","Big Bang Time Line"
+"astro/inflat.html","Inflationary Period in Big Bang"
 "airfri2.html","Terminal Velocity"
 "airfri3.html","Vertical Trajectory"
 "exp.html","Basic Combinations"
 "starlog/bispect.html","Spectroscopic Binary Stars"
-"molecule/vibrot.html","Vibration-Rotation Spectrum of HCl
-
-"
-"molecule/nno.html","Rotational Spectra and Structure of a Linear Molecule
-
-"
-"molecule/spf2h.html","Molecular Structure from Rotational Spectra
-
-"
-"molecule/molspecon.html","Molecular Spectra
-"
-"molecule/hcl.html","Spectrum of HCl
-
-"
+"molecule/vibrot.html","Vibration-Rotation Spectrum of HCl"
+"molecule/nno.html","Rotational Spectra and Structure of a Linear Molecule"
+"molecule/spf2h.html","Molecular Structure from Rotational Spectra"
+"molecule/molspecon.html","Molecular Spectra"
+"molecule/hcl.html","Spectrum of HCl"
 "molecule/ch.html","Rotational Spectrum of CH<sup>+</sup>
 "
-"solids/magperm2.html","Alnico and Alcomax Permanent Magnets
-"
-"solids/magsoft.html","Magnetically Soft Materials
-"
+"solids/magperm2.html","Alnico and Alcomax Permanent Magnets"
+"solids/magsoft.html","Magnetically Soft Materials"
 "pertab/sa.html","Samarium"
 "pertab/nd.html","Neodynium"
-"solids/maglev.html","Magnetic Levitation
-"
-"electric/lighting.html","Fluorescent Lighting
-"
-"solids/piezo.html","Piezoelectric Effect
-"
+"solids/maglev.html","Magnetic Levitation"
+"electric/lighting.html","Fluorescent Lighting"
+"solids/piezo.html","Piezoelectric Effect"
 "audio/tape2.html","Tape Head Action"
 "magnetic/transcon.html","Transformer concepts"
 "magnetic/tracir.html","Circuit Equations:Transformer"
 "magnetic/tracir2.html","Transformer Power Calculation"
 "magnetic/forwir2.html","Magnetic Force on a Current-Carrying Wire"
-"solar/viking.html"," Viking
-"
-"solar/gaspra.html"," Gaspra
-"
-"solar/mars2.html"," Moons of Mars
-"
-"solar/mars3.html"," Seasons on Mars
-"
-"solar/mars4.html"," Runoff Channels on Mars
-"
-"solar/voyager.html"," Voyager I
-"
-"solar/gz.html"," Comet Giacobini-Zinner
-"
-"solar/ulysses.html"," Ulysses
-"
-"solar/ida.html"," Ida and Moon
-"
-"solar/cassini.html"," Cassini Mission
-"
-"solar/saturn.html"," Saturn
-"
-"solar/dawn.html"," Dawn Mission
-"
-"solar/vesta.html"," Vesta
-"
-"solar/ceres.html"," Ceres
-"
+"solar/viking.html"," Viking"
+"solar/gaspra.html"," Gaspra"
+"solar/mars2.html"," Moons of Mars"
+"solar/mars3.html"," Seasons on Mars"
+"solar/mars4.html"," Runoff Channels on Mars"
+"solar/voyager.html"," Voyager I"
+"solar/gz.html"," Comet Giacobini-Zinner"
+"solar/ulysses.html"," Ulysses"
+"solar/ida.html"," Ida and Moon"
+"solar/cassini.html"," Cassini Mission"
+"solar/saturn.html"," Saturn"
+"solar/dawn.html"," Dawn Mission"
+"solar/vesta.html"," Vesta"
+"solar/ceres.html"," Ceres"
 "solar/solexplor.html","Solar System Exploration"
-"solar/venusland.html"," The Highlands of Venus
-"
-"optmod/eincoef.html","Einstein A and B Coefficients
-
-"
-"optmod/qualig.html","Quantum Properties of Light
-
-"
+"solar/venusland.html"," The Highlands of Venus"
+"optmod/eincoef.html","Einstein A and B Coefficients"
+"optmod/qualig.html","Quantum Properties of Light"
 "optmod/lascon.html","Laser concepts"
-"quantum/atspect3.html","Atomic Spectra
-"
-"quantum/atspect2.html","Atomic Spectra
-"
-"quantum/helium.html","Helium Energy Levels
-"
+"quantum/atspect3.html","Atomic Spectra"
+"quantum/atspect2.html","Atomic Spectra"
+"quantum/helium.html","Helium Energy Levels"
 "optics/optref.html","Optics References"
-"solar/io.html"," Io
-"
-"solar/europa.html"," Europa
-"
-"solar/ganymede.html"," Ganymede
-"
-"solar/callisto.html"," Callisto
-"
-"solar/satcon.html"," Saturn
-"
-"solar/uranus.html"," Uranus
-"
-"solar/neptune.html"," Neptune
-"
-"phyopt/reflco.html","Normal Reflection Coefficient
-"
+"solar/io.html"," Io"
+"solar/europa.html"," Europa"
+"solar/ganymede.html"," Ganymede"
+"solar/callisto.html"," Callisto"
+"solar/satcon.html"," Saturn"
+"solar/uranus.html"," Uranus"
+"solar/neptune.html"," Neptune"
+"phyopt/reflco.html","Normal Reflection Coefficient"
 "phyopt/reflectcon.html","Reflection"
 "magnetic/motdct.html","Torque Variation in DC Motor"
 "electric/farlaw2.html","Variations of Faraday's Law"
@@ -2305,8 +1802,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/impl.html","Inductive Reactance"
 "electric/impc.html","Capacitive Reactance"
 "waves/cavity.html","Cavity Resonance"
-"phyopt/cirapp.html","Circular Aperture Diffraction
-"
+"phyopt/cirapp.html","Circular Aperture Diffraction"
 "sound/cochlea.html","The Cochlea"
 "sound/place.html","Place Theory"
 "sound/placecon.html","Place theory concepts"
@@ -2325,19 +1821,15 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "phyopt/fraunhofcon.html","Fraunhofer Diffraction"
 "nucene/finert.html","Inertial Confinement Fusion"
 "nucene/iter.html","International Thermonuclear Experimental Reactor "
-"solids/bandgap.html","Semiconductor Band Gaps
-"
+"solids/bandgap.html","Semiconductor Band Gaps"
 "waves/emwavecon.html","Electromagnetic wave concepts"
 "magnetic/indtor.html","Approximate Inductance of a Toroid"
 "electric/impcom.html","Use of Complex Impedance"
-"solids/scdis.html","The Discovery of Superconductivity
-"
+"solids/scdis.html","The Discovery of Superconductivity"
 "phyopt/fabry.html","Fabry-Perot Interferometer"
-"electric/pickle.html","The Electric Pickle
-"
+"electric/pickle.html","The Electric Pickle"
 "electronic/digcktcon.html","Digital Circuits"
-"solids/dope.html","The Doping of Semiconductors
-"
+"solids/dope.html","The Doping of Semiconductors"
 "solids/sselcn.html","solid state electronics"
 "pertab/zn.html","Zinc"
 "electric/dcex.html","DC Circuit Examples"
@@ -2345,92 +1837,63 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/batbulb2.html","Bulb mystery: why is the left bulb brighter when in parallel but dimmer when in series with the right bulb?"
 "electric/shock.html","Electric Shock"
 "solids/semcn.html","Semiconductor concepts"
-"solids/pnjun.html","P-N Junction
-"
-"kinetic/relhum.html","Relative Humidity
-"
+"solids/pnjun.html","P-N Junction"
+"kinetic/relhum.html","Relative Humidity"
 "chemical/watersol.html","Water, the Solvent for Life"
 "music/cirmem.html","Circular Membrane Modes"
 "chemical/acidbase.html","Acid-Base Reactions"
 "chemical/oxred2.html","Oxidizing Agents"
 "chemical/bondd.html","Chemical Bond Energy Considerations"
 "pertab/chemel.html","Chemistry of the Elements"
-"solids/band2.html","Energy Bands:Insulators and Semiconductors
-"
-"solids/dsem.html","Bands for Doped Semiconductors
-"
-"thermo/bimet.html","Bimetallic Strips
-"
+"solids/band2.html","Energy Bands:Insulators and Semiconductors"
+"solids/dsem.html","Bands for Doped Semiconductors"
+"thermo/bimet.html","Bimetallic Strips"
 "electric/gfi.html","Ground Fault Interrupter"
 "electric/hsehld2.html","Household Use of Electric Energy"
-"solids/scbc.html","Critical Magnetic Field
-"
-"kinetic/visgas.html","Viscosity of Gases
-"
+"solids/scbc.html","Critical Magnetic Field"
+"kinetic/visgas.html","Viscosity of Gases"
 "chemical/watervis.html","Viscosity of Water"
 "trid2.html","Cofunction Formulas"
 "duck2.html","Force of Glancing Blow"
 "sphinc.html","Rolling Down an Incline"
 "hoocyl.html","Hoop and Cylinder Motion"
-"biology/ecg.html","The Heart's Electrical Sequence
-"
-"quantum/expect.html","Expectation Values
-"
+"biology/ecg.html","The Heart's Electrical Sequence"
+"quantum/expect.html","Expectation Values"
 "waves/wavstd.html","String Standing Waves"
 "waves/wpack.html","Wave Packet Solution"
 "quantum/ ../exp.html","Index of /hbase/quantum"
 "waves/string.html","Vibrating String"
-"quantum/pfbox.html","Particle in Finite-Walled Box
-"
-"quantum/hosc4.html","Quantum Harmonic Oscillator: Energy Minimum from Uncertainty Principle
-"
-"quantum/hosc2.html","Quantum Harmonic Oscillator: Schrodinger Equation
-"
-"quantum/hosc6.html","The Correspondence Principle and the Quantum Oscillator
-"
-"quantum/hosc7.html","Probability Distributions for the Quantum Oscillator
-"
-"molecule/vibrot3.html","Vibration-Rotation Spectrum of HBr
-
-"
+"quantum/pfbox.html","Particle in Finite-Walled Box"
+"quantum/hosc4.html","Quantum Harmonic Oscillator: Energy Minimum from Uncertainty Principle"
+"quantum/hosc2.html","Quantum Harmonic Oscillator: Schrodinger Equation"
+"quantum/hosc6.html","The Correspondence Principle and the Quantum Oscillator"
+"quantum/hosc7.html","Probability Distributions for the Quantum Oscillator"
+"molecule/vibrot3.html","Vibration-Rotation Spectrum of HBr"
 "molecule/schrcn.html","Schrodinger equation concepts"
-"quantum/hydwf.html","Hydrogen Separated Equation Solutions
-"
+"quantum/hydwf.html","Hydrogen Separated Equation Solutions"
 "math/legend.html","Legendre Polynomials"
-"atomic/term.html","Term Symbols
-"
+"atomic/term.html","Term Symbols"
 "sound/souspe2.html","Wave Speeds"
-"thermo/elecsh.html","Electron Contribution to Specific Heat
-"
-"thermo/debye.html","Debye's Contribution to Specific Heat Theory
-"
-"solids/fermi3.html","Conduction Electron Population for Semiconductor
-"
+"thermo/elecsh.html","Electron Contribution to Specific Heat"
+"thermo/debye.html","Debye's Contribution to Specific Heat Theory"
+"solids/fermi3.html","Conduction Electron Population for Semiconductor"
 "math/discom.html","Comparison of Distribution Functions"
 "math/binex.html","Binomial Distribution Example"
-"kinetic/bolapp.html","Applications of the Boltzmann Distribution
-"
-"kinetic/menfrevis.html","Mean Free Path Calculation for Hard Spheres and Viscous Gas
-"
+"kinetic/bolapp.html","Applications of the Boltzmann Distribution"
+"kinetic/menfrevis.html","Mean Free Path Calculation for Hard Spheres and Viscous Gas"
 "math/gaufcn2.html","Halfwidth of a Gaussian Distribution "
 "electric/rlcser2.html","RLC Series Circuit"
 "trid.html","Angle sum and difference"
 "alg2.html","Algebraic Properties of Real Numbers"
-"solids/bcs2.html","Ideas Leading to the BCS Theory
-"
-"quantum/hydrng.html","Probability for a Range of Radius<br>Hydrogen Ground State
-"
-"quantum/hydr.html","The Most Probable Radius<br>Hydrogen Ground State
-"
+"solids/bcs2.html","Ideas Leading to the BCS Theory"
+"quantum/hydrng.html","Probability for a Range of Radius<br>Hydrogen Ground State"
+"quantum/hydr.html","The Most Probable Radius<br>Hydrogen Ground State"
 "chemical/bond.html","Chemical Bonding"
 "chemical/ph.html","pH"
-"tables/waterres.html","Reservoirs of Available Water (liquid equivalent) on the Earth
-"
-"biology/glycolysis.html","Glycolysis
-"
+"tables/waterres.html","Reservoirs of Available Water (liquid equivalent) on the Earth"
+"biology/glycolysis.html","Glycolysis"
 "organic/pyruvate.html","Pyruvate"
-"biology/tca.html","The TCA Cycle
-"
+"biology/tca.html","The TCA Cycle"
 "organic/aldehyde.html","Aldehydes"
 "organic/ketone.html","Ketones"
 "organic/hydrocarbon.html","Hydrocarbons"
@@ -2438,11 +1901,9 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "chemical/electrode.html","Standard Electrode Potentials"
 "chemical/redoxcon.html","Oxidation/Reduction concepts"
 "chemical/electrochem.html","Electrochemical Cells"
-"tables/therprop5.html","Thermodynamic Properties of Substances and Ions at 25° C
-"
+"tables/therprop5.html","Thermodynamic Properties of Substances and Ions at 25° C"
 "chemical/chemequi.html","Chemical Equilibrium Constants"
-"thermo/pvtexp.html","PvT Surface for a Substance which Expands Upon Freezing
-"
+"thermo/pvtexp.html","PvT Surface for a Substance which Expands Upon Freezing"
 "waves/seismic.html","Seismic Waves"
 "sound/soubar.html","Breaking the Sound Barrier with an Aircraft"
 "music/voice.html","Vocal Sound Production"
@@ -2459,47 +1920,33 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "kinetic/pcoke.html","Can-Crushing Experiment"
 "kinetic/pdrum.html","Crushing of Steel Drum"
 "pasc4.html","Bottomless Bottle"
-"solids/hitc.html","High Temperature Superconductors
-"
-"solids/magdib.html","Magnesium Diboride
-"
+"solids/hitc.html","High Temperature Superconductors"
+"solids/magdib.html","Magnesium Diboride"
 "electronic/number.html","Number Systems"
-"thermo/thexp.html","Thermal Expansion
-"
+"thermo/thexp.html","Thermal Expansion"
 "chemical/waterdens.html","The Expansion of Water Upon Freezing"
 "vision/bright.html","Perceived Brightness"
-"vision/colper.html","Color Perception
-"
+"vision/colper.html","Color Perception"
 "vision/ciecon.html","CIE concepts"
 "vision/colmeascon.html","Color measurement concepts"
 "vision/colchar.html","Hue"
 "phyopt/coltemp.html","Color Temperature"
-"vision/colsys.html","Comparison of Munsell &amp; Ostwald
-"
-"vision/spd.html","Spectral Power Distribution
-
-"
-"vision/colcon.html","The Color-Sensitive Cones
-
-
-"
+"vision/colsys.html","Comparison of Munsell &amp; Ostwald"
+"vision/spd.html","Spectral Power Distribution"
+"vision/colcon.html","The Color-Sensitive Cones"
 "vision/colspa.html","Color Space"
 "vision/ciecal.html","Calculation of CIE Chromaticity Coordinates"
-"vision/colrep.html","Color Coverage Examples
-"
+"vision/colrep.html","Color Coverage Examples"
 "music/et2.html","The Equal Tempered Octave"
 "music/just.html","Just Temperament"
 "music/pythag.html","Pythagorean Temperament"
 "music/guita.html","Acoustic Guitar"
 "music/etsum.html","Ideas associated with the equal tempered octave"
 "music/tempercn.html","Temperament and musical scales"
-"solids/lattice.html","The Crystal Lattice
-"
+"solids/lattice.html","The Crystal Lattice"
 "organic/amine.html","Amines"
-"biology/nervecell.html","Nerve Cell
-"
-"biology/actpot.html","Action Potentials
-"
+"biology/nervecell.html","Nerve Cell"
+"biology/actpot.html","Action Potentials"
 "electric/bioelcon.html","Bioelectricty"
 "organic/gencodec.html","The Genetic Code"
 "organic/nucleotide.html","Nucleotides"
@@ -2511,16 +1958,13 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "organic/trna.html","Transfer  RNA"
 "../hbase/organic/gencode.html","The Genetic Code"
 "biology/ribosome.html","Ribosomes"
-"biology/metabolism.html","Metabolism
-"
+"biology/metabolism.html","Metabolism"
 "organic/essam.html","Essential Amino Acids"
 "biology/bioterm.html","Biology Terms and Concepts"
 "egex2.html","Lifting vs Heating Water"
 "humeng.html","Human Energy and Power"
-"electric/lighting2.html","Incandescent Lighting
-"
-"electronic/ledlight.html","LEDs for Lighting Applications
-"
+"electric/lighting2.html","Incandescent Lighting"
+"electronic/ledlight.html","LEDs for Lighting Applications"
 "vision/imagformcon.html","Image formation concepts"
 "vision/eyescal.html","The Cornea"
 "vision/accom.html","Accommodation"
@@ -2536,108 +1980,72 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "geoopt/multlenscon.html","Multi-Element Lenses"
 "geoopt/mirrorcon.html","Mirror concepts"
 "math/maxmin.html","Maxima and Minima from Calculus"
-"phyopt/reflin.html","Reflection and Transmission
-"
+"phyopt/reflin.html","Reflection and Transmission"
 "optmod/fibopt.html","Fiber Optics"
 "phyopt/polpri.html","Prisms for Polarization"
-"phyopt/freseq.html","Fresnel's Equations
-"
-"starlog/m16.html","M16, The Eagle Nebula
-"
-"solar/solflare.html"," Solar Flares
-"
-"thermo/heatreg.html","Temperature Regulation of the Human Body
-
-"
-"thermo/hques.html","Water&amp;Ice, Water&amp;Steam
-"
+"phyopt/freseq.html","Fresnel's Equations"
+"starlog/m16.html","M16, The Eagle Nebula"
+"solar/solflare.html"," Solar Flares"
+"thermo/heatreg.html","Temperature Regulation of the Human Body"
+"thermo/hques.html","Water&amp;Ice, Water&amp;Steam"
 "inecol2.html","Inelastic Collision Calculation"
 "balpen.html","Ballistic Pendulum"
 "col1d.html","Collisions in One Dimension"
 "inecol4.html","Collisions in Two Dimensions"
 "inecol3.html","Head-on Inelastic Collisions"
-"math/stirling.html","Stirling's Approximation for n!
-"
+"math/stirling.html","Stirling's Approximation for n!"
 "chemical/solution.html","Solutions"
 "chemical/collig.html","Colligative Properties of Solutions"
 "organic/glycol.html","Ethylene Glycol"
 "surten2.html","Surface Tension and Bubbles"
 "chemical/waal.html","van der Waals Bonding"
-"thermo/icecream.html","Ice Cream Maker
-"
-"biology/ligabs.html","Light Absorption for Photosynthesis
-"
-"biology/chlorleaf.html","Chlorophyll in Leaves
-"
+"thermo/icecream.html","Ice Cream Maker"
+"biology/ligabs.html","Light Absorption for Photosynthesis"
+"biology/chlorleaf.html","Chlorophyll in Leaves"
 "biology/psetran.html","Electron Transport in Photosynthesis"
-"biology/etcyc.html","Cyclic Electron Transport in Photosynthesis
-"
-"biology/watsplit.html","A Water Molecule can be Split by a Leaf!
-"
+"biology/etcyc.html","Cyclic Electron Transport in Photosynthesis"
+"biology/watsplit.html","A Water Molecule can be Split by a Leaf!"
 "organic/pq.html","Plastoquinone and Plastoquinol"
 "organic/cytochrome.html","Cytochrome Complex in Electron Transport"
-"biology/phopho.html","Photophosphorylation
-"
-"chemical/redoxp.html","Oxidation-Reduction Potentials
-"
+"biology/phopho.html","Photophosphorylation"
+"chemical/redoxp.html","Oxidation-Reduction Potentials"
 "organic/nad.html","NAD (Nicotinamide adenine dinucleotide)"
-"biology/etrans.html","Electron Transport in the Energy Cycle of the Cell
-"
+"biology/etrans.html","Electron Transport in the Energy Cycle of the Cell"
 "organic/fad.html","FAD - Flavin Adenine Dinucleotide"
-"chemical/redoxea.html","Reduction, Oxidation and Available Energy
-"
-"biology/phoc.html","C3 Photosynthesis
-"
+"chemical/redoxea.html","Reduction, Oxidation and Available Energy"
+"biology/phoc.html","C3 Photosynthesis"
 "organic/rubisco.html","RuBisCO "
 "organic/3pga.html","3-Phosphoglyceric acid"
 "organic/g3p.html","Glyceraldehyde 3-phosphate"
-"biology/mempot.html","Cell Membrane Potentials
-"
+"biology/mempot.html","Cell Membrane Potentials"
 "organic/dogma.html","The Central Dogma of Molecular Biology"
 "organic/rrna.html"," Ribosomal RNA  (rRNA)"
 "organic/replication.html","DNA Replication"
-"biology/cellcon.html","Cell Theory
-"
-"biology/ferment.html","Fermentation
-"
+"biology/cellcon.html","Cell Theory"
+"biology/ferment.html","Fermentation"
 "reldop3.html","Doppler shift"
-"sound/dopp2.html","Doppler Effect Wavelength Calculation
-"
+"sound/dopp2.html","Doppler Effect Wavelength Calculation"
 "sound/beat.html","Beats"
-"atomic/broaden.html","Broadening of Spectral Lines
-"
-"solar/vlt.html","Very Large Telescope (VLT)
-"
-"solar/xmmnewton.html"," XMM-Newton Space Telescope
-"
-"solar/herschel.html"," Herschel Infrared Observatory
-"
-"solar/planck.html"," Planck Microwave Observatory
-"
-"solar/fuse.html","Far Ultraviolet Spectroscopic Explorer
-"
-"solar/galex.html","Galaxy Evolution Explorer (GALEX)
-"
+"atomic/broaden.html","Broadening of Spectral Lines"
+"solar/vlt.html","Very Large Telescope (VLT)"
+"solar/xmmnewton.html"," XMM-Newton Space Telescope"
+"solar/herschel.html"," Herschel Infrared Observatory"
+"solar/planck.html"," Planck Microwave Observatory"
+"solar/fuse.html","Far Ultraviolet Spectroscopic Explorer"
+"solar/galex.html","Galaxy Evolution Explorer (GALEX)"
 "solar/satelitcon.html","Satellite instruments"
 "nucene/u235cs.html","Example of Energy Yield: Uranium-235 Fission "
 "pertab/u.html","Uranium"
 "nucene/reactor.html","Boiling Water Reactor"
 "nucene/tmi.html","Meanwhile, back at the reactor ..."
-"thermo/stefan2.html","The Stefan-Boltzmann Law
-"
-"thermo/absrad.html","A Good Absorber is a Good  Emitter
-"
-"thermo/cootime.html","Radiative Cooling Time
-"
-"quantum/radfrac.html","Radiated Power from Blackbody
-"
+"thermo/stefan2.html","The Stefan-Boltzmann Law"
+"thermo/absrad.html","A Good Absorber is a Good  Emitter"
+"thermo/cootime.html","Radiative Cooling Time"
+"quantum/radfrac.html","Radiated Power from Blackbody"
 "atmos/rbowp.html","Primary and Secondary Rainbows"
 "atmos/halo22.html","The 22° Halo"
-"quantum/xtube.html","X-ray Tube
-"
-"optmod/brill.html","Brillouin Scattering
-
-"
+"quantum/xtube.html","X-ray Tube"
+"optmod/brill.html","Brillouin Scattering"
 "phyopt/oilfilm.html","Oil Film Interference"
 "phyopt/bardif3.html","Diffraction by Opaque Edges"
 "phyopt/polcross.html","Crossed Polarizers"
@@ -2649,46 +2057,28 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "nuclear/mri.html","Magnetic Resonance Imaging"
 "electronic/cellphone.html","Cellular Telephones"
 "waves/mwoven.html","Microwave Ovens"
-"molecule/esr.html","Electron Spin Resonance
-
-"
-"ewav.html","Electron Waves and Orbits
-"
+"molecule/esr.html","Electron Spin Resonance"
+"ewav.html","Electron Waves and Orbits"
 "astro/wc.html","Windows of Creation"
-"solids/scex.html","Mercury Superconducting Transition
-"
+"solids/scex.html","Mercury Superconducting Transition"
 "phyopt/polclas.html","Classification of Polarization"
-"optmod/lasapp.html","Laser Applications
-
-"
+"optmod/lasapp.html","Laser Applications"
 "quantum/lascon.html","Laser concepts"
 "chemical/saltcom.html","Sodium Chloride"
 "pertab/cl.html","Chlorine"
-"molecule/paulirep.html","Pauli Repulsion in Ionic Molecules
-
-"
-"molecule/boneng.html","Chemical bond energy example
-
-"
+"molecule/paulirep.html","Pauli Repulsion in Ionic Molecules"
+"molecule/boneng.html","Chemical bond energy example"
 "nuclear/nucspec.html","Nuclear Spectra"
 "nuclear/sphwel.html","Spherical Potential Well"
 "nuclear/liqdrop.html","Liquid Drop Model of Nucleus"
 "nuclear/nucexc.html","Nuclear Excitation Energies"
-"quantum/lithium.html","Lithium Energy Levels
-"
-"quantum/paschen.html","Paschen-Back Effect
-"
-"molecule/spf2hc.html","Determining the Rotational Constants
-
-"
+"quantum/lithium.html","Lithium Energy Levels"
+"quantum/paschen.html","Paschen-Back Effect"
+"molecule/spf2hc.html","Determining the Rotational Constants"
 "chemical/bondcon.html","Chemical bond concepts"
-"atomic/hund.html","Hund's Rules
-"
-"atomic/lcoup.html","Russell-Saunders or L-S Coupling
-"
-"molecule/molstruct.html","Molecular Structure
-
-"
+"atomic/hund.html","Hund's Rules"
+"atomic/lcoup.html","Russell-Saunders or L-S Coupling"
+"molecule/molstruct.html","Molecular Structure"
 "pertab/cr.html","Chromium"
 "chemical/chemhist.html","Lavoisier, the Father of Chemistry"
 "chemical/chemeas.html","Chemical Measurements"
@@ -2708,78 +2098,50 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "astref.html","Kaufmann"
 "astro/andromedauv.html","Andromeda Galaxy in the Ultraviolet"
 "astro/galaxy.html","Varieties of galaxies"
-"astro/ngc1818.html","Globular Cluster NGC 1818
-"
+"astro/ngc1818.html","Globular Cluster NGC 1818"
 "solar/solife.html"," Solar Lifetime"
-"starlog/starpro.html","Star Processes
-"
-"astro/dareng.html","Dark Energy
-"
-"starlog/polaris.html","Polaris
-"
-"starlog/rspuppis.html","RS Puppis
-"
-"solar/galileo2.html"," Galileo Spacecraft
-"
-"solar/shuttle.html"," The Space Shuttle
-"
-"solar/shoemaker.html"," Comet Shoemaker-Levy 9
-"
-"thermo/co2suf.html","Is CO<sub>2</sub> sufficient to drive global warming?
-"
-"thermo/co2past.html","Effects of increased CO<sub>2</sub> in Earth's Past
-"
+"starlog/starpro.html","Star Processes"
+"astro/dareng.html","Dark Energy"
+"starlog/polaris.html","Polaris"
+"starlog/rspuppis.html","RS Puppis"
+"solar/galileo2.html"," Galileo Spacecraft"
+"solar/shuttle.html"," The Space Shuttle"
+"solar/shoemaker.html"," Comet Shoemaker-Levy 9"
+"thermo/co2suf.html","Is CO<sub>2</sub> sufficient to drive global warming?"
+"thermo/co2past.html","Effects of increased CO<sub>2</sub> in Earth's Past"
 "thermo/temp20.html","Much of temperature change of 20th century not correlated with CO<sub>2</sub>
 "
-"thermo/icecore.html","CO<sub>2</sub> lags temperature rises in ice core data
-"
-"thermo/surwarm.html","More surface warming is observed than atmospheric warming?
-"
-"thermo/solact.html","Correlation of global temperature with solar activity
-"
-"thermo/suncos.html","Is Solar Activity Affecting Low Level Cloud Formation?
-"
+"thermo/icecore.html","CO<sub>2</sub> lags temperature rises in ice core data"
+"thermo/surwarm.html","More surface warming is observed than atmospheric warming?"
+"thermo/solact.html","Correlation of global temperature with solar activity"
+"thermo/suncos.html","Is Solar Activity Affecting Low Level Cloud Formation?"
 "geophys/minconc.html","Processes that Concentrate Mineral Resources"
 "pertab/ti.html","Titanium"
-"biology/cyanobac.html","Cyanobacteria
-"
-"biology/protista.html","Protista Kingdom of Eukaryotes
-"
-"biology/fungi.html","Fungi
-"
+"biology/cyanobac.html","Cyanobacteria"
+"biology/protista.html","Protista Kingdom of Eukaryotes"
+"biology/fungi.html","Fungi"
 "biology/plants.html","Plants"
 "biology/animal.html","The Animal Kingdom"
 "organic/lipid.html","Lipids"
 "organic/amide.html","Amides"
 "astro/wcearth.html","How do you form a habitable planet?"
 "geophys/earthstruct.html","Structure of the Earth"
-"astro/orbtilt.html","Axis Tilt is Critical for Life
-"
-"astro/moonform.html","Hypotheses for the Formation of Earth's Moon
-"
-"astro/devlife.html","Stages in the Development of Life
-"
+"astro/orbtilt.html","Axis Tilt is Critical for Life"
+"astro/moonform.html","Hypotheses for the Formation of Earth's Moon"
+"astro/devlife.html","Stages in the Development of Life"
 "astro/wcradheat.html","The Radioactive Heating of the Earth"
 "starlog/staradpre.html","Stellar Radiation Pressure"
 "mechanics/lagptsolar.html","Lagrange Points of the Earth-Sun System"
-"astro/uniage.html","The Age of the Universe
-"
+"astro/uniage.html","The Age of the Universe"
 "math/spfun.html","Special Functions"
 "biology/soldif.html","Energetics of Solute Diffusion"
-"kinetic/ospcal.html","Osmotic Pressure Calculation
-"
-"kinetic/eggosm.html","Osmotic Pressure Example
-"
+"kinetic/ospcal.html","Osmotic Pressure Calculation"
+"kinetic/eggosm.html","Osmotic Pressure Example"
 "biology/actran.html","Active Transport Across Cell Membranes"
-"biology/celmem.html","The Cell Membrane
-"
-"ptens.html","Wall Tension
-
-"
+"biology/celmem.html","The Cell Membrane"
+"ptens.html","Wall Tension"
 "organic/hemo.html","Hemoglobin"
-"ptens3.html","The Baby's First Breath
-
-"
+"ptens3.html","The Baby's First Breath"
 "lapcon.html","LaPlace's law concepts"
 "chemical/flame2.html","Flame Colors as Chemical Indicators"
 "pertab/alkmet.html","Alkali Metals"
@@ -2787,17 +2149,13 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "pertab/mo.html","Molybdenum"
 "phyopt/biref.html","Birefringent Materials"
 "minerals/calcite2.html","Calcite"
-"astro/atmohab.html","The Atmosphere of a Habitable Planet
-"
+"astro/atmohab.html","The Atmosphere of a Habitable Planet"
 "nuclear/millikan.html","Robert A. Millikan"
-"nuclear/radon.html","Radiation in your own home?
-"
+"nuclear/radon.html","Radiation in your own home?"
 "nuclear/alpdec.html","Modeling Alpha Half-life"
-"solar/trojan.html","The Trojan Asteroids
-"
+"solar/trojan.html","The Trojan Asteroids"
 "organic/aminostruct.html","Amino Acids with Hydrocarbon R-groups"
-"solar/comet.html"," Comets
-"
+"solar/comet.html"," Comets"
 "pertab/y.html","Yttrium"
 "pertab/sb.html","Antimony"
 "geophys/stibarsen.html","stibarsen"
@@ -2810,9 +2168,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "chemical/basecom.html","Sodium Bicarbonate"
 "tayser.html","Taylor Series"
 "nuclear/spinpol.html","Nuclear Spin Polarization"
-"optmod/laspow.html","Powering a Laser
-
-"
+"optmod/laspow.html","Powering a Laser"
 "geophys/sedime.html","Sedimentary Rocks"
 "geophys/limestone.html","Limestone"
 "geophys/shale.html","Shale"
@@ -2823,14 +2179,10 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "geophys/seafloor.html","Sea Floor Dynamics as Evidence of Plate Tectonics"
 "geophys/qjasper.html","Jasper Quartz"
 "geophys/qagate.html","Agate Quartz"
-"biology/ecoli.html","Escherichia Coli
-"
-"biology/cytoplasm.html","Cytoplasm
-"
-"biology/grambac.html","Gram-positive and Gram-negative Bacteria
-"
-"biology/autotroph.html","Autotrophs and Heterotrophs
-"
+"biology/ecoli.html","Escherichia Coli"
+"biology/cytoplasm.html","Cytoplasm"
+"biology/grambac.html","Gram-positive and Gram-negative Bacteria"
+"biology/autotroph.html","Autotrophs and Heterotrophs"
 "geophys/quartz2.html","Forms of Quartz"
 "geophys/quartz3.html","Forms of Quartz"
 "geophys/qmilky.html","Milky Quartz"
@@ -2877,15 +2229,11 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "nuclear/nmrvar.html","Varieties of NMR Applications"
 "math/poiex.html","Poisson Distribution Example"
 "math/mathrf.html","Mathematics References"
-"optmod/lasosc.html","Pulsed Laser Oscillator
-
-"
+"optmod/lasosc.html","Pulsed Laser Oscillator"
 "optmod/lastyp.html","Laser types"
 "optmod/lasert.html","Eximer Lasers"
-"atomic/carbon.html","Carbon Energy Levels
-"
-"atomic/nitrogenlev.html","Nitrogen Energy Levels
-"
+"atomic/carbon.html","Carbon Energy Levels"
+"atomic/nitrogenlev.html","Nitrogen Energy Levels"
 "phyopt/slits.html","Double Slit Interference"
 "phyopt/mulslid.html","Single Slit Diffraction"
 "phyopt/gratres.html","Resolvance of Grating"
@@ -2895,53 +2243,36 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "phyopt/gratingcon.html","Grating concepts"
 "audio/cdplay.html","Compact Disc Audio"
 "phyopt/whilig.html","White Light Fringes"
-"vision/radiant.html","Radiant Flux
-"
+"vision/radiant.html","Radiant Flux"
 "vision/radphocon.html","Radiometry and photometry"
 "electronic/leds.html","Light Sources in Electronics"
 "vision/ligunit.html","footcandle"
-"vision/areance2.html","Surface Illuminance
-"
+"vision/areance2.html","Surface Illuminance"
 "acoustic/revtim.html","Reverberation Time"
 "acoustic/reverbadd.html","Adding Reverberation"
 "acoustic/refdel.html","Early First-Reflected Sound"
 "acoustic/revmod2.html","Reverberation Time Estimate"
 "acoustic/baslos.html","The Bass Loss Problem"
 "sound/acont.html","A,B, and C Contours"
-"thermo/nickel.html","A Nickel's Worth of Radiation
-"
-"astro/engrad.html","Energy in Radiation in the Early Universe
-"
-"astro/fried.html","The Friedmann Equation
-"
-"astro/expuni3.html","Radiation and Matter in the Early Universe
-
-"
+"thermo/nickel.html","A Nickel's Worth of Radiation"
+"astro/engrad.html","Energy in Radiation in the Early Universe"
+"astro/fried.html","The Friedmann Equation"
+"astro/expuni3.html","Radiation and Matter in the Early Universe"
 "airpw.html","Airplane in Wind"
 "airpw2.html","Airplane in Wind: Wind Velocity Calculation"
 "relmot.html","Relative Motion"
-"astro/expuni2.html","Mass-dominated Expansion of the Universe
-"
-"starlog/procyon.html","Procyon
-"
-"starlog/ceti.html","Omicron Ceti - Mira
-"
-"starlog/grm34.html","Groombridge 34
-"
+"astro/expuni2.html","Mass-dominated Expansion of the Universe"
+"starlog/procyon.html","Procyon"
+"starlog/ceti.html","Omicron Ceti - Mira"
+"starlog/grm34.html","Groombridge 34"
 "starlog/etacar.html","Eta Carinae"
-"starlog/lacaille.html","Lacaille 9352
-"
-"starlog/lalande.html","Lalande 21185
-"
-"starlog/ross.html","Ross 128
-"
-"starlog/rigel.html","Rigel
-"
-"solar/wfpc2.html","Wide Field and Planetary Camera
-"
+"starlog/lacaille.html","Lacaille 9352"
+"starlog/lalande.html","Lalande 21185"
+"starlog/ross.html","Ross 128"
+"starlog/rigel.html","Rigel"
+"solar/wfpc2.html","Wide Field and Planetary Camera"
 "astro/solarcon.html","Solar System Concepts"
-"solar/wfpcd.html","Diagram of Wide Field and Planetary Camera
-"
+"solar/wfpcd.html","Diagram of Wide Field and Planetary Camera"
 "relativity/relcon.html","special relativity"
 "math/consec.html","Conic Sections"
 "vecid.html","Vector Identities"
@@ -2949,67 +2280,41 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "airfri4.html","Vertical Trajectory of Sphere"
 "expc.html","Exponents"
 "watwav.html","Highest Ocean Waves"
-"molecule/vibrot2.html","Vibration-Rotation Spectrum of HCl
-
-"
-"molecule/bornop.html","The Born-Oppenheimer Approximation
-"
+"molecule/vibrot2.html","Vibration-Rotation Spectrum of HCl"
+"molecule/bornop.html","The Born-Oppenheimer Approximation"
 "atmos/raman.html","Raman Scattering"
-"molecule/rotnr.html","The Non-Rigid Rotor
-
-"
-"solids/maglev2.html","Magnetic Levitation
-"
-"solids/maglev3.html","Magnetic Levitation
-"
-"solids/maglev4.html","Magnetic Levitation
-"
-"solids/maglev5.html","Damping of Levitated Magnet Motion
-"
+"molecule/rotnr.html","The Non-Rigid Rotor"
+"solids/maglev2.html","Magnetic Levitation"
+"solids/maglev3.html","Magnetic Levitation"
+"solids/maglev4.html","Magnetic Levitation"
+"solids/maglev5.html","Damping of Levitated Magnet Motion"
 "pertab/nobgas.html","The Noble Gases"
 "magnetic/indmut.html","Coupled Inductors"
-"solar/huygens.html"," Huygens Probe from the Cassini Mission
-"
-"solar/titan.html"," Titan
-"
-"solar/jupgany.html"," Cassini Mission: Jupiter and Ganymede 
-"
-"solar/satcas.html"," Saturn Images from Cassini
-"
-"solar/iapetus.html"," Iapetus
-"
-"solar/hyperion.html","Saturn Moon Collage
-"
-"solar/enceladus.html"," Enceladus
-"
+"solar/huygens.html"," Huygens Probe from the Cassini Mission"
+"solar/titan.html"," Titan"
+"solar/jupgany.html"," Cassini Mission: Jupiter and Ganymede "
+"solar/satcas.html"," Saturn Images from Cassini"
+"solar/iapetus.html"," Iapetus"
+"solar/hyperion.html","Saturn Moon Collage"
+"solar/enceladus.html"," Enceladus"
 "optmod/semiconf.html","Helium-Neon Laser"
-"optmod/lasmod.html","Tunable Lasers
-"
-"optmod/scaleh.html","Hologram Scaling with Wavelength
-
-"
+"optmod/lasmod.html","Tunable Lasers"
+"optmod/scaleh.html","Hologram Scaling with Wavelength"
 "pertab/he.html","Helium"
-"solar/jupmag.html"," Jupiter's Magnetic Field
-"
-"solar/iogal.html"," Jupiter Moon Io Imaged by Galileo
-"
-"solar/eurogal.html"," Europa's Surface as Seen by Galileo
-"
-"phyopt/reflex.html","Reflection and Transmission
-"
+"solar/jupmag.html"," Jupiter's Magnetic Field"
+"solar/iogal.html"," Jupiter Moon Io Imaged by Galileo"
+"solar/eurogal.html"," Europa's Surface as Seen by Galileo"
+"phyopt/reflex.html","Reflection and Transmission"
 "phyopt/antiref.html","Anti-Reflection Coatings"
-"thermo/ligabs.html","Light Absorption and Reflection by Opaque Objects
-"
+"thermo/ligabs.html","Light Absorption and Reflection by Opaque Objects"
 "phyopt/incidentcon.html","Incident light behavior"
 "magnetic/comtat.html","Commutator and Brushes on DC Motor"
 "magnetic/igcoil.html"," Auto Ignition Coils"
 "electric/vdivac.html","AC Voltage Divider"
 "sound/phon.html","Phons"
 "sound/corti.html","Organ of Corti"
-"solids/trans.html","The Junction Transistor
-"
-"solids/diod.html","Forward Biased P-N Junction
-"
+"solids/trans.html","The Junction Transistor"
+"solids/diod.html","Forward Biased P-N Junction"
 "electronic/transcon.html","Transistors"
 "sound/anerv.html","The Auditory Nerve"
 "sound/audiom.html","Pure Tone Audiometry"
@@ -3042,11 +2347,9 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "acoustic/studio.html","Recording Studio Acoustics"
 "music/viores.html","Violin Resonances"
 "waves/coke2.html","Plastic Coke Bottle Resonance"
-"phyopt/cirapp2.html","Circular Aperture Diffraction
-"
+"phyopt/cirapp2.html","Circular Aperture Diffraction"
 "phyopt/diflim.html","Diffraction-Limited Imaging"
-"phyopt/corfog.html","Corona from Fogged Eyeglasses
-"
+"phyopt/corfog.html","Corona from Fogged Eyeglasses"
 "sound/pulse.html","Doppler Pulse Detection"
 "sound/usound2.html","Arterial Ultrasound Scan"
 "electronic/oscillator.html","Oscillators"
@@ -3060,8 +2363,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "phyopt/fabry4.html","Sodium Doublet on Fabry-Perot"
 "phyopt/fabry3.html","Sodium Doublet on Fabry-Perot"
 "na.html","Example of sodium doublet"
-"phyopt/interf.html","Interference Condition for Thin Films
-"
+"phyopt/interf.html","Interference Condition for Thin Films"
 "chemical/corrosion.html","Corrosion as an Electrochemical Process"
 "electronic/photocond.html","Photoconductive Surfaces"
 "electric/dcex4.html","Two Loop Currents"
@@ -3069,8 +2371,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/thev2l.html","Thevenin: Two Loop Problem"
 "electric/nort2l.html","Norton: Two Loop Problem"
 "electric/dcex6.html","Battery With Internal Resistance"
-"solids/pnjun2.html","P-N Energy Bands
-"
+"solids/pnjun2.html","P-N Energy Bands"
 "kinetic/ menfre.html","Index of /hbase/Kinetic"
 "music/percus.html","Percussion Instruments"
 "music/timpani.html","The Timpani"
@@ -3079,33 +2380,23 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "chemical/salt.html","Salts"
 "chemical/compound.html","Compounds and Molecules"
 "chemical/reactcon.html","Chemical reaction concepts"
-"solids/bandper.html","Interatomic spacing and semiconductors
-"
-"thermo/bimetal.html","Bimetallic Strip with Liquid Nitrogen 
-"
+"solids/bandper.html","Interatomic spacing and semiconductors"
+"thermo/bimetal.html","Bimetallic Strip with Liquid Nitrogen "
 "electric/gfi2.html","Ground Fault Interrupter"
 "electric/gfi3.html","Ground Fault Interrupter"
-"solids/scbc2.html","Critical Magnetic Field and Critical Current
-"
+"solids/scbc2.html","Critical Magnetic Field and Critical Current"
 "hoocyl2.html","Hoop and Cylinder Motion"
-"biology/sanode.html","The Sinoatrial Node: The Body's Natural Pacemaker
-"
-"biology/heartelec.html","Heart Electrical Phenomena
-"
+"biology/sanode.html","The Sinoatrial Node: The Body's Natural Pacemaker"
+"biology/heartelec.html","Heart Electrical Phenomena"
 "quantum/hbase/","Parent Directory"
 "quantum/dopbroad.html","Number of Modes in a Gas Laser Cavity"
-"quantum/fermi3.html","The Matrix Element in the Fermi Theory of Beta Decay
-"
-"quantum/hosc3.html","Quantum Harmonic Oscillator: Ground State Solution
-"
+"quantum/fermi3.html","The Matrix Element in the Fermi Theory of Beta Decay"
+"quantum/hosc3.html","Quantum Harmonic Oscillator: Ground State Solution"
 "quantum/imgqua/","Index of /hbase/quantum/imgqua"
-"quantum/mod3.html","Microwave Interactions
-"
+"quantum/mod3.html","Microwave Interactions"
 "quantum/modpic/","Index of /hbase/quantum/modpic"
-"quantum/qnsch.html","How Quantum Numbers Arise from the Schrodinger Equation
-"
-"quantum/string.html","Conflict Between the Uncertainty Principle and General Relativity
-"
+"quantum/qnsch.html","How Quantum Numbers Arise from the Schrodinger Equation"
+"quantum/string.html","Conflict Between the Uncertainty Principle and General Relativity"
 "music/eguit.html","Electric Guitar"
 "waves/string2.html","Measurements with a steel string"
 "music/strings.html","String Instruments"
@@ -3113,15 +2404,13 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "math/sphhar.html","Spherical Harmonics"
 "electric/serres.html","Resonance"
 "chemical/bond2.html","Comparison of Properties of Ionic and Covalent Compounds"
-"biology/atpsyn.html","ATP Synthase
-"
+"biology/atpsyn.html","ATP Synthase"
 "organic/alkane.html","Alkanes"
 "organic/alcohol.html","Alcohols"
 "organic/carbacid.html","Carboxylic Acids"
 "chemical/oxred.html","Gain and Loss of Oxygen"
 "chemical/electrolyt.html","Electrolytic Cells"
-"geophys/granite.html","Granite
-"
+"geophys/granite.html","Granite"
 "sound/soubar2.html","F-14 Tomcat Fighter Aircraft in Transonic Flight"
 "waves/tsunami.html","Tsunami"
 "geoopt/lenseq.html","Thin Lens Equation"
@@ -3138,18 +2427,14 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electronic/number4.html","Number Systems"
 "electronic/number2.html","Signed Integer Representations"
 "electronic/ebcdic.html","EBCDIC Alphanumeric Code"
-"thermo/thexp2.html","Area expansion is like a photographic enlargement
-"
-"thermo/jarlid.html","Thermal Expansion: How to Loosen a Jar Lid
-"
+"thermo/thexp2.html","Area expansion is like a photographic enlargement"
+"thermo/jarlid.html","Thermal Expansion: How to Loosen a Jar Lid"
 "vision/rodcone.html","Rods and Cones"
 "vision/candle.html","Why is a candle flame yellow? "
 "vision/retina.html","The Retina"
-"vision/cieprim.html","The C.I.E Primaries
-"
+"vision/cieprim.html","The C.I.E Primaries"
 "vision/newtcol.html","The Newton Color Circle"
-"vision/colwheel.html","Color Wheel
-"
+"vision/colwheel.html","Color Wheel"
 "atmos/blusky.html","Blue Sky"
 "vision/colhist.html","Some Color History "
 "music/pianof.html","The Piano"
@@ -3171,8 +2456,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "trna.html","tRNA"
 "biochemcon.html","Biochemical concepts"
 "protein.html","proteins"
-"biology/metab.html","Oxygen Required for Metabolism
-"
+"biology/metab.html","Oxygen Required for Metabolism"
 "electronic/ledcon.html","LED concepts"
 "vision/eyescal2.html","Design of Scale-Model Eye"
 "geoopt/sysmat.html","System Matrix"
@@ -3187,11 +2471,9 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "geoopt/opinst.html","Optical Instruments"
 "vision/peacock.html","Peacock Feather Colors"
 "optmod/fibimg.html","Fiber Optic Imaging Device"
-"phyopt/polref.html","Polarization by Reflection
-"
+"phyopt/polref.html","Polarization by Reflection"
 "col2d.html","Collisions in Two Dimensions"
-"math/funstat.html","Functions for Statistics
-"
+"math/funstat.html","Functions for Statistics"
 "phyopt/soapfilm.html","Soap Film Interference"
 "geoopt/simmag.html","Simple Magnifier"
 "organic/fes.html","Iron-Sulfur Clusters "
@@ -3201,10 +2483,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "sound/subton.html","Subjective Tones"
 "sound/beatbox.html","Beats with two tone generators"
 "astro/deuabund.html","Deuterium Abundance"
-"thermo/cooltime3.html","Radiative Cooling of a Volcanic Fragment
-"
-"thermo/cootime2.html","Kelvin Cooling Time for the Earth
-"
+"thermo/cooltime3.html","Radiative Cooling of a Volcanic Fragment"
+"thermo/cootime2.html","Kelvin Cooling Time for the Earth"
 "atmos/rbowfeat.html","Show rainbow features"
 "atmos/rainbowcon.html","Rainbow concepts"
 "atmos/corona2.html","Water Droplet Diffraction"
@@ -3222,24 +2502,18 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "phyopt/optact.html","Optical Activity"
 "electronic/amfmdet.html"," AM Detector"
 "electronic/amtran.html","AM Transmission"
-"math/foutra.html","Fourier Transforms
-"
-"solids/scex2.html","Niobium-Tin Superconductor
-"
-"thermo/liqn2.html","Liquid Nitrogen
-"
+"math/foutra.html","Fourier Transforms"
+"solids/scex2.html","Niobium-Tin Superconductor"
+"thermo/liqn2.html","Liquid Nitrogen"
 "phyopt/polar.html","Polarization by Reflection"
 "phyopt/quarwv.html","Quarter-Wave Plate"
-"optmod/lasapp2.html","Laser Printers
-
-"
+"optmod/lasapp2.html","Laser Printers"
 "optmod/laspec.html","Laser Spectroscopy"
 "chemical/nacl.html","Forms of Sodium Chloride"
 "chemical/acidcom.html","Hydrochloric Acid"
 "holdev.html","bleach"
 "math/bessel.html","Bessel Functions"
-"solids/elpro.html","Electric Properties of Solids
-"
+"solids/elpro.html","Electric Properties of Solids"
 "chemical/plasma.html","Plasma"
 "particles/atomsiz.html","The Size of Atoms"
 "pertab/tc.html","Technetium"
@@ -3251,17 +2525,13 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "organic/phoslip.html","Phospholipids"
 "organic/cholesterol.html","Cholesterol"
 "organic/carboxy.html","Carboxylic Acids"
-"geophys/felsic.html","Felsic Rock
-"
-"astro/tidfrict.html","Tidal Friction
-"
-"astro/roche.html","The Roche Limit
-"
+"geophys/felsic.html","Felsic Rock"
+"astro/tidfrict.html","Tidal Friction"
+"astro/roche.html","The Roche Limit"
 "astro/wcplate.html","What is the role of plate tectonics in the habitability of the Earth?"
 "mechanics/lagpt.html","Lagrange Points of the Earth-Moon System"
 "biology/phago.html","Phagocytosis"
-"thermo/balloon.html","Shrinking balloon in liquid nitrogen 
-"
+"thermo/balloon.html","Shrinking balloon in liquid nitrogen "
 "fcab.html","Force Equilibrium Example"
 "pertab/salt.html","salts"
 "pertab/halog.html","The Halogens"
@@ -3272,8 +2542,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "phyopt/biref2.html","Calcite"
 "phyopt/biref3.html","Calcite"
 "astro/wccarbon.html","Carbon's unique role in life."
-"solar/halley.html"," Halley's Comet
-"
+"solar/halley.html"," Halley's Comet"
 "optmod/lasmodes.html","Number of Modes in a Gas Laser Cavity"
 "geophys/dolostone.html","Dolostone"
 "geophys/gypsumrock.html","Rock Gypsum"
@@ -3281,8 +2550,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "geophys/metamo.html","Metamorphic Rocks"
 "geophys/quartzite.html","Quartzite"
 "geophys/metrock.html","Metamorphic Rocks"
-"geophys/diorite.html","Diorite
-"
+"geophys/diorite.html","Diorite"
 "geophys/gneiss.html","Gneiss Examples"
 "geophys/sedrock2.html","Testing Sedimentary Rocks"
 "geophys/conbou.html","Convergent Boundaries between Tectonic Plates"
@@ -3316,19 +2584,14 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "mechanics/quadrag2.html","Vertical Trajectory Calculation for Quadratic Drag of form -cv<sup>2</sup>
 "
 "molecule/raman2.html","Raman Scattering from Minerals"
-"optmod/holog.html","Holography
-
-"
+"optmod/holog.html","Holography"
 "phyopt/intfilt.html","Interference Filters"
-"optmod/holmerc.html","Hologram With Mercury Light
-
-"
+"optmod/holmerc.html","Hologram With Mercury Light"
 "optmod/holcon.html","Holography concepts"
 "phyopt/refco.html","Normal Reflection Coefficient"
 "electronic/transwitch.html","Transistor Switches"
 "electric/acthev.html","AC Thevenin's Theorem"
-"solids/trans2.html","Transistor Operation
-"
+"solids/trans2.html","Transistor Operation"
 "electronic/amp.html"," Amplifiers"
 "solids/rectifiers.html","rectification"
 "electronic/diodecon.html","Diodes"
@@ -3408,10 +2671,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electronic/bincount.html","Binary Counting"
 "thermo/","Index of /hbase/thermo"
 "vision/colpuz.html","Color Puzzles"
-"vision/addcol.html","Additive Color Mixing
-"
-"vision/pricol2.html"," Primary Colors
-"
+"vision/addcol.html","Additive Color Mixing"
+"vision/pricol2.html"," Primary Colors"
 "music/piano.html","Piano and Others"
 "biology/vescicle.html","Intracellular Vesicles"
 "biology/golgi.html","Golgi Apparatus"
@@ -3426,45 +2687,33 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "sound/twoton.html","Beats With Two Tone Generators"
 "astro/deustab.html","Upon the Stability of the Deuteron Hangs the Future of the Early Universe"
 "atmos/halo2.html","Halo Phenomena"
-"phyopt/fresgeo.html","Fresnel Geometry
-"
+"phyopt/fresgeo.html","Fresnel Geometry"
 "phyopt/liquidc.html","Liquid Crystal Display"
 "electric/filcap2.html","RC Low Pass Filter"
 "electronic/rectifiers.html","Rectifiers"
 "geoopt/cspeed.html","Propagation of Light"
-"solids/scapp.html","Superconductor Applications
-"
-"thermo/ndrop.html","Droplets of Liquid Nitrogen on Table Top
-"
-"thermo/filmcan.html","Exploding Film Can
-"
-"thermo/mingey.html","Mini-geyser with Liquid Nitrogen 
-"
-"thermo/vacfla.html","A Vacuum Flask
-"
+"solids/scapp.html","Superconductor Applications"
+"thermo/ndrop.html","Droplets of Liquid Nitrogen on Table Top"
+"thermo/filmcan.html","Exploding Film Can"
+"thermo/mingey.html","Mini-geyser with Liquid Nitrogen "
+"thermo/vacfla.html","A Vacuum Flask"
 "organic/stearic.html","Stearic Acid"
 "organic/ester.html","Esters"
-"geophys/rhyolite.html","Rhyolite
-"
+"geophys/rhyolite.html","Rhyolite"
 "geophys/platelif.html","Global Thermostat"
 "biology/cytoskel.html","The Cytoskeleton"
-"thermo/balloon2.html","Shrinking balloon in liquid nitrogen 
-"
-"thermo/liqair.html","Liquifying Air 
-"
-"freeb.html","Free-Body Diagram
-"
+"thermo/balloon2.html","Shrinking balloon in liquid nitrogen "
+"thermo/liqair.html","Liquifying Air "
+"freeb.html","Free-Body Diagram"
 "phyopt/polint3.html","Interference Colors in Minerals"
 "phyopt/polint2.html","Polarization and Interference Colors"
 "astro/wcwater.html","Amazing water, the fluid of life."
-"solar/giotto.html"," Giotto Spacecraft
-"
+"solar/giotto.html"," Giotto Spacecraft"
 "geophys/slate.html","Slate"
 "geophys/phyllite.html","Phyllite"
 "geophys/marble.html","Marble"
 "geophys/wollas.html","Wollastanite"
-"geophys/andesitic.html","Andesitic Rock
-"
+"geophys/andesitic.html","Andesitic Rock"
 "pertab/diamond.html","Diamonds"
 "pertab/geophys.html","Geophysics"
 "organic/benzine.html","Benzene"
@@ -3475,28 +2724,17 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "boatc3.html","Boat in Current: Speed of Current"
 "molecule/scattercon.html","Scattering concepts"
 "molecule/atmoscon.html","Atmospheric optics concepts"
-"optmod/holog2.html","Interference Imaging
-
-"
-"optmod/holog3.html","Reflection Holograms
-
-"
-"optmod/holfilm.html","Image on the Film of a Hologram
-
-"
-"optmod/holmerc2.html","Hologram With Mercury Light
-
-"
-"optmod/holmerc3.html","Hologram With Mercury Light
-
-"
+"optmod/holog2.html","Interference Imaging"
+"optmod/holog3.html","Reflection Holograms"
+"optmod/holfilm.html","Image on the Film of a Hologram"
+"optmod/holmerc2.html","Hologram With Mercury Light"
+"optmod/holmerc3.html","Hologram With Mercury Light"
 "electronic/opampsw.html","Op-Amp Switching"
 "electronic/buffer.html","Buffer"
 "electric/visource.html","Voltage and Current Sources"
 "electric/serpar.html","Series-Parallel Combination"
 "electronic/loadline.html","Transistor Characteristic Curves"
-"solids/basemit.html","Base-Emitter Voltage
-"
+"solids/basemit.html","Base-Emitter Voltage"
 "electronic/npnce.html","NPN Common Emitter Amplifier"
 "electronic/npncc.html","NPN Common Collector Amplifier"
 "electronic/tranimped.html","Common Emitter Impedances"
@@ -3534,8 +2772,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "atmos/glory.html","Glories from Close and Distant Clouds"
 "electronic/unijun.html","Unijunction Transistor"
 "sound/earring.html","Why do my ears ring after a loud concert?"
-"solids/zener.html","The Zener Effect
-"
+"solids/zener.html","The Zener Effect"
 "electronic/opamp2.html","Op-Amp Open Loop Gain"
 "electronic/opampcon.html","Op-amp concepts"
 "electronic/feedbackcon.html","Feedback concepts"
@@ -3560,8 +2797,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "music/harpsi.html","The Harpsichord"
 "electric/rlcpar.html","RLC Parallel Circuit"
 "organic/vitamin.html","Vitamins"
-"geoopt/imgpri.html","Image from Principal Planes 
-"
+"geoopt/imgpri.html","Image from Principal Planes "
 "geoopt/priplan2.html","Principal Planes"
 "electronic/jkflipflop.html","J-K Flip-Flop"
 "electronic/flipflop.html","Flip-Flops"
@@ -3572,52 +2808,33 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electronic/and.html","AND Gate"
 "electronic/seqoper.html","Sequential Operations"
 "thermo/hbase/","Parent Directory"
-"thermo/heatengpro.html","Heat Engine Processes
-"
-"thermo/bodrad.html","Radiation Cooling of Body
-
-"
-"thermo/calor.html","Calorimetry
-"
-"thermo/cice.html","Cooling With Ice
-"
-"thermo/coocof.html","Cooling Coffee
-"
-"thermo/coocof2.html","Cooling a Cup of Coffee
-"
-"thermo/coohot.html","Cooling a Hot Object
-"
-"thermo/freezhot.html","Hot Water Freezing?
-"
+"thermo/heatengpro.html","Heat Engine Processes"
+"thermo/bodrad.html","Radiation Cooling of Body"
+"thermo/calor.html","Calorimetry"
+"thermo/cice.html","Cooling With Ice"
+"thermo/coocof.html","Cooling Coffee"
+"thermo/coocof2.html","Cooling a Cup of Coffee"
+"thermo/coohot.html","Cooling a Hot Object"
+"thermo/freezhot.html","Hot Water Freezing?"
 "thermo/heatpic/","Index of /hbase/thermo/heatpic"
-"thermo/heatques.html","Heat Questions
-"
+"thermo/heatques.html","Heat Questions"
 "thermo/imgheat/","Index of /hbase/thermo/imgheat"
-"thermo/temperp.html","Temperature
-"
-"thermo/therid2.html","Pressure and the Thermodynamic Identity
-"
+"thermo/temperp.html","Temperature"
+"thermo/therid2.html","Pressure and the Thermodynamic Identity"
 "thermo/top.html","Precession of Spinning Top"
-"thermo/watice.html","Water &amp; Ice, Water &amp; Steam
-"
-"thermo/woodmet.html","Steel and Wood at Zero Celsius
-"
+"thermo/watice.html","Water &amp; Ice, Water &amp; Steam"
+"thermo/woodmet.html","Steel and Wood at Zero Celsius"
 "atmos/redsun.html","Red Sunset"
-"vision/subcol.html","Subtractive Color Mixing
-"
-"geoopt/mat2.html","System Matrix: Two Thin Lenses 
-"
+"vision/subcol.html","Subtractive Color Mixing"
+"geoopt/mat2.html","System Matrix: Two Thin Lenses "
 "geoopt/vergtra.html","Vergence Tracing in Thick Lens"
 "astro/exprate.html","The Critical Nature of the Expansion Rate of the Early Universe"
 "astro/mass5w.html","The Mass-5 Roadblock"
-"solids/squid.html","SQUID Magnetometer
-"
+"solids/squid.html","SQUID Magnetometer"
 "biology/mictub.html","Microtubule Network"
-"astro/ocehab.html","The Ocean's Role on a Habitable Planet
-"
+"astro/ocehab.html","The Ocean's Role on a Habitable Planet"
 "astro/wcchem.html","Reflections on the chemistry of life."
-"geophys/andesite.html","Andesite
-"
+"geophys/andesite.html","Andesite"
 "organic/chemcon.html","Chemistry"
 "electronic/opampvar2.html","Voltage Follower"
 "electronic/opamp.html","Operational Amplifiers"
@@ -3626,11 +2843,8 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electronic/opampi.html","The Ideal Op-amp"
 "audio/mp3.html","MP3 Digital Sound"
 "audio/trawvcon.html","Traveling wave concepts"
-"optmod/holog4.html","Viewing a Transmission Hologram
-"
-"optmod/holproj.html","Projecting Holograms
-
-"
+"optmod/holog4.html","Viewing a Transmission Hologram"
+"optmod/holproj.html","Projecting Holograms"
 "holol.html","Laboratory procedure"
 "electronic/gate.html","Basic Gates"
 "electronic/negfeed.html","Feedback in the Emitter Follower"
@@ -3653,8 +2867,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "electric/rcimp.html","RC Circuit"
 "electric/rlcparc.html","RLC Parallel Calculation"
 "organic/vitaminc.html","Vitamin C"
-"geoopt/pri2len.html","Principal Planes: Two Thin Lenses 
-"
+"geoopt/pri2len.html","Principal Planes: Two Thin Lenses "
 "electronic/dflipflop.html","The D Flip-Flop"
 "electronic/setreset.html"," Switch Debouncing"
 "electronic/tflipflop.html","The T Flip-Flop"
@@ -3680,12 +2893,10 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "thermo/imgheat/convectpot.gif","convectpot.GIF"
 "thermo/imgheat/trise20.psd","trise20.psd"
 "atmos/greenmaybe.html","A Tantalizing Hint of the Green Flash"
-"vision/filter.html","Subtractive Color Mixing: Filters
-"
+"vision/filter.html","Subtractive Color Mixing: Filters"
 "geoopt/vergtra2.html","Thick Lens in Different Media"
 "astro/wctransp.html","The Transparency Point and the Decoupling of Light"
-"solids/squid2.html","SQUID Magnetometer Sensitivity
-"
+"solids/squid2.html","SQUID Magnetometer Sensitivity"
 "biology/cilia.html","Cilia"
 "electronic/a741p.html","The 741: Practical Considerations"
 "electronic/curmir.html","The Transistor Current Mirror"
@@ -3707,8 +2918,7 @@ HyperMath is a growing collection of examples of applied mathematics with links 
 "mechanics/indexv.html","Index to Video/Demonstrations"
 "chom.html","Class Home"
 "papers/prespr.html","Papers"
-"focapp.html","Focused Applications of Physics Principles
-"
+"focapp.html","Focused Applications of Physics Principles"
 "exprob/exorg.html","Example Problems"
 "hbasees/hframe.html","Español"
 "snapshot/hphysnap.html","<font size=""+2"">HyperPhysics</font>"
