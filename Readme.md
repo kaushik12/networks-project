@@ -33,12 +33,6 @@ heading
     ## [1] "Acceleration"
 
 ``` r
-print("Links")
-```
-
-    ## [1] "Links"
-
-``` r
 links
 ```
 
@@ -48,12 +42,6 @@ links
     ##  [7] "mot.html#mot1"             "hframe.html"              
     ##  [9] "hph.html"                  "hph.html#mechcon"         
     ## [11] "javascript:history.go(-1)"
-
-``` r
-print("Titles")
-```
-
-    ## [1] "Titles"
 
 ``` r
 titles
@@ -73,17 +61,100 @@ titles
 
 We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those iteratively. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content. In the below chunk, we write the function to extract all the links from a page while simultaneously cleaning the data for further use. We exclude javascript links, multimedia links and also stop the parsing from entering into an infinite loop when it reaches an index directory (<http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/>) where sorting by Name, Size etc. create a slightly different URL. We also exclude URLs under the class/ subdomain as these don't contain Physics content but are structured courses that have been created within the hyperphysics domain.
 
+``` r
+url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
+
+## Defining a function to get all the hyperlinks in a given webpage
+get_links <- function(url,prefix=url_prefix,heading){
+  
+  full_url <- paste0(prefix,url)
+  webpage <- read_html(full_url)
+  nodes <- html_nodes(webpage,'a')
+  titles <- stri_encode(html_text(nodes), "", "UTF-8")
+  links <- html_attr(nodes,"href")
+  headings <- html_nodes(webpage,'h1')
+  h_regex <- regexpr(">(.*)<",as.character(headings[1]))
+  heading <- substr(as.character(headings[1]),(h_regex[1]+1),h_regex[1]+attr(h_regex,"match.length")-2)
+
+  ## Removing any javascript or external (starting with http:// or https://) links 
+  titles <- titles[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
+  links <- links[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
+  
+  ## Removing multimedia links (.gif/.mp4/.jpg/.png/.mov)
+  titles <- titles[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
+  links <- links[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
+  
+  ## Removing any links which refer to index directory sorting
+  titles <- titles[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
+  links <- links[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
+  
+  ## Removing certain URLs to exclude within page references (of the form #xxxD)
+  links <- sub("\\#.*","\\",links)
+  
+  ## Removing the Index and Main page URLs along with any null or missing cases
+  excluded_urls <- c("",NA)
+  titles <- titles[!links %in% excluded_urls]
+  links <- links[!links %in% excluded_urls]
+  
+  ## If the parent url is of the form xx/yy/zz.html, we need to prefix yy/ to results of the form  xx.html
+  if(grepl("^.*/",url)){
+    string_to_add <- paste0(sub("\\/.*html","\\",url),"/")
+    links[!grepl("^../",links)] <- paste0(string_to_add,links[!grepl("^../",links)])
+  }
+  
+  ## Removing any links to sub-domain class as they don;t have physics content
+  titles <- titles[!grepl("class/",links)]
+  links <- links[!grepl("class/",links)]
+
+  ## Trimming URLs of the form ../xxx.html and removing extra /s and spaces
+  links <- sub("^../","\\",links)
+  links <- gsub("//|///","/",links)
+  links <- gsub("\r","",links)
+  
+  ## Fixing broken URLs (manual fixes during initial testing)
+  links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
+  links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
+  links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
+  links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
+  links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
+  links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
+  links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
+  links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
+  links[grepl("^astro/grav.html$",links)] <- "grav.html"
+
+  
+  ## Removing the Index and Main page URLs along with any null or missing cases
+  excluded_urls <- c("hframe.html","hph.html")
+  titles <- titles[!links %in% excluded_urls]
+  links <- links[!links %in% excluded_urls]
+  links <- tolower(links)
+  
+  ## trimming leading and trailing white spaces and removing duplicates 
+  unique_links <- trimws(links[!duplicated(links)],which="both")
+  unique_titles <- trimws(titles[!duplicated(links)],which="both") 
+  return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
+}
+
+l <- get_links("acca.html",heading="Acceleration")
+l
+```
+
     ## $main_page
-    ## [1] "electric/lightncon.html"
+    ## [1] "acca.html"
     ## 
     ## $main_page_title
-    ## character(0)
+    ## [1] "Acceleration"
     ## 
     ## $page_links
-    ## [1] "emcon.html"
+    ## [1] "vel2.html"  "vect.html"  "units.html" "deriv.html" "mot.html"  
     ## 
     ## $page_titles
-    ## [1] "Electricity and Magnetism"
+    ## [1] "velocity"                                      
+    ## [2] "vector"                                        
+    ## [3] "units"                                         
+    ## [4] "derivative"                                    
+    ## [5] "Motion equations when acceleration is constant"
 
 We note that the results now are lot cleaner compared to the raw output from before. Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit.
 
@@ -129,17 +200,215 @@ get_edges <- function(l){
 
 We now use the function defined above to go over all the URLs and store the network structure.
 
+``` r
+## Creating a list to store all the URLs vsiited
+visited_urls <- NA
+error_urls <- NA
+unvisited_urls <- c("acca.html") ## starting with the first URL
+page_details <- rbind(page_details,c("acca.html","Acceleration"))
+page_details <- page_details[-1,]
+
+####################
+# Function to go through a starting set of URLs and iteratively visit all linked URLs till no none remain unvisited
+####################
+
+scrape_urls <- function(urls_to_visit,visited_urls, page_details, edge_list,error_urls){
+  counter <- 0
+  st <- proc.time()
+  while(length(urls_to_visit) > 0){
+    tryCatch(
+      {
+        l <- get_links(urls_to_visit[1],heading=page_details$title[which(page_details$url == urls_to_visit[1])])
+        page_details <- add_page_details(l,df = page_details )
+        edge_list <- rbind(edge_list,get_edges(l))
+      },
+      error=function(cond){
+        # print(unvisited_urls[1])
+        error_urls <<- c(error_urls,urls_to_visit[1])
+      },
+      finally={
+        visited_urls <- c(visited_urls,urls_to_visit[1])
+        urls_to_visit <- page_details$url[!page_details$url %in% visited_urls]
+        counter <- counter + 1   
+      }
+    )
+  }
+  error_urls <- error_urls[!is.na(error_urls)]
+  proc.time() - st
+  return(list(pd=page_details,el=edge_list,visited_urls=visited_urls,unvisited_urls=urls_to_visit,errors=error_urls))
+}
+
+## Running the scraping function
+
+scrape <- scrape_urls(urls_to_visit=unvisited_urls,visited_urls=visited_urls, page_details=page_details, edge_list=edge_list,error_urls = error_urls)
+
+unvisited_urls <- scrape$unvisited_urls
+visited_urls <- scrape$visited_urls
+page_details <- scrape$pd
+edge_list <- scrape$el
+error_urls <- scrape$errors
+```
+
 We find that there are 295 broken URLs. The next step is to try and fix these before scraping through them again. Through some manual inspection, we find that most broken URLs are of the form xxx/yyy/zzz.html where the correct URL is supposed to be yyy/zzz.html. We also note that some of them aren't broken and do infact work.
 
+``` r
+length(error_urls)
+```
+
     ## [1] 295
+
+``` r
+#######################
+## Fixing Broken URLs
+#######################
+
+## Removing the links which are broken because of the index directory structure
+error_urls <- error_urls[!(grepl("^kinetic/imgkin",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/kinpic",error_urls))]
+error_urls <- error_urls[!(grepl("kinetic/hbase/",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/imgqua",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/modpic",error_urls))]
+error_urls <- error_urls[!(grepl("quantum/hbsae/",error_urls))]
+error_urls <- error_urls[!(grepl("^thermo/heatpic",error_urls))]
+error_urls <- error_urls[!(grepl("^thermo/imgheat",error_urls))]
+error_urls <- error_urls[!(grepl("thermo/hbase/",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/imgqua/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^quantum/modpic/[[:punct:]]",error_urls))]
+error_urls <- error_urls[!(grepl("^kinetic/[[:punct:]]",error_urls))]
+
+## Creating a data frame to store these URLs and their fixes
+fixed_error_urls <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
+unvisited_urls <- ""
+
+## Looping through error URLs and identifying those of the form described above
+for(i in seq_along(error_urls)){
+  fixed_error_urls[i,1] <- error_urls[i]
+  tryCatch(
+    {
+      fixed_error_urls[i,2] <- substring(error_urls[i],regexpr("/",error_urls[i])[1]+1)
+      temp_url <- paste0(url_prefix,fixed_error_urls[i,2])
+      if(!(fixed_error_urls[i,2] %in% edge_list$from_url)){
+        temp_page <- read_html(temp_url)  
+      }
+      ## Replace URL in Page Details
+      page_details$url[which(page_details$url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      ## Replace URL in Edge Details
+      edge_list$from_url[which(edge_list$from_url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      edge_list$to_url[which(edge_list$to_url %in% error_urls[i])] <- fixed_error_urls[i,2]
+      ## Add to Unvisited URLs if not visited
+      if(!fixed_error_urls[i,2] %in% edge_list$from_url){
+        unvisited_urls <- c(unvisited_urls,fixed_error_urls[i,2])
+      }
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
+}
+
+## Function to fix URLs in page details and edge list to the correct URL and adding to list of pages to visit if unvisited
+
+fix_error_urls <- function(fixed_error_urls, page_details, edge_list,unvisited_urls){
+  error_url_fixes <- fixed_error_urls[!is.na(fixed_error_urls$X2),]
+  for(i in seq_along(error_url_fixes)){
+    err_url <- error_url_fixes$X1[i]
+    fixed_url <- error_url_fixes$X2[i]
+    page_details$url[which(page_details$url == err_url)] <- fixed_url
+    edge_list$from_url[which(edge_list$from_url == err_url)] <- fixed_url  
+    edge_list$to_url[which(edge_list$to_url == err_url)] <- fixed_url  
+    if(!fixed_url %in% edge_list$from_url){
+          unvisited_urls <- c(unvisited_urls,fixed_url)
+        }
+  }
+  fixed_error_urls <- fixed_error_urls[is.na(fixed_error_urls$X2),]
+  return(list(errors=fixed_error_urls,pd=page_details,el=edge_list,unvisited=unvisited_urls))
+}
+
+fixes <- fix_error_urls(fixed_error_urls = fixed_error_urls, page_details = page_details, edge_list = edge_list, unvisited_urls = unvisited_urls)
+unvisited_urls <- fixes$unvisited
+page_details <- fixes$pd
+edge_list <- fixes$el
+fixed_error_urls <- fixes$errors
+
+## Check if these URls are infact broken (some seem to work on manual inspection)
+for(i in seq_along(fixed_error_urls$X1)){
+  tryCatch(
+    {
+      temp_url <- paste0(url_prefix,gsub("//|///","/",fixed_error_urls[i,1]))
+      temp_page <- read_html(temp_url)   
+      fixed_error_urls[i,2] <- gsub("//|///","/",fixed_error_urls[i,1])
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
+}
+
+fixes <- fix_error_urls(fixed_error_urls = fixed_error_urls, page_details = page_details, edge_list = edge_list, unvisited_urls = unvisited_urls)
+unvisited_urls <- fixes$unvisited
+page_details <- fixes$pd
+edge_list <- fixes$el
+fixed_error_urls <- fixes$errors
+dim(fixed_error_urls)[1]
+```
 
     ## [1] 40
 
 After correcting for these two cases, we are left with 40 broken URLs. Fixing these required a lot of manual checking. One of the ways of identifying these was to add the parent URL domain to check if that works and we were able to reduce the number of errors with this.
 
+``` r
+## Adding parent domain to URL to check if it works
+for(i in seq_along(fixed_error_urls$X1)){
+  tryCatch(
+    {  
+      parent_url <- edge_list$from_url[edge_list$to_url == fixed_error_urls[i,1]][2]
+      parent_domain <- strsplit(parent_url,"/")[[1]][max(1,length(strsplit(parent_url,"/")[[1]])-1)]
+      fixed_url <- paste0(parent_domain,"/",fixed_error_urls$X1[i])
+      temp_url <- paste0(url_prefix,fixed_url)
+      temp_page <- read_html(temp_url)   
+      fixed_error_urls[i,2] <- fixed_url
+    },
+    error=function(cond){
+      fixed_error_urls[i,2] <<- NA
+    }
+  )
+}
+
+## Other manual fixes
+fixed_error_urls$X2[grep("nuclear/gphysref.html",fixed_error_urls$X1)] <-"geophys/gphysref.html"
+fixed_error_urls$X2[grep("phyopt/optref.html",fixed_error_urls$X1)] <-"optics/optref.html"
+fixed_error_urls$X2[grep("astref.html",fixed_error_urls$X1)] <-"astro/astref.html"
+fixed_error_urls$X2[grep("relcon.html",fixed_error_urls$X1)] <-"relativ/relcon.html"
+fixed_error_urls$X2[grep("music/..sound/timbre.html",fixed_error_urls$X1)] <-"sound/timbre.html"
+
+fixes <- fix_error_urls(fixed_error_urls = fixed_error_urls, page_details = page_details, edge_list = edge_list, unvisited_urls = unvisited_urls)
+unvisited_urls <- fixes$unvisited
+page_details <- fixes$pd
+edge_list <- fixes$el
+fixed_error_urls <- fixes$errors
+dim(fixed_error_urls)[1]
+```
+
     ## [1] 20
 
+``` r
+## Ignoring 20 broken URLs for now
+```
+
 We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Finally, we visit the unvisited fixed URLs and add the information to the dataset.
+
+``` r
+## Re-running the scraping function with the fixed URLs unvisited previously
+new_error_urls <- ""
+scrape <- scrape_urls(urls_to_visit=unvisited_urls,visited_urls=visited_urls, page_details=page_details, edge_list=edge_list,error_urls = new_error_urls)
+
+unvisited_urls <- scrape$unvisited_urls
+visited_urls <- scrape$visited_urls
+page_details <- scrape$pd
+edge_list <- scrape$el
+new_error_urls <- scrape$errors
+```
 
 Finally, we check the dataset once more to remove self-edges and any duplicates.
 
@@ -174,26 +443,6 @@ Importing the saved datasets with edge list and nodal attributes.
 
 Creating the network objects and setting the vertex attributes. When the network is created, it numbers the nodes alphabetically based on the vertex name (in this case URL). We get these and store them for future reference.
 
-``` r
-## Creating Network object
-hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
-
-node_names <- get.vertex.attribute(hyperphysics_network,"vertex.names") 
-set.vertex.attribute(hyperphysics_network,"Titles",page_details$title[order(page_details$url)])
-
-## IGraph object
-hyperphysics_graph <- asIgraph(hyperphysics_network)
-
-## Storing the Vertex URLs and Titles in the order they appear in the graph object
-vertex_urls <- vertex_attr(hyperphysics_graph,"vertex.names")
-vertex_titles <- vertex_attr(hyperphysics_graph,"Titles") 
-
-## Some additional clean up of the data (remove trailing spaces and /n)
-vertex_titles <- gsub("\n","",vertex_titles)
-vertex_titles <- trimws(vertex_titles,which = "both")
-V(hyperphysics_graph)$Titles <- vertex_titles
-```
-
 ##### Sample of the dataset
 
 ``` r
@@ -220,33 +469,13 @@ head(edge_list,5)
 
 ###### Nodes, Edges and Density
 
-``` r
-paste("No. of Nodes: ",dim(page_details)[1])
-```
-
     ## [1] "No. of Nodes:  2931"
 
-``` r
-paste("No. of Edges: ",dim(edge_list)[1])
-```
-
     ## [1] "No. of Edges:  21058"
-
-``` r
-network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
-paste("Density: ",round(network_density,5))
-```
 
     ## [1] "Density:  0.00245"
 
 ###### A look at the network sample
-
-``` r
-set.seed(5)
-sample_nodes <- sample(V(hyperphysics_graph),750,replace = FALSE)
-sub_hyperphysics_graph <- induced_subgraph(hyperphysics_graph,sample_nodes)
-plot(sub_hyperphysics_graph,edge.arrow.size=.3,vertex.size=3,vertex.label=NA)
-```
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png)
 
@@ -256,50 +485,18 @@ From the plot of an induced sub-graph of 750 nodes, we can already see some clus
 
 The first network statistics we look into furhter is the degree distribution. We want to verify if the distribution follows a power law as with several similar networks extracted from the web.
 
-``` r
-## Degree Distribution
-in_degree <- igraph::degree(hyperphysics_graph,mode="in")
-out_degree <- igraph::degree(hyperphysics_graph,mode="out")
-
-## Avg. Degrees
-paste("Mean In-Degree: ",round(mean(in_degree),4))
-```
-
     ## [1] "Mean In-Degree:  7.1846"
-
-``` r
-paste("Mean Out-Degree: ",round(mean(out_degree),4))
-```
 
     ## [1] "Mean Out-Degree:  7.1846"
 
 It is a bit strange and interesting that the Avg. In and Out Degrees match perfectly.We then plot the degree distribution in the log-log scale to see if it is linear denoting a scale-free distribution.
 
-``` r
-## Plots of Degree Distribution
-par(mfrow=c(1,2))
-plot(log(as.numeric(row.names(table(in_degree)))),log(table(in_degree)),main="Log-log plot of In-Degree Dist.",xlab="log(In-Degree)",ylab="log(frequency)",type="p",pch=1)
-
-plot(log(as.numeric(row.names(table(out_degree)[-1]))),log(table(out_degree)[-1]),main="Log-log plot of Out-Degree Dist.",xlab="log(Out-Degree)",ylab="log(frequency)",type="p",pch=1)
-```
-
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png)
 
 We note that the degree distributions is almost perfectly linear in the log-log scale signifying preferential attachment in terms of the network structure. The out-degree distribution though starts off with a lower frequency of nodes with fewer degress. This perhaps indicates the nature of the textbook where most of the pages are linked with atleast a few other pages and very few pages have no links outward.
 
-``` r
-in_deg_est <- lm(log(table(in_degree))~log(as.numeric(row.names(table(in_degree)))))
-out_deg_est <- lm(log(table(out_degree)[-1])~log(as.numeric(row.names(table(out_degree)[-1]))))
-
-in_deg_est$coefficients[2]
-```
-
     ## log(as.numeric(row.names(table(in_degree)))) 
     ##                                     -1.36514
-
-``` r
-out_deg_est$coefficients[2]
-```
 
     ## log(as.numeric(row.names(table(out_degree)[-1]))) 
     ##                                         -1.551737
@@ -312,21 +509,7 @@ The estimated co-efficient or the power in the power-law form for the degree dis
 
 Next, we look at the distrbution of the Geodesic distance between nodes. This measure gives us a sense of how close the nodes are from each other and along side a scale-free degree distribution, a short average geodesic distance (or network diameter) would indicate a small-world nature of the network as defined by Watts and Strogatz (1998).
 
-``` r
-## Geodesic Distances
-
-geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
-avg_path_length <- average.path.length(hyperphysics_graph)
-dist_path_length <- path.length.hist(hyperphysics_graph)
-paste("Average Geodesic Distance: ",round(avg_path_length,3))
-```
-
     ## [1] "Average Geodesic Distance:  5.862"
-
-``` r
-options(scipen=3)
-plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution of Geodesic Distances",xlab = "Geodesic Path length",ylab="Count",type='o',pch=1)
-```
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-21-1.png)
 
@@ -336,17 +519,7 @@ We do observe that the Network Diameter small at ~5.86 and this is re-inforced b
 
 The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized.
 
-``` r
-## Centrality Measures
-betweenness_centrality <- centr_betw(hyperphysics_graph)
-paste("Network Centralization: ",round(betweenness_centrality$centralization,3))
-```
-
     ## [1] "Network Centralization:  0.236"
-
-``` r
-page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
-```
 
 ------------------------------------------------------------------------
 
@@ -361,15 +534,6 @@ In this section, we create the functions to extract hierarchies from the network
 
 The specific formulae and methodology are presented in following sub-sections where we explore each of these methodologies in detail. The first three methods listed above are as defined in the Muchnik, et.al. paper. The last methodology is an independent exploration of a different way to extract hierarchy which takes into account the clusters of topics in the network and extract the hierarchy iteratively starting from the highest-level allthe way down to the leaf nodes.
 
-``` r
-## We create the adjacency matrix and an undirected edgelist which is needed for hierarchy extraction
-
-hyperphysics_adjacency <- as_adj(hyperphysics_graph,type = "both")
-hyperphysics_edgelist <- as_edgelist(hyperphysics_graph)
-undirected_edgelist <- data.frame(rbind(hyperphysics_edgelist,cbind(hyperphysics_edgelist[,2],hyperphysics_edgelist[,1])))
-undirected_edgelist <- undirected_edgelist[!duplicated(undirected_edgelist), ]
-```
-
 ###### Overview
 
 To understand the core idea behind extracting hierarchies from a network, we look at a regular tree to start with. From the below sample tree marked by it's corresponding betweenness centralities, we can make the following observations:
@@ -382,11 +546,11 @@ To understand the core idea behind extracting hierarchies from a network, we loo
 
 These three fundamental ideas form the basis of hierarchy extraction in each of the following methods. The overall process of hierarchy extraction can be summarized as the following set of steps
 
-1.  Define a suitable hierarchy score for each node A hierarchy score for a node is a measure such as it's betweenness centrality which can be used to compare two nodes to determine the hierarchical relation between them. For a regular node such as the above example, we can simply use the betweenness centrality as the graph is regular. But in the case of real-world networks such as the one we are dealing with, every node need not have the same degree and hence we look at nodal measures which are scaled by their respective degrees.
+1.  Define a suitable hierarchy score for each node: A hierarchy score for a node is a measure such as it's betweenness centrality which can be used to compare two nodes to determine the hierarchical relation between them. For a regular node such as the above example, we can simply use the betweenness centrality as the graph is regular. But in the case of real-world networks such as the one we are dealing with, every node need not have the same degree and hence we look at nodal measures which are scaled by their respective degrees.
 
-2.  Compare scores for 2 neighboring nodes (in the underlying undirected network) We then compare the scores of two nodes in the underlying network and determine if one is higher in the hierarchy if the ratio of the scores is between a lower and an upper threshold and it has a higher score. This does not depend on the direction of the edge between the two nodes in the underlying network.
+2.  Compare scores for 2 neighboring nodes (in the underlying undirected network): We then compare the scores of two nodes in the underlying network and determine if one is higher in the hierarchy if the ratio of the scores is between a lower and an upper threshold and it has a higher score. This does not depend on the direction of the edge between the two nodes in the underlying network.
 
-3.  Define the right cutoffs The choice of cutoffs affects the hierarchical network output. A high upper cutoff would create hierarchical relations between two similar nodes at the same level in the hierarchy such as two disjoint topics in physics such as Kinetics and Optics, say. A low or no lower cutoff would include a hierarchical relation between two nodes connected in the underlying network but not necessarily directly related in a hierarchical sense. It may leed to creation of triangles in the hierarchy with a node being connected to several nodes at higher levels in the hierarchy.
+3.  Define the right cutoffs: The choice of cutoffs affects the hierarchical network output. A high upper cutoff would create hierarchical relations between two similar nodes at the same level in the hierarchy such as two disjoint topics in physics such as Kinetics and Optics, say. A low or no lower cutoff would include a hierarchical relation between two nodes connected in the underlying network but not necessarily directly related in a hierarchical sense. It may leed to creation of triangles in the hierarchy with a node being connected to several nodes at higher levels in the hierarchy.
 
 The paper performs the analysis on the Wikipedia article network where it's corresponding Wikipedia Category network was used to validate the results of the methodologies. This allowed the authors to optimize the cutoffs based on correct classification of the hierarchical relations with respect to the category network. In our case, we do not have a hierarchical network to validate against and hence try out different levels of cutoff. As a aprt of continuing work on this, I hope to survey educators in the Physics community to help classify the estimated hierarchical relations to validate the results.
 
@@ -421,28 +585,29 @@ get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
 get\_sub\_tree is a function to sample a graph from the hierarchy where, given a staring node, we sample *n* nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a layout for a cleaner visualization.
 
 ``` r
-## A function to sample a sub-graph from ther hierarchy graph.
+## Recursive Depth-First search for the sub-tree given the root
 
-## start
-## get n samples of lower nodes
-## for each of these get n samples of lower nodes
-## 
+get_children <- function(st,el,n=5){
+  all_children <- matrix(el[el[,1]==st,],ncol=2,byrow=FALSE)
+  sampled_children <- all_children[all_children[,2] %in% sample(all_children[,2],min(n,length(all_children[,2])),replace=FALSE),]
+  return(matrix(sampled_children,ncol=2,byrow = FALSE))
+}
 
-
-get_sub_tree <- function(st,levels=1,el,n=10,cur_level=1){
-  reduced_el <- matrix(NA,ncol=2)
-  down_nodes <- NA
-  down_nodes <- c(down_nodes,sample(el[el[,1] == st,2],min(n,length(el[el[,1] == st,2]))))
-  down_nodes <- down_nodes[!is.na(down_nodes)]
-  reduced_el <- rbind(reduced_el,el[which(el[,2] %in% down_nodes & el[,1] == st),])
-  if(cur_level <= levels){
-    for(i in seq_along(down_nodes)){
-      reduced_el <- rbind(reduced_el,get_sub_tree(st=down_nodes[i],levels = levels,el = el,n = n, cur_level =(cur_level+1)))
+get_sub_tree <- function(st,el,level=1,cur_level=1,sub_el=matrix(NA,ncol=2),n=5){
+  if(cur_level > level){
+    tmp_el <- matrix(NA,ncol=2)
+    return(tmp_el)
+  }else{
+    tmp_el <- get_children(st,el,n)
+    for(i in seq_along(tmp_el[,2])){
+      if(!tmp_el[i,2] %in% sub_el[,1]){
+        tmp_el <- rbind(tmp_el,get_sub_tree(tmp_el[i,2],el,level,(cur_level+1),tmp_el,n=n))  
+      }
     }
   }
-  reduced_el <-  reduced_el[-1,]
-  reduced_el <-  reduced_el[!duplicated(reduced_el),]
-  return(reduced_el)
+  tmp_el <- tmp_el[!duplicated(tmp_el),]
+  tmp_el <- tmp_el[!is.na(tmp_el[,1]),]
+  return(tmp_el)
 }
 
 wrap_strings <- function(vector_of_strings,width){
@@ -451,6 +616,8 @@ wrap_strings <- function(vector_of_strings,width){
                         }))
 }
 
+
+## Function to plot a tree using ggraph
 tree_plot_func <- function(graph) {
 
   # plot
@@ -480,31 +647,7 @@ tree_plot_func <- function(graph) {
 
 As the name suggests, in the method we use a simple betweenness centrality based hierarchy score to determine hierarchical relation between the nodes. As discussed above, in order to scale the score to account for the non-regular network structure, we define a hierarchy score as below:
 
-![Betweenness Centrality Score](images/betweenness_centrality.png)
-
-``` r
-bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degree)*(1+out_degree)))
-
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
-
-bw_hierarchy_graph <- get_hierarchy_graph(bw_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
-bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
-
-bw_hierarchy_graph_centrality <- centr_betw(bw_hierarchy_graph)
-max_centrality_node <- which(bw_hierarchy_graph_centrality$res == max(bw_hierarchy_graph_centrality$res),arr.ind = TRUE)
-
-
-## plotting sub-tree
-set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(max_centrality_node,2,bw_hierarchy_edgelist,n=10),directed = TRUE)
-# g <- bw_hierarchy_graph
-V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),25)
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
-tree_plot_func(g2)
-```
+![Betweenness Centrality Score](images/betweenness_centrality.png) \#\#\#\#\#\# Results
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-27-1.png)
 
@@ -520,29 +663,7 @@ $$PR(u) = \\sum\_{v\\in B\_u}\\frac{PR(v)}{L(v)} $$
 *B*<sub>*u*</sub>: The set containing all nodes linking to node *u*
 *L*(*v*): No. of edges from node *v*
 
-``` r
-pr_hierarchy_score <- page_rank_centrality$vector
-
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
-
-pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
-pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
-
-## plotting sub-tree
-set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(2177,2,pr_hierarchy_edgelist,n=4))
-V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
-tree_plot_func(g2)
-```
-
-    ## Multiple parents. Unfolding graph
-
-    ## Warning: The plyr::rename operation has created duplicates for the
-    ## following name(s): (`na.rm`)
+###### Results
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-28-1.png)
 
@@ -556,48 +677,6 @@ The authors define the score as comparision between the weighted fraction of the
 
 Given this idea, the hierarchy score is defined as the following:
 
-![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
-
-``` r
-get_ab_hierarchy_score <- function(gdist,alpha,m){
-  h_plus <- rep(0,dim(gdist)[1])
-  h_minus <- rep(0,dim(gdist)[1])
-  
-  for(j in c(1:m)){  
-    N_plus <- rep(0,dim(gdist)[1])
-    N_minus <- rep(0,dim(gdist)[1])
-    for(i in c(1:dim(gdist)[1])){
-      N_plus[i] <- max(1,sum(gdist[i,] == m))
-      N_minus[i] <- sum(gdist[,i] == m)
-    }
-    N_plus_avg <- mean(N_plus)
-    N_minus_avg <- mean(N_minus)
-    h_plus <- h_plus + alpha^(-j) * (N_plus / N_plus_avg)
-    h_minus <- h_minus + alpha^(-j) * (N_minus / N_minus_avg)
-  }
-  h_score <- h_minus / h_plus
-  return(h_score)
-}
-
-ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=3)
-
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
-
-ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
-ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
-
-## plotting sub-tree
-set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(2177,3,ab_hierarchy_edgelist,n=3))
-V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
-tree_plot_func(g2)
-```
-
-    ## Warning: The plyr::rename operation has created duplicates for the
-    ## following name(s): (`na.rm`)
+![Attraction-Basin hierarchy Score](images/attraction_basin_score.png) \#\#\#\#\#\# Results
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-29-1.png)

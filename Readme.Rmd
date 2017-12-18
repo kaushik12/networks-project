@@ -423,6 +423,10 @@ page_details <- read.csv("code/Data/page_details.csv",stringsAsFactors = FALSE)
 Creating the network objects and setting the vertex attributes. When the network is created, it numbers the nodes alphabetically based on the vertex name (in this case URL). We get these and store them for future reference. 
 
 ```{r, echo=FALSE}
+## 
+page_details[grep("HyperMath",page_details$title),2] <- "HyperMath"
+page_details[grep("hph.html",page_details$url),2] <- "HyperPhysics"
+
 ## Creating Network object
 hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
 
@@ -705,7 +709,7 @@ max_centrality_node <- which(bw_hierarchy_graph_centrality$res == max(bw_hierarc
 
 ## plotting sub-tree
 set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(max_centrality_node,bw_hierarchy_edgelist,level=5,n=10),directed = TRUE)
+g <- graph_from_edgelist(get_sub_tree(245,bw_hierarchy_edgelist,level=3,n=4),directed = TRUE)
 # g <- bw_hierarchy_graph
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),25)
 iso <- V(g)[igraph::degree(g)==0]
@@ -742,7 +746,7 @@ pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
 V(pr_hierarchy_graph)$titles <- strtrim(wrap_strings(vertex_titles[V(pr_hierarchy_graph)],10),30)
 ## plotting sub-tree
 set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(668,level=3,pr_hierarchy_edgelist,n=3))
+g <- graph_from_edgelist(get_sub_tree(245,level=3,pr_hierarchy_edgelist,n=4))
 
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
 iso <- V(g)[igraph::degree(g)==0]
@@ -802,17 +806,17 @@ get_ab_hierarchy_score <- function(gdist,alpha,m){
   return(h_score)
 }
 
-ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=3)
+ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=5)
 
-upper_cutoff <- 0.9
-lower_cutoff <- 0.1
+upper_cutoff <- 0.8
+lower_cutoff <- 0.2
 
 ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
 
 ## plotting sub-tree
-set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(668,level=3,ab_hierarchy_edgelist,n=3))
+set.seed(10)
+g <- graph_from_edgelist(get_sub_tree(245,level=3,ab_hierarchy_edgelist,n=5 ))
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
