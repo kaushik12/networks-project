@@ -1,18 +1,44 @@
 ---
-title: "Introduction"
+title: "The Tree of Knowledge"
 author: "Kaushik Mohan"
 output: github_document
 ---
 
+## Directory Structure
+- `Code/Data` contains edgelists and node details of the scraped network used in this project
+- `Paper` includes the Muchnik, et.al. paper used as the primary reference for this project
+- `Presentations` contain the project proposal and final presentation for the course
+
+# Introduction
+
+## Objective  
+- To extract hierarchical structure of articles for a field (say, Mathematics, Physics..)
+
+## Why?  
+- Individual learning is still hierarchical
+- Can be used to create structured curriculum content with just resources available on the web
+- Identify gaps in information on the web
+   
+## Overview 
 This project is an attempt to use (and improve) methods described in the paper by Muchnik, et.al. for extracting hierarchies from a network. The paper has been made available for reference in the respective folder within the repo. The end goal is to be able to use these techniques to create a knowledge tree from the Wikipedia EN article network which could be used to create a more structured online-reference/learning platform akin to a traditional Encyclopedia.    
 
 For the purpose of this project though, we use a smaller and more specific network of articles from HyperPhysics, a HTML Textbook (http://hyperphysics.phy-astr.gsu.edu/hbase/hframe.html). This textbook also has a more complete hyperlink structure compared to Wikipedia which should give us better results. Based on this network, we should be able to arrive at a tree structure which denotes the evolution of Physics literature and traditional structure in Physics instruction. The HyperPhysics page provides hierarchies based on content and some semantics which could be used as a reference to validate the results of the analysis.
 
-As a work in progress at the end, we look at developing a better algorithm for extracting hierarchies using the idea of community detection to create each level of the hierarchy iteratively. The intution/hypothesis behind formulating such an approach is two-fold. Firstly, the previous methodologies identify hierarchies locally across all nodes to generate the full structure. Secondly, the cutoffs based on which hierarchical relationships are determined arbitrarily and tuned through validation. The proposed methodologies address these issues by using eigenvector based community detection to create the hierarchy through a top-down approach. By first identifying a community of nodes (topics in this sense) and their hierarchical relationships, we then dive deeper into each group to determine the hierarchies within. By iteratively going through this process, we hope to have a better and more intuitive hierarchical structure developing from the underlying network.  
+As a work in progress at the end, we look at developing a better algorithm for extracting hierarchies using the idea of community detection to create each level of the hierarchy iteratively. The intution/hypothesis behind formulating such an approach is two-fold. Firstly, the previous methodologies identify hierarchies locally across all nodes to generate the full structure. Secondly, the cutoffs based on which hierarchical relationships are determined arbitrarily and tuned through validation. The proposed methodology addresses these issues by using eigenvector based community detection to create the hierarchy in a top-down approach. By first identifying a community of nodes (topics, in this context) and their hierarchical relationships, we then dive deeper into each topic to determine the hierarchies within. By iteratively going through this process, we hope to have a better and more intuitive hierarchical structure developing from the underlying network. This approach might perhaps more appilicable in this setting as the hypothesis is tied to the context.   
+
+## Goals
+
+To summarize, the goals of this project are
+
+1. Use the methodologies defined in the paper to extract the hierarchical structure of HyperPhysics content
+
+2. Develop a commuity based iterative methodology for hierarchy extraction in a knowledge network
+
+3. Compare the results from the different methodologies and validate the results by surveying members in the Physics community
 
 ***
 
-#### Part 1: Scraping for Data
+## Part 1: Scraping for Data
 
 The first part of the project involves scraping through the HyperPhysics domain to create a network with pages as nodes and hyperlink between pages as edges. The webpage used here is HyperPhysics, a Physics and Math HTML textbook developed by Carl R. nave of Georgia State University. We use this because it's comprehensive coverage of most of physics and the linking structure between content pages. It also has a map of the content in some form which could provide validation to the extraction of trees from the link structure.
 
@@ -42,9 +68,9 @@ titles
 
 ```
 
-We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those iteratively. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content. In the below chunk, we write the function to extract all the links from a page while simultaneously cleaning the data for further use. We exclude javascript links, multimedia links and also stop the parsing from entering into an infinite loop when it reaches an index directory (http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/) where sorting by Name, Size etc. create a slightly different URL. We also exclude URLs under the class/ subdomain as these don't contain Physics content but are structured courses that have been created within the hyperphysics domain.  
+We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those iteratively. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content. In the below chunk, we write the function to extract all the links from a page while simultaneously cleaning the data for further use. We exclude javascript links, multimedia links and also stop the parsing from entering into an infinite loop when it reaches an index directory (http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/) where sorting by Name, Size etc. create a slightly different URL. We also exclude URLs under the class/ subdomain as these don't contain Physics content but are structured courses that have been created within the hyperphysics domain. We account for many such cases and define a function to scrape for hyperlinks and simultaneously clean it for consumption. 
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE,echo=FALSE}
 url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
 
 ## Defining a function to get all the hyperlinks in a given webpage
@@ -124,9 +150,9 @@ l
 
 ```
 
-We note that the results now are lot cleaner compared to the raw output from before. Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit.
+We note that the results now are lot cleaner compared to the raw output from before. Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit. We also define functions to add new pages and edges to the respective data frames.
 
-```{r}
+```{r, echo=FALSE}
 ## Storing the page URL and title in data frame page_details
 page_details <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
 colnames(page_details) <- c("url","title")
@@ -136,8 +162,7 @@ edge_list <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
 colnames(edge_list) <- c("from_url","to_url")
 ```
 
-We also define functions to add new pages and edges to the respective data frames. 
-```{r}
+```{r, echo=FALSE}
 ## Function to add new page details
 add_page_details <- function(l,df){
   existing_urls <- df$url
@@ -166,9 +191,9 @@ get_edges <- function(l){
 
 ```
 
-We now use the function defined above to go over all the URLs and store the network structure. 
+Using these helper functions, we go over all the URLs and store the network structure. 
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 ## Creating a list to store all the URLs vsiited
 visited_urls <- NA
 error_urls <- NA
@@ -202,7 +227,7 @@ scrape_urls <- function(urls_to_visit,visited_urls, page_details, edge_list,erro
     )
   }
   error_urls <- error_urls[!is.na(error_urls)]
-  proc.time() - st
+  print(proc.time() - st)
   return(list(pd=page_details,el=edge_list,visited_urls=visited_urls,unvisited_urls=urls_to_visit,errors=error_urls))
 }
 
@@ -217,10 +242,12 @@ edge_list <- scrape$el
 error_urls <- scrape$errors
 ```
 
-We find that there are 295 broken URLs. The next step is to try and fix these before scraping through them again. Through some manual inspection, we find that most broken URLs are of the form xxx/yyy/zzz.html where the correct URL is supposed to be yyy/zzz.html. We also note that some of them aren't broken and do infact work.
+### Error handling
+
+One of the major challenges in scraping the web for the network data was with handling the different formats of URLs and account for broken ones. At the end of the scraping, we find that there are 295 broken URLs. The next step is to try and fix these before scraping through them again. Through some manual inspection, we try and find patterns within these in order to fix them in batches rather than individually. We are able to identify that most of the cases involve a missing or incorrect parent domain. By taking care of these cases, we reduce the number down to less than 20 cases. 
 
 
-```{r, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
 length(error_urls)
 
 #######################
@@ -315,13 +342,11 @@ unvisited_urls <- fixes$unvisited
 page_details <- fixes$pd
 edge_list <- fixes$el
 fixed_error_urls <- fixes$errors
-dim(fixed_error_urls)[1]
+# dim(fixed_error_urls)[1]
 
 ```
 
-After correcting for these two cases, we are left with 40 broken URLs. Fixing these required a lot of manual checking. One of the ways of identifying these was to add the parent URL domain to check if that works and we were able to reduce the number of errors with this. 
-
-```{r, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
 
 ## Adding parent domain to URL to check if it works
 for(i in seq_along(fixed_error_urls$X1)){
@@ -352,14 +377,15 @@ unvisited_urls <- fixes$unvisited
 page_details <- fixes$pd
 edge_list <- fixes$el
 fixed_error_urls <- fixes$errors
-dim(fixed_error_urls)[1]
+# dim(fixed_error_urls)[1]
 
+head(fixed_error_urls[,1],20)
 ## Ignoring 20 broken URLs for now
 ```
 
-We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Finally, we visit the unvisited fixed URLs and add the information to the dataset. 
+We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Next, we visit the unvisited fixed URLs and add the information to the dataset. 
 
-```{r, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
 
 ## Re-running the scraping function with the fixed URLs unvisited previously
 new_error_urls <- ""
@@ -389,7 +415,7 @@ page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplica
 We store these final Edge List and Page Details data frames as CSVs as a backup, for easier access in the following sections and to work with a clean environment.
 
 ```{r, warning=FALSE, message=FALSE}
-setwd("code/Data")
+setwd("Code/Data")
 write.csv(page_details,file="page_details.csv",row.names = FALSE)
 write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
 ```
@@ -398,7 +424,7 @@ We are finally left with 21,057 edges and 2931 nodes. We use this network data f
 
 ***
 
-#### Part 2: Network Stats
+## Part 2: Network Stats
 
 In this section, we use this data from the scraping exercise to create a network object and perform some basic network analysis. We look at presenting a high-level overview of the network through some of it's node level and network level statistics in order gain an understanding of the underlying structure. 
 
@@ -416,8 +442,8 @@ Importing the saved datasets with edge list and nodal attributes.
 
 ```{r, echo=FALSE, warning=FALSE}
 ## Importing Data Sets
-edge_list <- read.csv("code/Data/edge_list.csv",stringsAsFactors = FALSE)
-page_details <- read.csv("code/Data/page_details.csv",stringsAsFactors = FALSE)
+edge_list <- read.csv("Code/Data/edge_list.csv",stringsAsFactors = FALSE)
+page_details <- read.csv("Code/Data/page_details.csv",stringsAsFactors = FALSE)
 ```
 
 Creating the network objects and setting the vertex attributes. When the network is created, it numbers the nodes alphabetically based on the vertex name (in this case URL). We get these and store them for future reference. 
@@ -447,23 +473,14 @@ V(hyperphysics_graph)$Titles <- vertex_titles
 
 ```
 
-##### Sample of the dataset
+#### Sample of the network
 
 ```{r}
 head(page_details,5)
 head(edge_list,5)
 ```
 
-###### Nodes, Edges and Density
-
-```{r, echo=FALSE}
-paste("No. of Nodes: ",dim(page_details)[1])
-paste("No. of Edges: ",dim(edge_list)[1])
-network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
-paste("Density: ",round(network_density,5))
-
-```
-###### A look at the network sample
+##### Plot
 
 ```{r, echo=FALSE}
 set.seed(5)
@@ -474,7 +491,17 @@ plot(sub_hyperphysics_graph,edge.arrow.size=.3,vertex.size=3,vertex.label=NA)
 
 From the plot of an induced sub-graph of 750 nodes, we can already see some clusters closely interconnected within in the network. 
 
-###### Degree Distribution
+### Nodes, Edges and Density
+
+```{r, echo=FALSE}
+paste("No. of Nodes: ",dim(page_details)[1])
+paste("No. of Edges: ",dim(edge_list)[1])
+network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
+paste("Density: ",round(network_density,5))
+
+```
+
+### Degree Distribution
 The first network statistics we look into furhter is the degree distribution. We want to verify if the distribution follows a power law as with several similar networks extracted from the web.
 
 ```{r,echo=FALSE}
@@ -487,7 +514,7 @@ paste("Mean In-Degree: ",round(mean(in_degree),4))
 paste("Mean Out-Degree: ",round(mean(out_degree),4))
 ```
 
-It is a bit strange and interesting that the Avg. In and Out Degrees match perfectly.We then plot the degree distribution in the log-log scale to see if it is linear denoting a scale-free distribution.
+It is a bit strange and interesting that the Avg. In and Out Degrees match perfectly. We then plot the degree distribution in the log-log scale to see if it is linear denoting a scale-free distribution.
 
 ```{r, echo=FALSE}
 ## Plots of Degree Distribution
@@ -513,8 +540,8 @@ The estimated co-efficient or the power in the power-law form for the degree dis
 ![Degree Distribution](images/degrees.png)
 
 
+### Geodesic Distance Distribution
 
-###### Geodesic Distance Distribution
 Next, we look at the distrbution of the Geodesic distance between nodes. This measure gives us a sense of how close the nodes are from each other and along side a scale-free degree distribution, a short average geodesic distance (or network diameter) would indicate a small-world nature of the network as defined by Watts and Strogatz (1998).
 
 ```{r, echo=FALSE}
@@ -531,8 +558,9 @@ plot(c(1:length(dist_path_length$res)),dist_path_length$res,main="Distribution o
 
 We do observe that the Network Diameter small at ~5.86 and this is re-inforced by the above plot of the geodesic distance distribution. 
 
-###### Centralization
-The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized. 
+### Centralization
+
+The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized. A value of 0.236 implies that the network isn't highly centralized but at the same time the structure isn't purely random either with some nodes playing a central role. 
 
 ```{r, echo=FALSE}
 ## Centrality Measures
@@ -543,7 +571,7 @@ page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack")
 
 ***
 
-#### Part 3: Extracting hierarchies
+## Part 3: Extracting hierarchies
 
 In this section, we create the functions to extract hierarchies from the network and use these on the HyperPhysics article network. Four different hierarchy extraction methods are explored, namely
 
@@ -566,7 +594,7 @@ undirected_edgelist <- undirected_edgelist[!duplicated(undirected_edgelist), ]
 
 ```
 
-###### Overview
+### Overview
 To understand the core idea behind extracting hierarchies from a network, we look at a regular tree to start with. From the below sample tree marked by it's corresponding betweenness centralities, we can make the following observations:
     
 - Greater centrality corresponds to a higher level in the hierarchy
@@ -579,6 +607,8 @@ bw_g <- centr_betw(g,directed=FALSE)$res
 V(g)$bw <- ifelse(bw_g > 0,bw_g,"")
 plot(g, vertex.size=8,vertex.label=V(g)$bw ,vertex.label.cex=0.8,vertex.label.dist=2,edge.arrow.size=.3)
 ```
+
+### 
 
 These three fundamental ideas form the basis of hierarchy extraction in each of the following methods. The overall process of hierarchy extraction can be summarized as the following set of steps
 
@@ -595,7 +625,7 @@ The paper performs the analysis on the Wikipedia article network where it's corr
 
 Before going into the methodologies we define some helper functions which help create a hierarchical graph from the respective scores and also functions for plotting purposes. 
 
-```{r}
+```{r, echo=FALSE}
 get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
   
   ## Calculating Score ratio for all edges with error handling for nodes with a 0 score
@@ -622,7 +652,7 @@ get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
 
 ```
 
-get_sub_tree is a function to sample a graph from the hierarchy where, given a staring node, we sample $n$ nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a layout for a cleaner visualization.  
+We also define a function to sample a graph from the hierarchy where, given a staring node, we sample $n$ nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a plotting function for a cleaner visualization.  
 
 ```{r}
 ## Recursive Depth-First search for the sub-tree given the root
@@ -686,12 +716,13 @@ tree_plot_func <- function(graph) {
 ```
 
 
-###### Betweenness Centrality based hierarchy extraction
+### Betweenness Centrality based hierarchy extraction
 
 As the name suggests, in the method we use a simple betweenness centrality based hierarchy score to determine hierarchical relation between the nodes. As discussed above, in order to scale the score to account for the non-regular network structure, we define a hierarchy score as below:
 
 ![Betweenness Centrality Score](images/betweenness_centrality.png)
-###### Results
+
+#### Results
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
 betweenness_centrality <- centr_betw(hyperphysics_graph,directed=TRUE)
@@ -705,8 +736,9 @@ bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
 
 bw_hierarchy_graph_centrality <- centr_betw(bw_hierarchy_graph)
 max_centrality_node <- which(bw_hierarchy_graph_centrality$res == max(bw_hierarchy_graph_centrality$res),arr.ind = TRUE)
+```
 
-
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
 ## plotting sub-tree
 set.seed(1)
 g <- graph_from_edgelist(get_sub_tree(245,bw_hierarchy_edgelist,level=3,n=4),directed = TRUE)
@@ -720,7 +752,7 @@ tree_plot_func(g2)
 ```
 
 
-###### Page-Rank based hierarchy extraction
+### Page-Rank based hierarchy extraction
 
 The idea behind page-rank based hierarchy scoring is similar to betweenness based approach. Page-Rank algorithm gives us a centrality measure for a node that is weighted by the centrality measures of it's neighbours. As this measure is already weighted, we don't need to scale it by the degree of the node. Page-Rank centrality is defined as below:
 
@@ -732,9 +764,10 @@ $PR(u)$: Page-Rank for node $u$
 $B_u$: The set containing all nodes linking to node $u$  
 $L(v)$: No. of edges from node $v$
 
-###### Results
 
-```{r, warning=FALSE, message=FALSE,echo=FALSE}
+#### Results
+
+```{r, warning=FALSE, message=FALSE}
 page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack",directed=TRUE)
 pr_hierarchy_score <- page_rank_centrality$vector
 
@@ -744,6 +777,10 @@ lower_cutoff <- 0.2
 pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
 V(pr_hierarchy_graph)$titles <- strtrim(wrap_strings(vertex_titles[V(pr_hierarchy_graph)],10),30)
+```
+
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
 ## plotting sub-tree
 set.seed(1)
 g <- graph_from_edgelist(get_sub_tree(245,level=3,pr_hierarchy_edgelist,n=4))
@@ -772,7 +809,7 @@ tree_plot_func(g2)
 # diagonalNetwork(List = root2, fontSize = 10, opacity = 0.9, margin = 0)
 ```
 
-###### Attraction Basin based hierarchy extraction
+### Attraction Basin based hierarchy extraction
 
 This is a method developed by the authors of the paper. The purpose behind it was to create a measure that can be estimated locally and does not nequire for the entire network to be analysed. For example, to calculate betweenness centrality for a node, all the shortest paths between all the nodes have to be calculated. Similarly, page-rank centrality being iterative, has to be estimated for all the nodes in the network together. For large networks, such computations can be very expensive and hence there is a need for a local measure of centrality.
 
@@ -783,7 +820,8 @@ The authors define the score as comparision between the weighted fraction of the
 Given this idea, the hierarchy score is defined as the following:
 
 ![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
-###### Results
+
+#### Results
 
 ```{r, warning=FALSE,message=FALSE, echo=FALSE}
 get_ab_hierarchy_score <- function(gdist,alpha,m){
@@ -805,7 +843,9 @@ get_ab_hierarchy_score <- function(gdist,alpha,m){
   h_score <- h_minus / h_plus
   return(h_score)
 }
+```
 
+```{r}
 ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=5)
 
 upper_cutoff <- 0.8
@@ -814,6 +854,9 @@ lower_cutoff <- 0.2
 ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
 
+```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
 ## plotting sub-tree
 set.seed(10)
 g <- graph_from_edgelist(get_sub_tree(245,level=3,ab_hierarchy_edgelist,n=5 ))
@@ -822,6 +865,6 @@ iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
 V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
 tree_plot_func(g2)
-
-
 ```
+
+

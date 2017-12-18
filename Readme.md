@@ -1,16 +1,37 @@
-Introduction
+The Tree of Knowledge
 ================
 Kaushik Mohan
+
+Directory Structure
+===================
+
+-   `Code/data` contains edgelists and node details of the scraped network used in this project.
+-   `Paper` includes the Muchnik, et.al. paper used as the primary reference for this project
+
+Introduction
+============
 
 This project is an attempt to use (and improve) methods described in the paper by Muchnik, et.al. for extracting hierarchies from a network. The paper has been made available for reference in the respective folder within the repo. The end goal is to be able to use these techniques to create a knowledge tree from the Wikipedia EN article network which could be used to create a more structured online-reference/learning platform akin to a traditional Encyclopedia.
 
 For the purpose of this project though, we use a smaller and more specific network of articles from HyperPhysics, a HTML Textbook (<http://hyperphysics.phy-astr.gsu.edu/hbase/hframe.html>). This textbook also has a more complete hyperlink structure compared to Wikipedia which should give us better results. Based on this network, we should be able to arrive at a tree structure which denotes the evolution of Physics literature and traditional structure in Physics instruction. The HyperPhysics page provides hierarchies based on content and some semantics which could be used as a reference to validate the results of the analysis.
 
-As a work in progress at the end, we look at developing a better algorithm for extracting hierarchies using the idea of community detection to create each level of the hierarchy iteratively. The intution/hypothesis behind formulating such an approach is two-fold. Firstly, the previous methodologies identify hierarchies locally across all nodes to generate the full structure. Secondly, the cutoffs based on which hierarchical relationships are determined arbitrarily and tuned through validation. The proposed methodologies address these issues by using eigenvector based community detection to create the hierarchy through a top-down approach. By first identifying a community of nodes (topics in this sense) and their hierarchical relationships, we then dive deeper into each group to determine the hierarchies within. By iteratively going through this process, we hope to have a better and more intuitive hierarchical structure developing from the underlying network.
+As a work in progress at the end, we look at developing a better algorithm for extracting hierarchies using the idea of community detection to create each level of the hierarchy iteratively. The intution/hypothesis behind formulating such an approach is two-fold. Firstly, the previous methodologies identify hierarchies locally across all nodes to generate the full structure. Secondly, the cutoffs based on which hierarchical relationships are determined arbitrarily and tuned through validation. The proposed methodology addresses these issues by using eigenvector based community detection to create the hierarchy in a top-down approach. By first identifying a community of nodes (topics, in this context) and their hierarchical relationships, we then dive deeper into each topic to determine the hierarchies within. By iteratively going through this process, we hope to have a better and more intuitive hierarchical structure developing from the underlying network. This approach might perhaps more appilicable in this setting as the hypothesis is tied to the context.
+
+Goals
+-----
+
+To summarize, the goals of this project are
+
+1.  Use the methodologies defined in the paper to extract the hierarchical structure of HyperPhysics content
+
+2.  Develop a commuity based iterative methodology for hierarchy extraction in a knowledge network
+
+3.  Compare the results from the different methodologies and validate the results by surveying members in the Physics community
 
 ------------------------------------------------------------------------
 
-#### Part 1: Scraping for Data
+Part 1: Scraping for Data
+-------------------------
 
 The first part of the project involves scraping through the HyperPhysics domain to create a network with pages as nodes and hyperlink between pages as edges. The webpage used here is HyperPhysics, a Physics and Math HTML textbook developed by Carl R. nave of Georgia State University. We use this because it's comprehensive coverage of most of physics and the linking structure between content pages. It also has a map of the content in some form which could provide validation to the extraction of trees from the link structure.
 
@@ -156,49 +177,9 @@ l
     ## [4] "derivative"                                    
     ## [5] "Motion equations when acceleration is constant"
 
-We note that the results now are lot cleaner compared to the raw output from before. Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit.
+We note that the results now are lot cleaner compared to the raw output from before. Now that we have written a function to extract urls and titles, we will create a data structure for storing this information for all the pages we visit. We also define functions to add new pages and edges to the respective data frames.
 
-``` r
-## Storing the page URL and title in data frame page_details
-page_details <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
-colnames(page_details) <- c("url","title")
-
-## Initializing a data frame to store the edge list which would be the hyperlinks
-edge_list <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
-colnames(edge_list) <- c("from_url","to_url")
-```
-
-We also define functions to add new pages and edges to the respective data frames.
-
-``` r
-## Function to add new page details
-add_page_details <- function(l,df){
-  existing_urls <- df$url
-  existing_titles <- df$title
-  new_urls <- c(l$main_page,l$page_links)
-  new_titles <- c(l$main_page_title,l$page_titles)
-  ## Checking if Title is as per page and not the hyperlink text
-  if(!(df[df$url == l$main_page,2] == l$main_page_title)){
-    df[df$url == l$main_page,2] <- l$main_page_title
-  }
-  ## Removing duplicates before appending
-  new_titles <- new_titles[!new_urls %in% existing_urls]
-  new_urls <- new_urls[!new_urls %in% existing_urls]
-  temp_df <- data.frame(url=new_urls,title=new_titles)
-  return(rbind(df,temp_df))
-}
-
-## Function to get new edge information
-get_edges <- function(l){
-  if(length(l$page_links) > 0){
-    return(data.frame(from_url=l$main_page,to_url=l$page_links))
-  }else{
-    return(NULL)
-  }
-}
-```
-
-We now use the function defined above to go over all the URLs and store the network structure.
+Using these helper functions, we go over all the URLs and store the network structure.
 
 ``` r
 ## Creating a list to store all the URLs vsiited
@@ -249,166 +230,35 @@ edge_list <- scrape$el
 error_urls <- scrape$errors
 ```
 
-We find that there are 295 broken URLs. The next step is to try and fix these before scraping through them again. Through some manual inspection, we find that most broken URLs are of the form xxx/yyy/zzz.html where the correct URL is supposed to be yyy/zzz.html. We also note that some of them aren't broken and do infact work.
+### Error handling
 
-``` r
-length(error_urls)
-```
+One of the major challenges in scraping the web for the network data was with handling the different formats of URLs and account for broken ones. At the end of the scraping, we find that there are 295 broken URLs. The next step is to try and fix these before scraping through them again. Through some manual inspection, we try and find patterns within these in order to fix them in batches rather than individually. We are able to identify that most of the cases involve a missing or incorrect parent domain. By taking care of these cases, we reduce the number down to less than 20 cases.
 
     ## [1] 295
 
-``` r
-#######################
-## Fixing Broken URLs
-#######################
-
-## Removing the links which are broken because of the index directory structure
-error_urls <- error_urls[!(grepl("^kinetic/imgkin",error_urls))]
-error_urls <- error_urls[!(grepl("^kinetic/kinpic",error_urls))]
-error_urls <- error_urls[!(grepl("kinetic/hbase/",error_urls))]
-error_urls <- error_urls[!(grepl("^quantum/imgqua",error_urls))]
-error_urls <- error_urls[!(grepl("^quantum/modpic",error_urls))]
-error_urls <- error_urls[!(grepl("quantum/hbsae/",error_urls))]
-error_urls <- error_urls[!(grepl("^thermo/heatpic",error_urls))]
-error_urls <- error_urls[!(grepl("^thermo/imgheat",error_urls))]
-error_urls <- error_urls[!(grepl("thermo/hbase/",error_urls))]
-error_urls <- error_urls[!(grepl("^quantum/[[:punct:]]",error_urls))]
-error_urls <- error_urls[!(grepl("^quantum/imgqua/[[:punct:]]",error_urls))]
-error_urls <- error_urls[!(grepl("^quantum/modpic/[[:punct:]]",error_urls))]
-error_urls <- error_urls[!(grepl("^kinetic/[[:punct:]]",error_urls))]
-
-## Creating a data frame to store these URLs and their fixes
-fixed_error_urls <- data.frame(matrix(ncol=2),stringsAsFactors = FALSE)
-unvisited_urls <- ""
-
-## Looping through error URLs and identifying those of the form described above
-for(i in seq_along(error_urls)){
-  fixed_error_urls[i,1] <- error_urls[i]
-  tryCatch(
-    {
-      fixed_error_urls[i,2] <- substring(error_urls[i],regexpr("/",error_urls[i])[1]+1)
-      temp_url <- paste0(url_prefix,fixed_error_urls[i,2])
-      if(!(fixed_error_urls[i,2] %in% edge_list$from_url)){
-        temp_page <- read_html(temp_url)  
-      }
-      ## Replace URL in Page Details
-      page_details$url[which(page_details$url %in% error_urls[i])] <- fixed_error_urls[i,2]
-      ## Replace URL in Edge Details
-      edge_list$from_url[which(edge_list$from_url %in% error_urls[i])] <- fixed_error_urls[i,2]
-      edge_list$to_url[which(edge_list$to_url %in% error_urls[i])] <- fixed_error_urls[i,2]
-      ## Add to Unvisited URLs if not visited
-      if(!fixed_error_urls[i,2] %in% edge_list$from_url){
-        unvisited_urls <- c(unvisited_urls,fixed_error_urls[i,2])
-      }
-    },
-    error=function(cond){
-      fixed_error_urls[i,2] <<- NA
-    }
-  )
-}
-
-## Function to fix URLs in page details and edge list to the correct URL and adding to list of pages to visit if unvisited
-
-fix_error_urls <- function(fixed_error_urls, page_details, edge_list,unvisited_urls){
-  error_url_fixes <- fixed_error_urls[!is.na(fixed_error_urls$X2),]
-  for(i in seq_along(error_url_fixes)){
-    err_url <- error_url_fixes$X1[i]
-    fixed_url <- error_url_fixes$X2[i]
-    page_details$url[which(page_details$url == err_url)] <- fixed_url
-    edge_list$from_url[which(edge_list$from_url == err_url)] <- fixed_url  
-    edge_list$to_url[which(edge_list$to_url == err_url)] <- fixed_url  
-    if(!fixed_url %in% edge_list$from_url){
-          unvisited_urls <- c(unvisited_urls,fixed_url)
-        }
-  }
-  fixed_error_urls <- fixed_error_urls[is.na(fixed_error_urls$X2),]
-  return(list(errors=fixed_error_urls,pd=page_details,el=edge_list,unvisited=unvisited_urls))
-}
-
-fixes <- fix_error_urls(fixed_error_urls = fixed_error_urls, page_details = page_details, edge_list = edge_list, unvisited_urls = unvisited_urls)
-unvisited_urls <- fixes$unvisited
-page_details <- fixes$pd
-edge_list <- fixes$el
-fixed_error_urls <- fixes$errors
-
-## Check if these URls are infact broken (some seem to work on manual inspection)
-for(i in seq_along(fixed_error_urls$X1)){
-  tryCatch(
-    {
-      temp_url <- paste0(url_prefix,gsub("//|///","/",fixed_error_urls[i,1]))
-      temp_page <- read_html(temp_url)   
-      fixed_error_urls[i,2] <- gsub("//|///","/",fixed_error_urls[i,1])
-    },
-    error=function(cond){
-      fixed_error_urls[i,2] <<- NA
-    }
-  )
-}
-
-fixes <- fix_error_urls(fixed_error_urls = fixed_error_urls, page_details = page_details, edge_list = edge_list, unvisited_urls = unvisited_urls)
-unvisited_urls <- fixes$unvisited
-page_details <- fixes$pd
-edge_list <- fixes$el
-fixed_error_urls <- fixes$errors
-dim(fixed_error_urls)[1]
-```
-
-    ## [1] 40
-
-After correcting for these two cases, we are left with 40 broken URLs. Fixing these required a lot of manual checking. One of the ways of identifying these was to add the parent URL domain to check if that works and we were able to reduce the number of errors with this.
-
-``` r
-## Adding parent domain to URL to check if it works
-for(i in seq_along(fixed_error_urls$X1)){
-  tryCatch(
-    {  
-      parent_url <- edge_list$from_url[edge_list$to_url == fixed_error_urls[i,1]][2]
-      parent_domain <- strsplit(parent_url,"/")[[1]][max(1,length(strsplit(parent_url,"/")[[1]])-1)]
-      fixed_url <- paste0(parent_domain,"/",fixed_error_urls$X1[i])
-      temp_url <- paste0(url_prefix,fixed_url)
-      temp_page <- read_html(temp_url)   
-      fixed_error_urls[i,2] <- fixed_url
-    },
-    error=function(cond){
-      fixed_error_urls[i,2] <<- NA
-    }
-  )
-}
-
-## Other manual fixes
-fixed_error_urls$X2[grep("nuclear/gphysref.html",fixed_error_urls$X1)] <-"geophys/gphysref.html"
-fixed_error_urls$X2[grep("phyopt/optref.html",fixed_error_urls$X1)] <-"optics/optref.html"
-fixed_error_urls$X2[grep("astref.html",fixed_error_urls$X1)] <-"astro/astref.html"
-fixed_error_urls$X2[grep("relcon.html",fixed_error_urls$X1)] <-"relativ/relcon.html"
-fixed_error_urls$X2[grep("music/..sound/timbre.html",fixed_error_urls$X1)] <-"sound/timbre.html"
-
-fixes <- fix_error_urls(fixed_error_urls = fixed_error_urls, page_details = page_details, edge_list = edge_list, unvisited_urls = unvisited_urls)
-unvisited_urls <- fixes$unvisited
-page_details <- fixes$pd
-edge_list <- fixes$el
-fixed_error_urls <- fixes$errors
-dim(fixed_error_urls)[1]
-```
-
-    ## [1] 20
-
-``` r
-## Ignoring 20 broken URLs for now
-```
+    ##                           X1   X2
+    ## 72      magnetic/elecur.html <NA>
+    ## 93     mechanics/volcon.html <NA>
+    ## 136      acoustic/dbcon.html <NA>
+    ## 157     molecule/schrcn.html <NA>
+    ## 174      quantum/lascon.html <NA>
+    ## 176        solar/radtel.html <NA>
+    ## 181        astro/galaxy.html <NA>
+    ## 185   geophys/stibarsen.html <NA>
+    ## 186    minerals/geophys.html <NA>
+    ## 194      astro/solarcon.html <NA>
+    ## 227         pertab/salt.html <NA>
+    ## 234   solids/rectifiers.html <NA>
+    ## 239      quantum/qualig.html <NA>
+    ## 250      pertab/diamond.html <NA>
+    ## 251      pertab/geophys.html <NA>
+    ## 252 molecule/scattercon.html <NA>
+    ## 253   molecule/atmoscon.html <NA>
+    ## 258        music/string.html <NA>
+    ## 262     organic/chemcon.html <NA>
+    ## 263      audio/trawvcon.html <NA>
 
 We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Finally, we visit the unvisited fixed URLs and add the information to the dataset.
-
-``` r
-## Re-running the scraping function with the fixed URLs unvisited previously
-new_error_urls <- ""
-scrape <- scrape_urls(urls_to_visit=unvisited_urls,visited_urls=visited_urls, page_details=page_details, edge_list=edge_list,error_urls = new_error_urls)
-
-unvisited_urls <- scrape$unvisited_urls
-visited_urls <- scrape$visited_urls
-page_details <- scrape$pd
-edge_list <- scrape$el
-new_error_urls <- scrape$errors
-```
 
 Finally, we check the dataset once more to remove self-edges and any duplicates.
 
@@ -435,7 +285,8 @@ We are finally left with 21,057 edges and 2931 nodes. We use this network data f
 
 ------------------------------------------------------------------------
 
-#### Part 2: Network Stats
+Part 2: Network Stats
+---------------------
 
 In this section, we use this data from the scraping exercise to create a network object and perform some basic network analysis. We look at presenting a high-level overview of the network through some of it's node level and network level statistics in order gain an understanding of the underlying structure.
 
@@ -443,7 +294,7 @@ Importing the saved datasets with edge list and nodal attributes.
 
 Creating the network objects and setting the vertex attributes. When the network is created, it numbers the nodes alphabetically based on the vertex name (in this case URL). We get these and store them for future reference.
 
-##### Sample of the dataset
+#### Sample of the network
 
 ``` r
 head(page_details,5)
@@ -467,7 +318,13 @@ head(edge_list,5)
     ## 4 acca.html deriv.html
     ## 5 acca.html   mot.html
 
-###### Nodes, Edges and Density
+##### Plot
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
+
+From the plot of an induced sub-graph of 750 nodes, we can already see some clusters closely interconnected within in the network.
+
+### Nodes, Edges and Density
 
     ## [1] "No. of Nodes:  2931"
 
@@ -475,13 +332,7 @@ head(edge_list,5)
 
     ## [1] "Density:  0.00245"
 
-###### A look at the network sample
-
-![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png)
-
-From the plot of an induced sub-graph of 750 nodes, we can already see some clusters closely interconnected within in the network.
-
-###### Degree Distribution
+### Degree Distribution
 
 The first network statistics we look into furhter is the degree distribution. We want to verify if the distribution follows a power law as with several similar networks extracted from the web.
 
@@ -505,7 +356,7 @@ The estimated co-efficient or the power in the power-law form for the degree dis
 
 ![Degree Distribution](images/degrees.png)
 
-###### Geodesic Distance Distribution
+### Geodesic Distance Distribution
 
 Next, we look at the distrbution of the Geodesic distance between nodes. This measure gives us a sense of how close the nodes are from each other and along side a scale-free degree distribution, a short average geodesic distance (or network diameter) would indicate a small-world nature of the network as defined by Watts and Strogatz (1998).
 
@@ -515,7 +366,7 @@ Next, we look at the distrbution of the Geodesic distance between nodes. This me
 
 We do observe that the Network Diameter small at ~5.86 and this is re-inforced by the above plot of the geodesic distance distribution.
 
-###### Centralization
+### Centralization
 
 The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized.
 
@@ -523,7 +374,8 @@ The key network and nodal measure for our analysis is the Centrality and Central
 
 ------------------------------------------------------------------------
 
-#### Part 3: Extracting hierarchies
+Part 3: Extracting hierarchies
+------------------------------
 
 In this section, we create the functions to extract hierarchies from the network and use these on the HyperPhysics article network. Four different hierarchy extraction methods are explored, namely
 
@@ -534,7 +386,7 @@ In this section, we create the functions to extract hierarchies from the network
 
 The specific formulae and methodology are presented in following sub-sections where we explore each of these methodologies in detail. The first three methods listed above are as defined in the Muchnik, et.al. paper. The last methodology is an independent exploration of a different way to extract hierarchy which takes into account the clusters of topics in the network and extract the hierarchy iteratively starting from the highest-level allthe way down to the leaf nodes.
 
-###### Overview
+### Overview
 
 To understand the core idea behind extracting hierarchies from a network, we look at a regular tree to start with. From the below sample tree marked by it's corresponding betweenness centralities, we can make the following observations:
 
@@ -543,6 +395,8 @@ To understand the core idea behind extracting hierarchies from a network, we loo
 -   Large difference in centrality for nodes unconnected with by an edge in the hierarchy
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-24-1.png)
+
+### 
 
 These three fundamental ideas form the basis of hierarchy extraction in each of the following methods. The overall process of hierarchy extraction can be summarized as the following set of steps
 
@@ -556,33 +410,7 @@ The paper performs the analysis on the Wikipedia article network where it's corr
 
 Before going into the methodologies we define some helper functions which help create a hierarchical graph from the respective scores and also functions for plotting purposes.
 
-``` r
-get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
-  
-  ## Calculating Score ratio for all edges with error handling for nodes with a 0 score
-  score_ratio <- h_scores[edgelist[,1]]/ifelse(h_scores[edgelist[,2]]==0,0.00001,h_scores[edgelist[,2]])
-  
-  ## Creating a matrix with edges, scores for each node and the ratio of scores
-  hierarchy_matrix <- cbind(edgelist,h_scores[edgelist[,1]], h_scores[edgelist[,2]], score_ratio)
-  colnames(hierarchy_matrix) <- c("V1","V2","Score_V1","Score_V2","Score_Ratio")
-  
-  ## Eliminating rows where score ratio is not between the cutoffs
-  hierarchy_matrix <- hierarchy_matrix[hierarchy_matrix$Score_Ratio > lower & hierarchy_matrix$Score_Ratio <= upper,]
-  
-  ## Determining the higher and lower nodes based on their individual scores
-  hierarchy_matrix <- cbind(hierarchy_matrix,ifelse(hierarchy_matrix[,3] > hierarchy_matrix[,4],hierarchy_matrix[,1],hierarchy_matrix[,2]))
-  hierarchy_matrix <- cbind(hierarchy_matrix,ifelse(hierarchy_matrix[,3] > hierarchy_matrix[,4],hierarchy_matrix[,2],hierarchy_matrix[,1]))
-  colnames(hierarchy_matrix) <- c("V1","V2","Score_V1","Score_V2","Score_Ratio","Higher_Node","Lower_Node")
-
-  ## The Last two columns are the directional edges in the hierarchy 
-  hierarchy_edgelist <- as.matrix(hierarchy_matrix[,c(6,7)])
-  hierarchy_network <- network(hierarchy_edgelist,matrix.type="edgelist",directed = TRUE)
-  hierarchy_graph <- asIgraph(hierarchy_network)
-  return(hierarchy_graph)
-}
-```
-
-get\_sub\_tree is a function to sample a graph from the hierarchy where, given a staring node, we sample *n* nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a layout for a cleaner visualization.
+We also define a function to sample a graph from the hierarchy where, given a staring node, we sample *n* nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a plotting function for a cleaner visualization.
 
 ``` r
 ## Recursive Depth-First search for the sub-tree given the root
@@ -643,15 +471,17 @@ tree_plot_func <- function(graph) {
 }
 ```
 
-###### Betweenness Centrality based hierarchy extraction
+### Betweenness Centrality based hierarchy extraction
 
 As the name suggests, in the method we use a simple betweenness centrality based hierarchy score to determine hierarchical relation between the nodes. As discussed above, in order to scale the score to account for the non-regular network structure, we define a hierarchy score as below:
 
-![Betweenness Centrality Score](images/betweenness_centrality.png) \#\#\#\#\#\# Results
+![Betweenness Centrality Score](images/betweenness_centrality.png)
 
-![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-27-1.png)
+#### Results
 
-###### Page-Rank based hierarchy extraction
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-28-1.png)
+
+### Page-Rank based hierarchy extraction
 
 The idea behind page-rank based hierarchy scoring is similar to betweenness based approach. Page-Rank algorithm gives us a centrality measure for a node that is weighted by the centrality measures of it's neighbours. As this measure is already weighted, we don't need to scale it by the degree of the node. Page-Rank centrality is defined as below:
 
@@ -663,11 +493,23 @@ $$PR(u) = \\sum\_{v\\in B\_u}\\frac{PR(v)}{L(v)} $$
 *B*<sub>*u*</sub>: The set containing all nodes linking to node *u*
 *L*(*v*): No. of edges from node *v*
 
-###### Results
+#### Results
 
-![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-28-1.png)
+``` r
+page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack",directed=TRUE)
+pr_hierarchy_score <- page_rank_centrality$vector
 
-###### Attraction Basin based hierarchy extraction
+upper_cutoff <- 0.8
+lower_cutoff <- 0.2
+
+pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
+V(pr_hierarchy_graph)$titles <- strtrim(wrap_strings(vertex_titles[V(pr_hierarchy_graph)],10),30)
+```
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-30-1.png)
+
+### Attraction Basin based hierarchy extraction
 
 This is a method developed by the authors of the paper. The purpose behind it was to create a measure that can be estimated locally and does not nequire for the entire network to be analysed. For example, to calculate betweenness centrality for a node, all the shortest paths between all the nodes have to be calculated. Similarly, page-rank centrality being iterative, has to be estimated for all the nodes in the network together. For large networks, such computations can be very expensive and hence there is a need for a local measure of centrality.
 
@@ -677,6 +519,18 @@ The authors define the score as comparision between the weighted fraction of the
 
 Given this idea, the hierarchy score is defined as the following:
 
-![Attraction-Basin hierarchy Score](images/attraction_basin_score.png) \#\#\#\#\#\# Results
+![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
 
-![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-29-1.png)
+#### Results
+
+``` r
+ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=5)
+
+upper_cutoff <- 0.8
+lower_cutoff <- 0.2
+
+ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
+ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
+```
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-33-1.png)
