@@ -621,22 +621,29 @@ get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
 get_sub_tree is a function to sample a graph from the hierarchy where, given a staring node, we sample $n$ nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a layout for a cleaner visualization.  
 
 ```{r}
-## A function to sample a sub-graph from ther hierarchy graph.
+## Recursive Depth-First search for the sub-tree given the root
 
-get_sub_tree <- function(st,levels=1,el,n=10,cur_level=1){
-  reduced_el <- matrix(NA,ncol=2)
-  down_nodes <- NA
-  down_nodes <- c(down_nodes,sample(el[el[,1] == st,2],min(n,length(el[el[,1] == st,2]))))
-  down_nodes <- down_nodes[!is.na(down_nodes)]
-  reduced_el <- rbind(reduced_el,el[which(el[,2] %in% down_nodes & el[,1] == st),])
-  if(cur_level <= levels){
-    for(i in seq_along(down_nodes)){
-      reduced_el <- rbind(reduced_el,get_sub_tree(st=down_nodes[i],levels = levels,el = el,n = n, cur_level =(cur_level+1)))
+get_children <- function(st,el,n=5){
+  all_children <- matrix(el[el[,1]==st,],ncol=2,byrow=FALSE)
+  sampled_children <- all_children[all_children[,2] %in% sample(all_children[,2],min(n,length(all_children[,2])),replace=FALSE),]
+  return(matrix(sampled_children,ncol=2,byrow = FALSE))
+}
+
+get_sub_tree <- function(st,el,level=1,cur_level=1,sub_el=matrix(NA,ncol=2),n=5){
+  if(cur_level > level){
+    tmp_el <- matrix(NA,ncol=2)
+    return(tmp_el)
+  }else{
+    tmp_el <- get_children(st,el,n)
+    for(i in seq_along(tmp_el[,2])){
+      if(!tmp_el[i,2] %in% sub_el[,1]){
+        tmp_el <- rbind(tmp_el,get_sub_tree(tmp_el[i,2],el,level,(cur_level+1),tmp_el,n=n))  
+      }
     }
   }
-  reduced_el <-  reduced_el[-1,]
-  reduced_el <-  reduced_el[!duplicated(reduced_el),]
-  return(reduced_el)
+  tmp_el <- tmp_el[!duplicated(tmp_el),]
+  tmp_el <- tmp_el[!is.na(tmp_el[,1]),]
+  return(tmp_el)
 }
 
 wrap_strings <- function(vector_of_strings,width){
@@ -644,6 +651,7 @@ wrap_strings <- function(vector_of_strings,width){
                         paste(strwrap(x, width=width), collapse="\n")
                         }))
 }
+
 
 ## Function to plot a tree using ggraph
 tree_plot_func <- function(graph) {
@@ -682,6 +690,7 @@ As the name suggests, in the method we use a simple betweenness centrality based
 ###### Results
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
+betweenness_centrality <- centr_betw(hyperphysics_graph,directed=TRUE)
 bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degree)*(1+out_degree)))
 
 upper_cutoff <- 0.8
@@ -696,7 +705,7 @@ max_centrality_node <- which(bw_hierarchy_graph_centrality$res == max(bw_hierarc
 
 ## plotting sub-tree
 set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(max_centrality_node,2,bw_hierarchy_edgelist,n=10),directed = TRUE)
+g <- graph_from_edgelist(get_sub_tree(max_centrality_node,bw_hierarchy_edgelist,level=5,n=10),directed = TRUE)
 # g <- bw_hierarchy_graph
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),25)
 iso <- V(g)[igraph::degree(g)==0]
@@ -722,7 +731,7 @@ $L(v)$: No. of edges from node $v$
 ###### Results
 
 ```{r, warning=FALSE, message=FALSE,echo=FALSE}
-
+page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack",directed=TRUE)
 pr_hierarchy_score <- page_rank_centrality$vector
 
 upper_cutoff <- 0.8
@@ -730,15 +739,33 @@ lower_cutoff <- 0.2
 
 pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
-
+V(pr_hierarchy_graph)$titles <- strtrim(wrap_strings(vertex_titles[V(pr_hierarchy_graph)],10),30)
 ## plotting sub-tree
 set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(2177,2,pr_hierarchy_edgelist,n=4))
+g <- graph_from_edgelist(get_sub_tree(668,level=3,pr_hierarchy_edgelist,n=3))
+
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
 V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
 tree_plot_func(g2)
+
+# install.packages('networkD3')
+# library(networkD3)
+# pr_d3 <- igraph_to_networkD3(g2)
+# dendroNetwork( pr_d3, fontSize = 5, opacity = 0.9)
+# 
+# install.packages('data.tree')
+# library(data.tree)
+# library(networkD3)
+# 
+# g <- get_sub_tree(668,3,pr_hierarchy_edgelist,n=5)
+# df <- data.frame(from=vertex_titles[g[,1]],to=vertex_titles[g[,2]])
+# root2 <- data.tree::FromDataFrameNetwork(df)
+# 
+# root2 <- as.list(root2, mode = 'explicit', unname = TRUE)
+# 
+# diagonalNetwork(List = root2, fontSize = 10, opacity = 0.9, margin = 0)
 ```
 
 ###### Attraction Basin based hierarchy extraction
@@ -752,7 +779,7 @@ The authors define the score as comparision between the weighted fraction of the
 Given this idea, the hierarchy score is defined as the following:
 
 ![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
-
+###### Results
 
 ```{r, warning=FALSE,message=FALSE, echo=FALSE}
 get_ab_hierarchy_score <- function(gdist,alpha,m){
@@ -777,15 +804,15 @@ get_ab_hierarchy_score <- function(gdist,alpha,m){
 
 ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=3)
 
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
+upper_cutoff <- 0.9
+lower_cutoff <- 0.1
 
 ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
 
 ## plotting sub-tree
 set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(2177,3,ab_hierarchy_edgelist,n=3))
+g <- graph_from_edgelist(get_sub_tree(668,level=3,ab_hierarchy_edgelist,n=3))
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
