@@ -37,16 +37,14 @@ headings <- html_nodes(webpage,'h1')
 h_regex <- regexpr(">(.*)<",as.character(headings[1]))
 heading <- substr(as.character(headings[1]),(h_regex[1]+1),h_regex[1]+attr(h_regex,"match.length")-2)
 heading
-print("Links")
 links
-print("Titles")
 titles
 
 ```
 
 We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those iteratively. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content. In the below chunk, we write the function to extract all the links from a page while simultaneously cleaning the data for further use. We exclude javascript links, multimedia links and also stop the parsing from entering into an infinite loop when it reaches an index directory (http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/) where sorting by Name, Size etc. create a slightly different URL. We also exclude URLs under the class/ subdomain as these don't contain Physics content but are structured courses that have been created within the hyperphysics domain.  
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
 
 ## Defining a function to get all the hyperlinks in a given webpage
@@ -121,7 +119,7 @@ get_links <- function(url,prefix=url_prefix,heading){
   return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
 }
 
-l <- get_links("electric/lightncon.html",heading="Acceleration")
+l <- get_links("acca.html",heading="Acceleration")
 l
 
 ```
@@ -170,7 +168,7 @@ get_edges <- function(l){
 
 We now use the function defined above to go over all the URLs and store the network structure. 
 
-```{r, warning=FALSE,echo=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 ## Creating a list to store all the URLs vsiited
 visited_urls <- NA
 error_urls <- NA
@@ -222,7 +220,7 @@ error_urls <- scrape$errors
 We find that there are 295 broken URLs. The next step is to try and fix these before scraping through them again. Through some manual inspection, we find that most broken URLs are of the form xxx/yyy/zzz.html where the correct URL is supposed to be yyy/zzz.html. We also note that some of them aren't broken and do infact work.
 
 
-```{r, warning=FALSE,echo=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE}
 length(error_urls)
 
 #######################
@@ -323,7 +321,7 @@ dim(fixed_error_urls)[1]
 
 After correcting for these two cases, we are left with 40 broken URLs. Fixing these required a lot of manual checking. One of the ways of identifying these was to add the parent URL domain to check if that works and we were able to reduce the number of errors with this. 
 
-```{r, warning=FALSE,echo=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE}
 
 ## Adding parent domain to URL to check if it works
 for(i in seq_along(fixed_error_urls$X1)){
@@ -361,7 +359,7 @@ dim(fixed_error_urls)[1]
 
 We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Finally, we visit the unvisited fixed URLs and add the information to the dataset. 
 
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE}
 
 ## Re-running the scraping function with the fixed URLs unvisited previously
 new_error_urls <- ""
@@ -424,7 +422,7 @@ page_details <- read.csv("code/Data/page_details.csv",stringsAsFactors = FALSE)
 
 Creating the network objects and setting the vertex attributes. When the network is created, it numbers the nodes alphabetically based on the vertex name (in this case URL). We get these and store them for future reference. 
 
-```{r}
+```{r, echo=FALSE}
 ## Creating Network object
 hyperphysics_network <- network(as.matrix(edge_list),matrix.type="edgelist",directed = TRUE)
 
@@ -454,7 +452,7 @@ head(edge_list,5)
 
 ###### Nodes, Edges and Density
 
-```{r}
+```{r, echo=FALSE}
 paste("No. of Nodes: ",dim(page_details)[1])
 paste("No. of Edges: ",dim(edge_list)[1])
 network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
@@ -463,7 +461,7 @@ paste("Density: ",round(network_density,5))
 ```
 ###### A look at the network sample
 
-```{r}
+```{r, echo=FALSE}
 set.seed(5)
 sample_nodes <- sample(V(hyperphysics_graph),750,replace = FALSE)
 sub_hyperphysics_graph <- induced_subgraph(hyperphysics_graph,sample_nodes)
@@ -475,7 +473,7 @@ From the plot of an induced sub-graph of 750 nodes, we can already see some clus
 ###### Degree Distribution
 The first network statistics we look into furhter is the degree distribution. We want to verify if the distribution follows a power law as with several similar networks extracted from the web.
 
-```{r}
+```{r,echo=FALSE}
 ## Degree Distribution
 in_degree <- igraph::degree(hyperphysics_graph,mode="in")
 out_degree <- igraph::degree(hyperphysics_graph,mode="out")
@@ -487,7 +485,7 @@ paste("Mean Out-Degree: ",round(mean(out_degree),4))
 
 It is a bit strange and interesting that the Avg. In and Out Degrees match perfectly.We then plot the degree distribution in the log-log scale to see if it is linear denoting a scale-free distribution.
 
-```{r}
+```{r, echo=FALSE}
 ## Plots of Degree Distribution
 par(mfrow=c(1,2))
 plot(log(as.numeric(row.names(table(in_degree)))),log(table(in_degree)),main="Log-log plot of In-Degree Dist.",xlab="log(In-Degree)",ylab="log(frequency)",type="p",pch=1)
@@ -498,7 +496,7 @@ plot(log(as.numeric(row.names(table(out_degree)[-1]))),log(table(out_degree)[-1]
 
 We note that the degree distributions is almost perfectly linear in the log-log scale signifying preferential attachment in terms of the network structure. The out-degree distribution though starts off with a lower frequency of nodes with fewer degress. This perhaps indicates the nature of the textbook where most of the pages are linked with atleast a few other pages and very few pages have no links outward. 
 
-```{r}
+```{r, echo=FALSE}
 in_deg_est <- lm(log(table(in_degree))~log(as.numeric(row.names(table(in_degree)))))
 out_deg_est <- lm(log(table(out_degree)[-1])~log(as.numeric(row.names(table(out_degree)[-1]))))
 
@@ -515,7 +513,7 @@ The estimated co-efficient or the power in the power-law form for the degree dis
 ###### Geodesic Distance Distribution
 Next, we look at the distrbution of the Geodesic distance between nodes. This measure gives us a sense of how close the nodes are from each other and along side a scale-free degree distribution, a short average geodesic distance (or network diameter) would indicate a small-world nature of the network as defined by Watts and Strogatz (1998).
 
-```{r}
+```{r, echo=FALSE}
 ## Geodesic Distances
 
 geodesic_distances <- geodist(hyperphysics_network,count.paths = FALSE)
@@ -532,7 +530,7 @@ We do observe that the Network Diameter small at ~5.86 and this is re-inforced b
 ###### Centralization
 The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized. 
 
-```{r}
+```{r, echo=FALSE}
 ## Centrality Measures
 betweenness_centrality <- centr_betw(hyperphysics_graph)
 paste("Network Centralization: ",round(betweenness_centrality$centralization,3))
@@ -553,7 +551,7 @@ In this section, we create the functions to extract hierarchies from the network
 The specific formulae and methodology are presented in following sub-sections where we explore each of these methodologies in detail. The first three methods listed above are as defined in the Muchnik, et.al. paper. The last methodology is an independent exploration of a different way to extract hierarchy which takes into account the clusters of topics in the network and extract the hierarchy iteratively starting from the highest-level allthe way down to the leaf nodes.  
 
 
-```{r}
+```{r, echo=FALSE}
 
 ## We create the adjacency matrix and an undirected edgelist which is needed for hierarchy extraction
 
@@ -625,12 +623,6 @@ get_sub_tree is a function to sample a graph from the hierarchy where, given a s
 ```{r}
 ## A function to sample a sub-graph from ther hierarchy graph.
 
-## start
-## get n samples of lower nodes
-## for each of these get n samples of lower nodes
-## 
-
-
 get_sub_tree <- function(st,levels=1,el,n=10,cur_level=1){
   reduced_el <- matrix(NA,ncol=2)
   down_nodes <- NA
@@ -653,6 +645,7 @@ wrap_strings <- function(vector_of_strings,width){
                         }))
 }
 
+## Function to plot a tree using ggraph
 tree_plot_func <- function(graph) {
 
   # plot
@@ -686,9 +679,9 @@ tree_plot_func <- function(graph) {
 As the name suggests, in the method we use a simple betweenness centrality based hierarchy score to determine hierarchical relation between the nodes. As discussed above, in order to scale the score to account for the non-regular network structure, we define a hierarchy score as below:
 
 ![Betweenness Centrality Score](images/betweenness_centrality.png)
+###### Results
 
-
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degree)*(1+out_degree)))
 
 upper_cutoff <- 0.8
@@ -726,7 +719,9 @@ $PR(u)$: Page-Rank for node $u$
 $B_u$: The set containing all nodes linking to node $u$  
 $L(v)$: No. of edges from node $v$
 
-```{r}
+###### Results
+
+```{r, warning=FALSE, message=FALSE,echo=FALSE}
 
 pr_hierarchy_score <- page_rank_centrality$vector
 
@@ -759,7 +754,7 @@ Given this idea, the hierarchy score is defined as the following:
 ![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
 
 
-```{r}
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
 get_ab_hierarchy_score <- function(gdist,alpha,m){
   h_plus <- rep(0,dim(gdist)[1])
   h_minus <- rep(0,dim(gdist)[1])
