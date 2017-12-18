@@ -32,7 +32,6 @@ hyperphysics_graph <- asIgraph(hyperphysics_network)
 
 
 ```{r}
-
 paste("No. of Nodes: ",dim(page_details)[1])
 paste("No. of Edges: ",dim(edge_list)[1])
 network_density <- dim(edge_list)[1]/(dim(page_details)[1]*(dim(page_details)[1]-1))
