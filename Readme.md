@@ -119,7 +119,7 @@ We note that the results now are lot cleaner compared to the raw output from bef
 Using these helper functions, we go over all the URLs and store the network structure.
 
     ##    user  system elapsed 
-    ##  90.674  21.535 678.906
+    ##  89.318  20.996 684.776
 
 ### Error handling
 
@@ -141,7 +141,7 @@ One of the major challenges in scraping the web for the network data was with ha
 We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Next, we visit the unvisited fixed URLs and add the information to the dataset.
 
     ##    user  system elapsed 
-    ##   0.723   0.172   5.999
+    ##   0.790   0.167   4.775
 
 Finally, we check the dataset once more to remove self-edges and any duplicates.
 
@@ -295,74 +295,11 @@ Before going into the methodologies we define some helper functions which help c
 
 We also define a function to sample a graph from the hierarchy where, given a staring node, we sample *n* nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a plotting function for a cleaner visualization.
 
-``` r
-## Recursive Depth-First search for the sub-tree given the root
-
-get_children <- function(st,el,n=5){
-  all_children <- matrix(el[el[,1]==st,],ncol=2,byrow=FALSE)
-  sampled_children <- all_children[all_children[,2] %in% sample(all_children[,2],min(n,length(all_children[,2])),replace=FALSE),]
-  return(matrix(sampled_children,ncol=2,byrow = FALSE))
-}
-
-get_sub_tree <- function(st,el,level=1,cur_level=1,sub_el=matrix(NA,ncol=2),n=5){
-  if(cur_level > level){
-    tmp_el <- matrix(NA,ncol=2)
-    return(tmp_el)
-  }else{
-    tmp_el <- get_children(st,el,n)
-    for(i in seq_along(tmp_el[,2])){
-      if(!tmp_el[i,2] %in% sub_el[,1]){
-        tmp_el <- rbind(tmp_el,get_sub_tree(tmp_el[i,2],el,level,(cur_level+1),tmp_el,n=n))  
-      }
-    }
-  }
-  tmp_el <- tmp_el[!duplicated(tmp_el),]
-  tmp_el <- tmp_el[!is.na(tmp_el[,1]),]
-  return(tmp_el)
-}
-
-wrap_strings <- function(vector_of_strings,width){
-  as.character(sapply(vector_of_strings, FUN=function(x){
-                        paste(strwrap(x, width=width), collapse="\n")
-                        }))
-}
-
-
-## Function to plot a tree using ggraph
-tree_plot_func <- function(graph) {
-
-  # plot
-  plot <- ggraph(graph, 'dendrogram') + 
-    theme_bw() +
-    geom_edge_link() +
-    geom_node_point() +
-    geom_node_text(aes(label = node_label), na.rm = TRUE, repel= TRUE,size=2) +
-    theme(panel.grid.minor = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.background = element_blank(),
-          plot.background = element_rect(fill = "white"),
-          panel.border = element_blank(),
-          axis.line = element_blank(),
-          axis.text.x = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title.x = element_blank(),
-          axis.title.y = element_blank(),
-          plot.title = element_text(size = 2))
-  
-  print(plot)
-}
-```
-
 ### Betweenness Centrality based hierarchy extraction
 
 As the name suggests, in the method we use a simple betweenness centrality based hierarchy score to determine hierarchical relation between the nodes. As discussed above, in order to scale the score to account for the non-regular network structure, we define a hierarchy score as below:
 
 ![Betweenness Centrality Score](images/betweenness_centrality.png)
-
-#### Results
-
-![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-28-1.png)
 
 ### Page-Rank based hierarchy extraction
 
@@ -376,22 +313,6 @@ $$PR(u) = \\sum\_{v\\in B\_u}\\frac{PR(v)}{L(v)} $$
 *B*<sub>*u*</sub>: The set containing all nodes linking to node *u*
 *L*(*v*): No. of edges from node *v*
 
-#### Results
-
-``` r
-page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack",directed=TRUE)
-pr_hierarchy_score <- page_rank_centrality$vector
-
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
-
-pr_hierarchy_graph <- get_hierarchy_graph(pr_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
-pr_hierarchy_edgelist <- as_edgelist(pr_hierarchy_graph)
-V(pr_hierarchy_graph)$titles <- strtrim(wrap_strings(vertex_titles[V(pr_hierarchy_graph)],10),30)
-```
-
-![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-30-1.png)
-
 ### Attraction Basin based hierarchy extraction
 
 This is a method developed by the authors of the paper. The purpose behind it was to create a measure that can be estimated locally and does not nequire for the entire network to be analysed. For example, to calculate betweenness centrality for a node, all the shortest paths between all the nodes have to be calculated. Similarly, page-rank centrality being iterative, has to be estimated for all the nodes in the network together. For large networks, such computations can be very expensive and hence there is a need for a local measure of centrality.
@@ -404,16 +325,69 @@ Given this idea, the hierarchy score is defined as the following:
 
 ![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
 
-#### Results
+------------------------------------------------------------------------
 
-``` r
-ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=5)
+Part 4: Results
+---------------
 
-upper_cutoff <- 0.8
-lower_cutoff <- 0.2
+After defining all the methodologies and computing the overall hierarchy graph, we finally take a look at the results. For ease of visualization, I present a subgraph upto 3 levels in depth and sample of the complete branch structure. In order to compare the results from the 3 methods, we present the sub-graph originating at 3 different topics for each of the methods. The topics explored are
 
-ab_hierarchy_graph <- get_hierarchy_graph(ab_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
-ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
-```
+-   Conservation Laws
+-   Biology Concepts
+-   Quantum Physics
+
+We choose these three topics for multiple reasons. A concept like the Conservation Laws is fundamental to many different fields of physics and would expect it to be high up in the overall hierarchy. By looking at the structure originating from this, we could get a sense of how the hierarchy is determined at the high-level. Next, we choose Biology concepts because it is a tangential topic in the textbook with limited content compared to Physics. By looking at the estimated hierarchies for Biology, we could learn about how each of these methodologies work for a more self contained topic or group of articles. Lastly, we look at Quantum physics because being an advanced and not fully explored as a topic, we would expect it to appear relatively lower in the hierarchy and connected to many leaves. The performance of the algorithm in this domain could tell us how sensitive they are close to the boundary of the graph perhaps.
+
+#### Conservation Laws
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-31-1.png)
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-32-1.png)
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-33-1.png)
+
+#### Biology Concepts
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-34-1.png)
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-35-1.png)
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-36-1.png)
+
+#### Quantum Physics
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-37-1.png)
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-38-1.png)
+
+![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-39-1.png)
+
+------------------------------------------------------------------------
+
+Conclusion
+----------
+
+At the high-level, the results presented above are encouraging in that there are no outrightly nonsensical features visible in them. All of the algorithms are able to identify topics that are similar and close to each other even though the depth and the direction they take are quite different, naturally. Below, we analyse each of the outputs to try and observe patterns in them.
+
+We note some very interesting structure coming out of each of these algorithms. When looking at the branches rooting out of Conservation Laws, topics such as Kinetic Energy, Work and Energy priciples and articles in Heat and Thermodynamics seem to important branches. While thermodynamics related topics feature in the results of all the three algorithms, Kinetic energy and work principles appear in the traditional centrality based eastimates. The nature of the relationship however is quite different. Betweenness based algorithm places Kinetic energy and work in parallel while page-rank based algorithm places work under topics in Kinetic Energy. The Attraction basin algorithm output is uniquely different in that it branches out into fundamental forces and topics in astro-physics with heat and thermodynamics featuring more prominantly. Overall though, it does feel like these hierarchical relationahips though interesting, aren't particularly accurate. As hypothesised, we would expect a topic such as Conservation laws leading to different topics in Conservation or mechanics such as the law of conservation of energy, momentum, and angular-momentum etc.
+
+We notice a lot of similarities in the structure under Biology Concepts with Energy cycle, Cellular respiration and topics in photosynthesis appearing. The results from the page-rank based algorithm differ the most from the other two with only one of the branches having similar content on the above topics. The position of the article Electron transportation in photosynthesis and cellular respiration seem to be key nodes but their relative positions are quite different in the different outputs. While there is a hierarchical relationship between these two topics in the betweenness based algorithm, the two nodes are at the same level in the Attraction basin based approach. Fine-tuning the cut-offs to fix such relationships between seemingly important nodes might lead us to a better final output.
+
+Given my limited knowledge in the field of Quantum Physics, I wouldn't go too deep into analysing the structure for this topic. The hypothesis was that, given a specific and deep topic such as Quantum physics, we would see a lot of similarities in the output of the three algorithms. The hypothesis couldn't have been proved more wrong. Each of the algorithms seem to explore a different aspect within Quantum physics. While the branches seem to go out into pretty advanced topics fairly quickly, you can note that the page-rank based output does have more fundamental topics such "Fundamental Forces", "Wave-particle duality" and "Blackbody Radiation" featuring higher up.
+
+From analysing these three trees, we do find interesting parts from each of the algorithms. Given the fact that we haven't yet analysed the sensitivity to cut-offs, these must be taken as preliminary results. It is good to observe similarities in the outputs and perhaps the correlation is a strong indicator of the hierarchical relationship.
+
+Lastly, it must also be noted that for visualization, only a sample of nodes were presented. The absence of certain topics does not imply the absence of the hierarchical relationship in any of the given outputs.
+
+### The way forward
+
+The next steps in this project are:
+
+1.  Exlporing different roots in the full hierarchy graph
+2.  Quantifying similarities between the algorithms
+3.  Testing the sensitivity to cutoffs and other parameters
+4.  Developing a community-detection based iterative approach to extract hierarchy
+5.  Creating a survey to validate the outputs once tested robustly
+6.  Applying these methodologies to a much larger network such as the Wikipedia EN Article Network
+
+Some of the challenges that remain are in terms of being able to visualise the full hierarchical graph. I have made some progress in this aspect by exploring D3.js packages for networks (`networkD3`) and hope to be able to present that in some form in the near future. Looking at the full structure would certainly give us a different perspective of the nature and quality of these algorithms.
