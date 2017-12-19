@@ -3,13 +3,29 @@ The Tree of Knowledge
 Kaushik Mohan
 
 Directory Structure
-===================
+-------------------
 
--   `Code/data` contains edgelists and node details of the scraped network used in this project.
+-   `Code/Data` contains edgelists and node details of the scraped network used in this project
 -   `Paper` includes the Muchnik, et.al. paper used as the primary reference for this project
+-   `Presentations` contain the project proposal and final presentation for the course
 
 Introduction
 ============
+
+Objective
+---------
+
+-   To extract hierarchical structure of articles for a field (say, Mathematics, Physics..)
+
+Why?
+----
+
+-   Individual learning is still hierarchical
+-   Can be used to create structured curriculum content with just resources available on the web
+-   Identify gaps in information on the web
+
+Overview
+--------
 
 This project is an attempt to use (and improve) methods described in the paper by Muchnik, et.al. for extracting hierarchies from a network. The paper has been made available for reference in the respective folder within the repo. The end goal is to be able to use these techniques to create a knowledge tree from the Wikipedia EN article network which could be used to create a more structured online-reference/learning platform akin to a traditional Encyclopedia.
 
@@ -80,86 +96,7 @@ titles
     ## [10] "     Mechanics "                               
     ## [11] "Go Back"
 
-We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those iteratively. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content. In the below chunk, we write the function to extract all the links from a page while simultaneously cleaning the data for further use. We exclude javascript links, multimedia links and also stop the parsing from entering into an infinite loop when it reaches an index directory (<http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/>) where sorting by Name, Size etc. create a slightly different URL. We also exclude URLs under the class/ subdomain as these don't contain Physics content but are structured courses that have been created within the hyperphysics domain.
-
-``` r
-url_prefix <- "http://hyperphysics.phy-astr.gsu.edu/hbase/"
-
-## Defining a function to get all the hyperlinks in a given webpage
-get_links <- function(url,prefix=url_prefix,heading){
-  
-  full_url <- paste0(prefix,url)
-  webpage <- read_html(full_url)
-  nodes <- html_nodes(webpage,'a')
-  titles <- stri_encode(html_text(nodes), "", "UTF-8")
-  links <- html_attr(nodes,"href")
-  headings <- html_nodes(webpage,'h1')
-  h_regex <- regexpr(">(.*)<",as.character(headings[1]))
-  heading <- substr(as.character(headings[1]),(h_regex[1]+1),h_regex[1]+attr(h_regex,"match.length")-2)
-
-  ## Removing any javascript or external (starting with http:// or https://) links 
-  titles <- titles[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
-  links <- links[!grepl("^javascript|Javascript|http://|https://|www.|mailto:",links)]
-  
-  ## Removing multimedia links (.gif/.mp4/.jpg/.png/.mov)
-  titles <- titles[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
-  links <- links[!grepl(".gif|.jpg|.png|.mp4|.mov|.jpeg$",links)]
-  
-  ## Removing any links which refer to index directory sorting
-  titles <- titles[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
-  links <- links[!grepl("[[:punct:]]C[[:punct:]][A-Z][[:punct:]]O[[:punct:]][A-Z]",links)]
-  
-  ## Removing certain URLs to exclude within page references (of the form #xxxD)
-  links <- sub("\\#.*","\\",links)
-  
-  ## Removing the Index and Main page URLs along with any null or missing cases
-  excluded_urls <- c("",NA)
-  titles <- titles[!links %in% excluded_urls]
-  links <- links[!links %in% excluded_urls]
-  
-  ## If the parent url is of the form xx/yy/zz.html, we need to prefix yy/ to results of the form  xx.html
-  if(grepl("^.*/",url)){
-    string_to_add <- paste0(sub("\\/.*html","\\",url),"/")
-    links[!grepl("^../",links)] <- paste0(string_to_add,links[!grepl("^../",links)])
-  }
-  
-  ## Removing any links to sub-domain class as they don;t have physics content
-  titles <- titles[!grepl("class/",links)]
-  links <- links[!grepl("class/",links)]
-
-  ## Trimming URLs of the form ../xxx.html and removing extra /s and spaces
-  links <- sub("^../","\\",links)
-  links <- gsub("//|///","/",links)
-  links <- gsub("\r","",links)
-  
-  ## Fixing broken URLs (manual fixes during initial testing)
-  links[grepl("^mechanics/vel.html$",links)] <- "vel.html"
-  links[grepl("^mechanics/frict.html$",links)] <- "frict.html"
-  links[grepl("^forces/particles/quark.html$",links)] <- "particles/quark.html"
-  links[grepl("^magnetic/ferro.html$",links)] <- "solids/ferro.html"
-  links[grepl("^nuclear/hframe.html$",links)] <- "hframe.html"
-  links[grepl("^mechanics/hframe.html$",links)] <- "hframe.html"
-  links[grepl("^mechanics/hph.html$",links)] <- "hph.html"
-  links[grepl("^thermo/therm/entropcon.html$",links)] <- "thermo/entropcon.html"
-  links[grepl("^astro/particles/hadron.html$",links)] <- "particles/hadron.html"
-  links[grepl("^astro/grav.html$",links)] <- "grav.html"
-
-  
-  ## Removing the Index and Main page URLs along with any null or missing cases
-  excluded_urls <- c("hframe.html","hph.html")
-  titles <- titles[!links %in% excluded_urls]
-  links <- links[!links %in% excluded_urls]
-  links <- tolower(links)
-  
-  ## trimming leading and trailing white spaces and removing duplicates 
-  unique_links <- trimws(links[!duplicated(links)],which="both")
-  unique_titles <- trimws(titles[!duplicated(links)],which="both") 
-  return(list(main_page=url,main_page_title=heading,page_links=unique_links,page_titles=unique_titles))
-}
-
-l <- get_links("acca.html",heading="Acceleration")
-l
-```
+We can see all the links and page titles extracted from the HTML page. Next, we need to traverse through these URLs to find links in those iteratively. We keep track of the URLs visted and also include some URLs that we do not wish to look into as they do not have topic related content. In the below chunk, we write the function to extract all the links from a page while simultaneously cleaning the data for further use. We exclude javascript links, multimedia links and also stop the parsing from entering into an infinite loop when it reaches an index directory (<http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/>) where sorting by Name, Size etc. create a slightly different URL. We also exclude URLs under the class/ subdomain as these don't contain Physics content but are structured courses that have been created within the hyperphysics domain. We account for many such cases and define a function to scrape for hyperlinks and simultaneously clean it for consumption.
 
     ## $main_page
     ## [1] "acca.html"
@@ -181,54 +118,8 @@ We note that the results now are lot cleaner compared to the raw output from bef
 
 Using these helper functions, we go over all the URLs and store the network structure.
 
-``` r
-## Creating a list to store all the URLs vsiited
-visited_urls <- NA
-error_urls <- NA
-unvisited_urls <- c("acca.html") ## starting with the first URL
-page_details <- rbind(page_details,c("acca.html","Acceleration"))
-page_details <- page_details[-1,]
-
-####################
-# Function to go through a starting set of URLs and iteratively visit all linked URLs till no none remain unvisited
-####################
-
-scrape_urls <- function(urls_to_visit,visited_urls, page_details, edge_list,error_urls){
-  counter <- 0
-  st <- proc.time()
-  while(length(urls_to_visit) > 0){
-    tryCatch(
-      {
-        l <- get_links(urls_to_visit[1],heading=page_details$title[which(page_details$url == urls_to_visit[1])])
-        page_details <- add_page_details(l,df = page_details )
-        edge_list <- rbind(edge_list,get_edges(l))
-      },
-      error=function(cond){
-        # print(unvisited_urls[1])
-        error_urls <<- c(error_urls,urls_to_visit[1])
-      },
-      finally={
-        visited_urls <- c(visited_urls,urls_to_visit[1])
-        urls_to_visit <- page_details$url[!page_details$url %in% visited_urls]
-        counter <- counter + 1   
-      }
-    )
-  }
-  error_urls <- error_urls[!is.na(error_urls)]
-  proc.time() - st
-  return(list(pd=page_details,el=edge_list,visited_urls=visited_urls,unvisited_urls=urls_to_visit,errors=error_urls))
-}
-
-## Running the scraping function
-
-scrape <- scrape_urls(urls_to_visit=unvisited_urls,visited_urls=visited_urls, page_details=page_details, edge_list=edge_list,error_urls = error_urls)
-
-unvisited_urls <- scrape$unvisited_urls
-visited_urls <- scrape$visited_urls
-page_details <- scrape$pd
-edge_list <- scrape$el
-error_urls <- scrape$errors
-```
+    ##    user  system elapsed 
+    ##  90.674  21.535 678.906
 
 ### Error handling
 
@@ -236,29 +127,21 @@ One of the major challenges in scraping the web for the network data was with ha
 
     ## [1] 295
 
-    ##                           X1   X2
-    ## 72      magnetic/elecur.html <NA>
-    ## 93     mechanics/volcon.html <NA>
-    ## 136      acoustic/dbcon.html <NA>
-    ## 157     molecule/schrcn.html <NA>
-    ## 174      quantum/lascon.html <NA>
-    ## 176        solar/radtel.html <NA>
-    ## 181        astro/galaxy.html <NA>
-    ## 185   geophys/stibarsen.html <NA>
-    ## 186    minerals/geophys.html <NA>
-    ## 194      astro/solarcon.html <NA>
-    ## 227         pertab/salt.html <NA>
-    ## 234   solids/rectifiers.html <NA>
-    ## 239      quantum/qualig.html <NA>
-    ## 250      pertab/diamond.html <NA>
-    ## 251      pertab/geophys.html <NA>
-    ## 252 molecule/scattercon.html <NA>
-    ## 253   molecule/atmoscon.html <NA>
-    ## 258        music/string.html <NA>
-    ## 262     organic/chemcon.html <NA>
-    ## 263      audio/trawvcon.html <NA>
+    ##  [1] "magnetic/elecur.html"     "mechanics/volcon.html"   
+    ##  [3] "acoustic/dbcon.html"      "molecule/schrcn.html"    
+    ##  [5] "quantum/lascon.html"      "solar/radtel.html"       
+    ##  [7] "astro/galaxy.html"        "geophys/stibarsen.html"  
+    ##  [9] "minerals/geophys.html"    "astro/solarcon.html"     
+    ## [11] "pertab/salt.html"         "solids/rectifiers.html"  
+    ## [13] "quantum/qualig.html"      "pertab/diamond.html"     
+    ## [15] "pertab/geophys.html"      "molecule/scattercon.html"
+    ## [17] "molecule/atmoscon.html"   "music/string.html"       
+    ## [19] "organic/chemcon.html"     "audio/trawvcon.html"
 
-We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Finally, we visit the unvisited fixed URLs and add the information to the dataset.
+We ignore the 20 remaining cases, as it was difficult to manually identify the correct URLs for these. Next, we visit the unvisited fixed URLs and add the information to the dataset.
+
+    ##    user  system elapsed 
+    ##   0.723   0.172   5.999
 
 Finally, we check the dataset once more to remove self-edges and any duplicates.
 
@@ -276,7 +159,7 @@ page_details <- page_details[!duplicated(page_details$url),] ## Only URL duplica
 We store these final Edge List and Page Details data frames as CSVs as a backup, for easier access in the following sections and to work with a clean environment.
 
 ``` r
-setwd("code/Data")
+setwd("Code/Data")
 write.csv(page_details,file="page_details.csv",row.names = FALSE)
 write.csv(edge_list,file="edge_list.csv",row.names = FALSE)
 ```
@@ -340,7 +223,7 @@ The first network statistics we look into furhter is the degree distribution. We
 
     ## [1] "Mean Out-Degree:  7.1846"
 
-It is a bit strange and interesting that the Avg. In and Out Degrees match perfectly.We then plot the degree distribution in the log-log scale to see if it is linear denoting a scale-free distribution.
+It is a bit strange and interesting that the Avg. In and Out Degrees match perfectly. We then plot the degree distribution in the log-log scale to see if it is linear denoting a scale-free distribution.
 
 ![](Readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png)
 
@@ -368,7 +251,7 @@ We do observe that the Network Diameter small at ~5.86 and this is re-inforced b
 
 ### Centralization
 
-The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized.
+The key network and nodal measure for our analysis is the Centrality and Centralization measures.The overall network centralization is 0.236. This gives us a sense of the centralization of the network relative to a star configuration which is maximally centrlized. A value of 0.236 implies that the network isn't highly centralized but at the same time the structure isn't purely random either with some nodes playing a central role.
 
     ## [1] "Network Centralization:  0.236"
 

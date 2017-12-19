@@ -654,7 +654,7 @@ get_hierarchy_graph <- function(h_scores,edgelist,upper,lower){
 
 We also define a function to sample a graph from the hierarchy where, given a staring node, we sample $n$ nodes one level lower and continue on till the given number of levels. We also define two helper functions to wrap the titles of the nodes and create a plotting function for a cleaner visualization.  
 
-```{r}
+```{r,echo=FALSE}
 ## Recursive Depth-First search for the sub-tree given the root
 
 get_children <- function(st,el,n=5){
@@ -688,14 +688,15 @@ wrap_strings <- function(vector_of_strings,width){
 
 
 ## Function to plot a tree using ggraph
-tree_plot_func <- function(graph) {
+tree_plot_func <- function(graph,sz=2,title) {
 
   # plot
   plot <- ggraph(graph, 'dendrogram') + 
     theme_bw() +
     geom_edge_link() +
     geom_node_point() +
-    geom_node_text(aes(label = node_label), na.rm = TRUE, repel= TRUE,size=2) +
+    geom_node_text(aes(label = node_label), na.rm = TRUE, repel= TRUE,size=sz) +
+    labs(title = title) +
     theme(panel.grid.minor = element_blank(),
           panel.grid.major = element_blank(),
           panel.background = element_blank(),
@@ -707,7 +708,7 @@ tree_plot_func <- function(graph) {
           axis.ticks = element_blank(),
           axis.title.x = element_blank(),
           axis.title.y = element_blank(),
-          plot.title = element_text(size = 2))
+          plot.title = element_text(size = 10))
   
   print(plot)
 }
@@ -722,8 +723,6 @@ As the name suggests, in the method we use a simple betweenness centrality based
 
 ![Betweenness Centrality Score](images/betweenness_centrality.png)
 
-#### Results
-
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
 betweenness_centrality <- centr_betw(hyperphysics_graph,directed=TRUE)
 bw_hierarchy_score <- betweenness_centrality$res/(sqrt((1+in_degree)*(1+out_degree)))
@@ -734,22 +733,10 @@ lower_cutoff <- 0.2
 bw_hierarchy_graph <- get_hierarchy_graph(bw_hierarchy_score,undirected_edgelist,upper_cutoff,lower_cutoff)
 bw_hierarchy_edgelist <- as_edgelist(bw_hierarchy_graph)
 
-bw_hierarchy_graph_centrality <- centr_betw(bw_hierarchy_graph)
+bw_hierarchy_graph_centrality <- centr_betw(bw_hierarchy_graph,directed=FALSE)
 max_centrality_node <- which(bw_hierarchy_graph_centrality$res == max(bw_hierarchy_graph_centrality$res),arr.ind = TRUE)
 ```
 
-```{r,echo=FALSE, message=FALSE,warning=FALSE}
-## plotting sub-tree
-set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(245,bw_hierarchy_edgelist,level=3,n=4),directed = TRUE)
-# g <- bw_hierarchy_graph
-V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),25)
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
-tree_plot_func(g2)
-
-```
 
 
 ### Page-Rank based hierarchy extraction
@@ -764,10 +751,7 @@ $PR(u)$: Page-Rank for node $u$
 $B_u$: The set containing all nodes linking to node $u$  
 $L(v)$: No. of edges from node $v$
 
-
-#### Results
-
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE,echo=FALSE}
 page_rank_centrality <- page_rank(hyperphysics_graph,algo="prpack",directed=TRUE)
 pr_hierarchy_score <- page_rank_centrality$vector
 
@@ -780,35 +764,6 @@ V(pr_hierarchy_graph)$titles <- strtrim(wrap_strings(vertex_titles[V(pr_hierarch
 ```
 
 
-```{r,echo=FALSE, message=FALSE,warning=FALSE}
-## plotting sub-tree
-set.seed(1)
-g <- graph_from_edgelist(get_sub_tree(245,level=3,pr_hierarchy_edgelist,n=4))
-
-V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
-iso <- V(g)[igraph::degree(g)==0]
-g2 <- delete_vertices(g, iso)
-V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
-tree_plot_func(g2)
-
-# install.packages('networkD3')
-# library(networkD3)
-# pr_d3 <- igraph_to_networkD3(g2)
-# dendroNetwork( pr_d3, fontSize = 5, opacity = 0.9)
-# 
-# install.packages('data.tree')
-# library(data.tree)
-# library(networkD3)
-# 
-# g <- get_sub_tree(668,3,pr_hierarchy_edgelist,n=5)
-# df <- data.frame(from=vertex_titles[g[,1]],to=vertex_titles[g[,2]])
-# root2 <- data.tree::FromDataFrameNetwork(df)
-# 
-# root2 <- as.list(root2, mode = 'explicit', unname = TRUE)
-# 
-# diagonalNetwork(List = root2, fontSize = 10, opacity = 0.9, margin = 0)
-```
-
 ### Attraction Basin based hierarchy extraction
 
 This is a method developed by the authors of the paper. The purpose behind it was to create a measure that can be estimated locally and does not nequire for the entire network to be analysed. For example, to calculate betweenness centrality for a node, all the shortest paths between all the nodes have to be calculated. Similarly, page-rank centrality being iterative, has to be estimated for all the nodes in the network together. For large networks, such computations can be very expensive and hence there is a need for a local measure of centrality.
@@ -820,8 +775,6 @@ The authors define the score as comparision between the weighted fraction of the
 Given this idea, the hierarchy score is defined as the following:
 
 ![Attraction-Basin hierarchy Score](images/attraction_basin_score.png)
-
-#### Results
 
 ```{r, warning=FALSE,message=FALSE, echo=FALSE}
 get_ab_hierarchy_score <- function(gdist,alpha,m){
@@ -845,8 +798,8 @@ get_ab_hierarchy_score <- function(gdist,alpha,m){
 }
 ```
 
-```{r}
-ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=5)
+```{r, echo=FALSE}
+ab_hierarchy_score <- get_ab_hierarchy_score(geodesic_distances$gdist,alpha=2,m=3)
 
 upper_cutoff <- 0.8
 lower_cutoff <- 0.2
@@ -856,15 +809,175 @@ ab_hierarchy_edgelist <- as_edgelist(ab_hierarchy_graph)
 
 ```
 
+***
+
+## Part 4: Results
+
+After defining all the methodologies and computing the overall hierarchy graph, we finally take a look at the results. For ease of visualization, I present a subgraph upto 3 levels in depth and sample of the complete branch structure. In order to compare the results from the 3 methods, we present the sub-graph originating at 3 different topics for each of the methods. The topics explored are
+
+- Conservation Laws
+- Biology Concepts
+- Quantum Physics
+
+We choose these three topics for multiple reasons. A concept like the Conservation Laws is fundamental to many different fields of physics and would expect it to be high up in the overall hierarchy. By looking at the structure originating from this, we could get a sense of how the hierarchy is determined at the high-level. Next, we choose Biology concepts because it is a tangential topic in the textbook with limited content compared to Physics. By looking at the estimated hierarchies for Biology, we could learn about how each of these methodologies work for a more self contained topic or group of articles. Lastly, we look at Quantum physics because being an advanced and not fully explored as a topic, we would expect it to appear relatively lower in the hierarchy and connected to many leaves. The performance of the algorithm in this domain could tell us how sensitive they are close to the boundary of the graph perhaps. 
+
+#### Conservation Laws
+
 ```{r,echo=FALSE, message=FALSE,warning=FALSE}
 ## plotting sub-tree
-set.seed(10)
-g <- graph_from_edgelist(get_sub_tree(245,level=3,ab_hierarchy_edgelist,n=5 ))
+set.seed(1)
+g <- graph_from_edgelist(get_sub_tree(384,bw_hierarchy_edgelist,level=3,n=3),directed = TRUE)
+# g <- bw_hierarchy_graph
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),25)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Betweenness Based")
+
+```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(1)
+g <- graph_from_edgelist(get_sub_tree(384,level=3,pr_hierarchy_edgelist,n=3))
+
 V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
 iso <- V(g)[igraph::degree(g)==0]
 g2 <- delete_vertices(g, iso)
 V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
-tree_plot_func(g2)
+tree_plot_func(g2,2,"Page-Rank Based")
+
+# install.packages('networkD3')
+# library(networkD3)
+# pr_d3 <- igraph_to_networkD3(g2)
+# dendroNetwork( pr_d3, fontSize = 5, opacity = 0.9)
+# 
+# install.packages('data.tree')
+# library(data.tree)
+# library(networkD3)
+# 
+# g <- get_sub_tree(668,3,pr_hierarchy_edgelist,n=5)
+# df <- data.frame(from=vertex_titles[g[,1]],to=vertex_titles[g[,2]])
+# root2 <- data.tree::FromDataFrameNetwork(df)
+# 
+# root2 <- as.list(root2, mode = 'explicit', unname = TRUE)
+# 
+# diagonalNetwork(List = root2, fontSize = 10, opacity = 0.9, margin = 0)
 ```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(2)
+g <- graph_from_edgelist(get_sub_tree(384,level=3,ab_hierarchy_edgelist,n=4 ))
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Attraction Basin")
+```
+
+#### Biology Concepts
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(1)
+g <- graph_from_edgelist(get_sub_tree(245,bw_hierarchy_edgelist,level=3,n=3),directed = TRUE)
+# g <- bw_hierarchy_graph
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),25)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Betweenness Based")
+```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(3)
+g <- graph_from_edgelist(get_sub_tree(245,level=3,pr_hierarchy_edgelist,n=3))
+
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Page-Rank Based")
+```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(3)
+g <- graph_from_edgelist(get_sub_tree(245,level=3,ab_hierarchy_edgelist,n=4 ))
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Attraction Basin")
+```
+
+#### Quantum Physics
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(1)
+g <- graph_from_edgelist(get_sub_tree(2280,bw_hierarchy_edgelist,level=3,n=3),directed = TRUE)
+# g <- bw_hierarchy_graph
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Betweenness Based")
+
+```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(4)
+g <- graph_from_edgelist(get_sub_tree(2177,level=3,pr_hierarchy_edgelist,n=3))
+
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Page-Rank Based")
+```
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+## plotting sub-tree
+set.seed(2)
+g <- graph_from_edgelist(get_sub_tree(2280,level=3,ab_hierarchy_edgelist,n=3 ))
+V(g)$titles <- strtrim(as.character(vertex_titles[V(g)]),30)
+iso <- V(g)[igraph::degree(g)==0]
+g2 <- delete_vertices(g, iso)
+V(g2)$node_label = wrap_strings(V(g2)$titles, 10)
+tree_plot_func(g2,2,"Attraction Basin")
+```
+
+***
+
+## Conclusion
+
+At the high-level, the results presented above are encouraging in that there are no outrightly nonsensical features visible in them. All of the algorithms are able to identify topics that are similar and close to each other even though the depth and the direction they take are quite different, naturally. Below, we analyse each of the outputs to try and observe patterns in them. 
+
+We note some very interesting structure coming out of each of these algorithms. When looking at the branches rooting out of Conservation Laws, topics such as Kinetic Energy, Work and Energy priciples and articles in Heat and Thermodynamics seem to important branches. While thermodynamics related topics feature in the results of all the three algorithms, Kinetic energy and work principles appear in the traditional centrality based eastimates. The nature of the relationship however is quite different. Betweenness based algorithm places Kinetic energy and work in parallel while page-rank based algorithm places work under topics in Kinetic Energy. The Attraction basin algorithm output is uniquely different in that it branches out into fundamental forces and topics in astro-physics with heat and thermodynamics featuring more prominantly. Overall though, it does feel like these hierarchical relationahips though interesting, aren't particularly accurate. As hypothesised, we would expect a topic such as Conservation laws leading to different topics in Conservation or mechanics such as the law of conservation of energy, momentum, and angular-momentum etc.
+
+We notice a lot of similarities in the structure under Biology Concepts with Energy cycle, Cellular respiration and topics in photosynthesis appearing. The results from the page-rank based algorithm differ the most from the other two with only one of the branches having similar content on the above topics. The position of the article Electron transportation in photosynthesis and cellular respiration seem to be key nodes but their relative positions are quite different in the different outputs.  While there is a hierarchical relationship between these two topics in the betweenness based algorithm, the two nodes are at the same level in the Attraction basin based approach. Fine-tuning the cut-offs to fix such relationships between seemingly important nodes might lead us to a better final output. 
+
+Given my limited knowledge in the field of Quantum Physics, I wouldn't go too deep into analysing the structure for this topic. The hypothesis was that, given a specific and deep topic such as Quantum physics, we would see a lot of similarities in the output of the three algorithms. The hypothesis couldn't have been proved more wrong. Each of the algorithms seem to explore a different aspect within Quantum physics. While the branches seem to go out into pretty advanced topics fairly quickly, you can note that the page-rank based output does have more fundamental topics such "Fundamental Forces", "Wave-particle duality" and "Blackbody Radiation" featuring higher up. 
+
+From analysing these three trees, we do find interesting parts from each of the algorithms. Given the fact that we haven't yet analysed the sensitivity to cut-offs, these must be taken as preliminary results. It is good to observe similarities in the outputs and perhaps the correlation is a strong indicator of the hierarchical relationship. 
+
+Lastly, it must also be noted that for visualization, only a sample of nodes were presented. The absence of certain topics does not imply the absence of the hierarchical relationship in any of the given outputs. 
+
+### The way forward
+
+The next steps in this project are:
+
+1. Exlporing different roots in the full hierarchy graph
+2. Quantifying similarities between the algorithms
+3. Testing the sensitivity to cutoffs and other parameters
+4. Developing a community-detection based iterative approach to extract hierarchy
+5. Creating a survey to validate the outputs once tested robustly
+6. Applying these methodologies to a much larger network such as the Wikipedia EN Article Network
+
+Some of the challenges that remain are in terms of being able to visualise the full hierarchical graph. I have made some progress in this aspect by exploring D3.js packages for networks (`networkD3`) and hope to be able to present that in some form in the near future. Looking at the full structure would certainly give us a different perspective of the nature and quality of these algorithms. 
 
 
